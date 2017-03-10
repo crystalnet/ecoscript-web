@@ -16,6 +16,9 @@
  *  limitations under the License
  *
  */
+
+/*eslint linebreak-style: ["error", "windows"]*/
+
 /* eslint-env browser */
 (function() {
   'use strict';
