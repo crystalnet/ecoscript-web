@@ -110,9 +110,11 @@ gulp.task('scripts', () =>
       // Note: Since we are not using useref in the scripts build pipeline,
       //       you need to explicitly list your scripts here in the right order
       //       to be correctly concatenated
-      './app/scripts/main.js',
+      './app/scripts/initialize.js',
       // Other scripts //TODO add the scripts from the project
-      './app/scripts/modules/index.js'
+      './app/scripts/app.module.js',
+      './app/scripts/app.route.js',
+      './app/scripts/components/manageUsersController.js'
     ])
       .pipe($.newer('.tmp/scripts'))
       .pipe($.sourcemaps.init())
@@ -120,6 +122,14 @@ gulp.task('scripts', () =>
       .pipe($.sourcemaps.write())
       .pipe(gulp.dest('.tmp/scripts'))
       .pipe($.concat('main.min.js'))
+
+      // Custom angular annotation handling
+      /*.pipe(ngAnnotate({
+        // true helps add where @ngInject is not used. It infers.
+        // Doesn't work with resolve, so we must be explicit there
+        add: true
+      }))*/
+
       .pipe($.uglify({preserveComments: 'some'}))
       // Output files
       .pipe($.size({title: 'scripts'}))
