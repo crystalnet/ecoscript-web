@@ -2,7 +2,7 @@
  * Created by crystalneth on 11-Mar-17.
  */
 
-(function () {
+(function() {
   'use strict';
 
   // Get the module
@@ -13,11 +13,12 @@
 
   config.$inject = ['$routeProvider', '$locationProvider'];
 
+  // TODO documentation
   /* @ngInject */
   function config($routeProvider, $locationProvider) {
     $locationProvider.html5Mode({
-        enabled: true
-      });
+      enabled: true
+    });
 
     $routeProvider
       .when('/', {
@@ -29,9 +30,8 @@
       })
 
       .otherwise({
-        templateUrl: 'scripts/components/landing/landingView.htm'
+        redirectTo: '/'
       });
   }
+
 })();
-
-

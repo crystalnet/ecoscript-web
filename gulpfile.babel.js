@@ -113,7 +113,7 @@ gulp.task('scripts', () =>
       './app/scripts/initialize.js',
       // Other scripts //TODO add the scripts from the project
       './app/scripts/components/app.module.js',
-      './app/scripts/components/app.route.js',
+      './app/scripts/components/app.routes.js',
       './app/scripts/components/navigation/navigationController.js',
       './app/scripts/components/authentication/authentication.module.js',
       './app/scripts/components/authentication/authenticationService.js',
@@ -168,6 +168,31 @@ gulp.task('html', () => {
     .pipe(gulp.dest('dist'));
 });
 
+// Scan your HTM for assets & optimize them
+gulp.task('htm', () => {
+  return gulp.src('app/**/*.htm')
+    .pipe($.useref({
+      searchPath: '{.tmp,app}',
+      noAssets: true
+    }))
+
+    // Minify any HTM
+    .pipe($.if('*.htm', $.htmlmin({
+      removeComments: true,
+      collapseWhitespace: true,
+      collapseBooleanAttributes: true,
+      removeAttributeQuotes: true,
+      removeRedundantAttributes: true,
+      removeEmptyAttributes: true,
+      removeScriptTypeAttributes: true,
+      removeStyleLinkTypeAttributes: true,
+      removeOptionalTags: true
+    })))
+    // Output files
+    .pipe($.if('*.htm', $.size({title: 'htm', showFiles: true})))
+    .pipe(gulp.dest('dist'));
+});
+
 // Clean output directory
 gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
 
@@ -188,6 +213,7 @@ gulp.task('serve', ['scripts', 'styles'], () => {
   });
 
   gulp.watch(['app/**/*.html'], reload);
+  gulp.watch(['app/**/*.htm'], reload);
   gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
   gulp.watch(['app/scripts/**/*.js'], ['lint', 'scripts', reload]);
   gulp.watch(['app/images/**/*'], reload);
@@ -213,7 +239,7 @@ gulp.task('serve:dist', ['default'], () =>
 gulp.task('default', ['clean'], cb =>
   runSequence(
     'styles',
-    ['lint', 'html', 'scripts', 'images', 'copy'],
+    [/* TODO 'lint',*/ 'html', 'htm', 'scripts', 'images', 'copy'],
     'generate-service-worker',
     cb
   )

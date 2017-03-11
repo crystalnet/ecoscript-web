@@ -19,7 +19,7 @@
 
     self.authenticate = function() {
       $location.path('/login');
-    }
+    };
   }
-})();
 
+})();

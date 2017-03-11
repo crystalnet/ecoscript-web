@@ -9,156 +9,154 @@
  * Hash.pushState(true);
  *
  * Hash.on('/page/([0-9]+)$',
- *	{yep: function(path, parts) { }, nop: function() { }},
- *	'Page $1');
+ *  {yep: function(path, parts) { }, nop: function() { }},
+ *  'Page $1');
  *
  * Hash.go('/page/1');
  **/
 
 (function() {
+  'use strict';
 
-'use strict';
+  var hashes = {},
+    regexp = {},
+    history = [],
+    freq = 100,
+    num = 0,
+    pushState = false,
+    timer = null,
+    currentUrl = null,
 
-var hashes = {},
-	regexp = {},
-	history = [],
-	freq = 100,
-	num = 0,
-	pushState = false,
-	timer = null,
-	currentUrl = null,
+    freeze = function(obj) {
+      if (Object.freeze) return Object.freeze(obj);
+      return obj;
+    },
 
-	freeze = function(obj) {
-		if (Object.freeze) return Object.freeze(obj);
-		return obj;
-	},
+    getHashParts = function() {
+      return window.location.href.split('#');
+    },
 
-	getHashParts = function() {
-		return window.location.href.split('#');
-	},
+    startTimer = function() {
 
-	startTimer = function() {
-		
-		if (!timer)
-			timer = setInterval(function() {
-				if (num>0 && currentUrl!=window.location.href) {
-					currentUrl = window.location.href;
-					window.Hash.check();
-				}
-			}, freq);
+      if (!timer)
+        timer = setInterval(function() {
+          if (num > 0 && currentUrl != window.location.href) {
+            currentUrl = window.location.href;
+            window.Hash.check();
+          }
+        }, freq);
 
-	},
+    },
 
-	stopTimer = function() {
+    stopTimer = function() {
 
-		if (timer) {
-			clearInterval(timer);
-			timer = null;
-		}
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
 
-	};
+    };
 
-window.Hash = freeze({
+  window.Hash = freeze({
 
-		pushState: function(yes) {
+    pushState: function(yes) {
 
-			if (window.history && window.history.pushState)
-				pushState = yes;
+      if (window.history && window.history.pushState)
+        pushState = yes;
 
-			return this;
-		},
+      return this;
+    },
 
-		fragment: function() {
-			
-			var hash = getHashParts();
-			return (pushState) ?
-				window.location.pathname + ((hash[1]) ? '#' + hash[1] : '')
-				: hash[1] || '';
+    fragment: function() {
 
-		},
-		
-		get: function(path, params) {
-			
-			var p, fragment = '', parameters = [];
+      var hash = getHashParts();
+      return (pushState) ?
+        window.location.pathname + ((hash[1]) ? '#' + hash[1] : '')
+        : hash[1] || '';
 
-			for(p in params) {
-				if (!Object.prototype.hasOwnProperty(p))
-					continue;
-				parameters.push(encodeURIComponent(p) + '=' + encodeURIComponent(params[p]));
-			}
+    },
 
-			if (parameters.length>0)
-				parameters = '?' + parameters.join('&');
-		
-			return (pushState) ? path + parameters :
-				getHashParts()[0] + '#' + path + parameters;
+    get: function(path, params) {
 
-		},
+      var p, fragment = '', parameters = [];
 
-		go: function(hash, params) {
+      for (p in params) {
+        if (!Object.prototype.hasOwnProperty(p))
+          continue;
+        parameters.push(encodeURIComponent(p) + '=' + encodeURIComponent(params[p]));
+      }
 
-			if (this.fragment()!=hash) {
-				var to = this.get(hash, params);
+      if (parameters.length > 0)
+        parameters = '?' + parameters.join('&');
 
-				if (pushState)
-					window.history.pushState(null, document.title, to);
-				else
-					window.location.href = to;
-				}
-			
-			return this;
-		},
+      return (pushState) ? path + parameters :
+        getHashParts()[0] + '#' + path + parameters;
 
-		update: function () {
-			
-			currentUrl = window.location.href;
-			return this;
+    },
 
-		},
+    go: function(hash, params) {
 
-		on: function(hash, callback, title) {
+      if (this.fragment() != hash) {
+        var to = this.get(hash, params);
 
-			if (!hashes[hash])
-				hashes[hash] = {title: title, listeners: []};
-			
-			hashes[hash].listeners.push(callback);
-			num++;
-			startTimer();
+        if (pushState)
+          window.history.pushState(null, document.title, to);
+        else
+          window.location.href = to;
+      }
 
-			return this;
-		},
+      return this;
+    },
 
-		check: function() {
+    update: function() {
 
-			var i,
-				hash,
-				parts,
-				fragment = this.fragment();
+      currentUrl = window.location.href;
+      return this;
 
+    },
 
-			for (hash in hashes) {
-				if (!Object.prototype.hasOwnProperty.call(hashes, hash))
-					continue;
+    on: function(hash, callback, title) {
 
-				hashes[hash].regexp = hashes[hash].regexp || new RegExp(hash);
+      if (!hashes[hash])
+        hashes[hash] = {title: title, listeners: []};
 
-				if ((parts = hashes[hash].regexp.exec(fragment))) {
-					if (hashes[hash].title)
-						document.title = hashes[hash].title;
+      hashes[hash].listeners.push(callback);
+      num++;
+      startTimer();
 
-					for (i = 0; i<hashes[hash].listeners.length; i++)
-						if (hashes[hash].listeners[i].yep)
-							hashes[hash].listeners[i].yep(fragment, parts);
-				} else {
-					for (i = 0; i<hashes[hash].listeners.length; i++)
-						if (hashes[hash].listeners[i].nop)
-							hashes[hash].listeners[i].nop(fragment);
-				}
+      return this;
+    },
 
-			}
+    check: function() {
 
-			return this;
-		}
-});
+      var i,
+        hash,
+        parts,
+        fragment = this.fragment();
+
+      for (hash in hashes) {
+        if (!Object.prototype.hasOwnProperty.call(hashes, hash))
+          continue;
+
+        hashes[hash].regexp = hashes[hash].regexp || new RegExp(hash);
+
+        if ((parts = hashes[hash].regexp.exec(fragment))) {
+          if (hashes[hash].title)
+            document.title = hashes[hash].title;
+
+          for (i = 0; i < hashes[hash].listeners.length; i++)
+            if (hashes[hash].listeners[i].yep)
+              hashes[hash].listeners[i].yep(fragment, parts);
+        } else {
+          for (i = 0; i < hashes[hash].listeners.length; i++)
+            if (hashes[hash].listeners[i].nop)
+              hashes[hash].listeners[i].nop(fragment);
+        }
+
+      }
+
+      return this;
+    }
+  });
 
 })();

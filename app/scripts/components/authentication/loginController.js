@@ -2,7 +2,7 @@
  * Created by dominik on 10/03/2017.
  */
 
-(function () {
+(function() {
   'use strict';
 
   // Get the module
@@ -17,9 +17,9 @@
   function LoginController($scope, AuthenticationService) {
     var self = this;
 
-    self.send = function () {
+    self.send = function() {
       AuthenticationService.login(self.email, self.password);
-    }
+    };
   }
 
 })();

@@ -2,7 +2,7 @@
  * Created by dominik on 10/03/2017.
  */
 
-(function () {
+(function() {
   'use strict';
 
   // Get the module
@@ -11,24 +11,25 @@
   // Define service
     .service('AuthenticationService', AuthenticationService);
 
+  // TODO docu
   function AuthenticationService() {
     var self = this;
 
-    self.login = function (email, password) {
-      firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
-        //TODO Handle Errors here.
+    self.login = function(email, password) {
+      firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+        // TODO Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        console.log(errorCode, " :", errorMessage);
+        console.log(errorCode, ' :', errorMessage);
       });
     };
 
-    self.register = function (email, password) {
-      firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
-        //TODO Handle Errors here.
+    self.register = function(email, password) {
+      firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+        // TODO Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        console.log(errorCode, " :", errorMessage);
+        console.log(errorCode, ' :', errorMessage);
       });
     }
   }
