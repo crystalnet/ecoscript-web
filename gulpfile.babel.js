@@ -112,9 +112,14 @@ gulp.task('scripts', () =>
       //       to be correctly concatenated
       './app/scripts/initialize.js',
       // Other scripts //TODO add the scripts from the project
-      './app/scripts/app.module.js',
-      './app/scripts/app.route.js',
-      './app/scripts/components/manageUsersController.js'
+      './app/scripts/components/app.module.js',
+      './app/scripts/components/app.route.js',
+      './app/scripts/components/navigation/navigationController.js',
+      './app/scripts/components/authentication/authentication.module.js',
+      './app/scripts/components/authentication/authenticationService.js',
+      './app/scripts/components/authentication/loginController.js',
+      './app/scripts/components/authentication/registerController.js',
+
     ])
       .pipe($.newer('.tmp/scripts'))
       .pipe($.sourcemaps.init())

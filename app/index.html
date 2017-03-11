@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ecoscript</title>
+  <title>studyscript</title>
 
   <!-- Set base path -->
   <base href="/">
@@ -65,7 +65,8 @@
 
 <!-- Always shows a header, even in smaller screens. -->
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button mdl-color--white">
-  <header class="mdl-layout__header mdl-color--white mdl-color-text--grey-700">
+  <header class="mdl-layout__header mdl-color--white mdl-color-text--grey-700"
+          data-ng-controller="navigationController as navigation">
     <div class="mdl-layout__header-row">
       <!-- Title -->
       <div class="mdl-layout-spacer"></div>
@@ -81,7 +82,7 @@
         <a class="mdl-navigation__link mdl-layout--large-screen-only" href=""><h6>FAQ</h6></a>
         <a class="mdl-navigation__link mdl-layout--large-screen-only" href="#products"><h6>Produkte</h6></a>
         <a class="mdl-navigation__link" href="">
-          <button
+          <button data-ng-click="navigation.authenticate()"
             class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
             Anmelden
           </button>
@@ -187,7 +188,12 @@
 <script src="scripts/initialize.js"></script>
 <script src="scripts/components/app.module.js"></script>
 <script src="scripts/components/app.routes.js"></script>
-<script src="scripts/components/manageUsers/manageUsersController.js"></script>
+<script src="scripts/components/navigation/navigationController.js"></script>
+
+<script src="scripts/components/authentication/authentication.module.js"></script>
+<script src="scripts/components/authentication/authenticationService.js"></script>
+<script src="scripts/components/authentication/loginController.js"></script>
+<script src="scripts/components/authentication/registerController.js"></script>
 <!-- endbuild -->
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->

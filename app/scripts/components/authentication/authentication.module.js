@@ -6,7 +6,7 @@
   'use strict';
 
   // Define the module
-  angular.module('studyscriptApp', ['ngRoute', 'authentication']);
+  angular.module('authentication', []);
 
 })();
 

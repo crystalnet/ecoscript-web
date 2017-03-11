@@ -24,6 +24,10 @@
         templateUrl: 'scripts/components/landing/landingView.htm'
       })
 
+      .when('/login', {
+        templateUrl: 'scripts/components/authentication/authenticationView.htm'
+      })
+
       .otherwise({
         templateUrl: 'scripts/components/landing/landingView.htm'
       });

@@ -1,0 +1,58 @@
+<main class="mdl-layout__content">
+  <div class="page-content">
+
+    <h1>Register</h1>
+
+    <div data-ng-controller="registerController as register">
+      <!-- Textfield with Floating Label -->
+      <form action="#">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="email" id="usernamer" data-ng-model="register.email">
+          <label class="mdl-textfield__label mdl-color-text--white" for="usernamer">Email...</label>
+        </div>
+      </form>
+
+      <!-- Textfield with Floating Label -->
+      <form action="#">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="password" id="passwordr" data-ng-model="register.password">
+          <label class="mdl-textfield__label mdl-color-text--white" for="passwordr">Password...</label>
+        </div>
+      </form>
+
+      <!-- Colored FAB button -->
+      <button id="register-btn" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored"
+              data-ng-click="register.send()">
+        <i class="material-icons">keyboard_arrow_right</i>
+      </button>
+    </div>
+
+
+    <h1>Login</h1>
+
+    <div data-ng-controller="loginController as login">
+      <!-- Textfield with Floating Label -->
+      <form action="#">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="email" id="usernamel" data-ng-model="login.email">
+          <label class="mdl-textfield__label mdl-color-text--white" for="usernamel">Email...</label>
+        </div>
+      </form>
+
+      <!-- Textfield with Floating Label -->
+      <form action="#">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="password" id="passwordl" data-ng-model="login.password">
+          <label class="mdl-textfield__label mdl-color-text--white" for="passwordl">Password...</label>
+        </div>
+      </form>
+
+      <!-- Colored FAB button -->
+      <button id="login-btn" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored"
+              data-ng-click="login.send()">
+        <i class="material-icons">keyboard_arrow_right</i>
+      </button>
+    </div>
+
+  </div>
+</main>
