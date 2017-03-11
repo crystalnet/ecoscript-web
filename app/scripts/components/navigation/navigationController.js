@@ -20,6 +20,10 @@
     self.authenticate = function() {
       $location.path('/login');
     };
+
+    self.home = function() {
+      $location.path('/');
+    };
   }
 
 })();

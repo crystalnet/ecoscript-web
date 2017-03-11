@@ -106,7 +106,7 @@ gulp.task('styles', () => {
 // to enable ES2015 support remove the line `"only": "gulpfile.babel.js",` in the
 // `.babelrc` file.
 gulp.task('scripts', () =>
-    gulp.src([
+   /* gulp.src([
       // Note: Since we are not using useref in the scripts build pipeline,
       //       you need to explicitly list your scripts here in the right order
       //       to be correctly concatenated
@@ -115,12 +115,20 @@ gulp.task('scripts', () =>
       './app/scripts/components/app.module.js',
       './app/scripts/components/app.routes.js',
       './app/scripts/components/navigation/navigationController.js',
+      './app/scripts/components/order/orderController.js',
+      './app/scripts/components/landing/landingController.js',
       './app/scripts/components/authentication/authentication.module.js',
       './app/scripts/components/authentication/authenticationService.js',
       './app/scripts/components/authentication/loginController.js',
       './app/scripts/components/authentication/registerController.js',
+      */
+  gulp.src('app/scripts/components/**/*.js')
+    .pipe($.useref({
+      searchPath: '{app}',
+      noAssets: true
+    }))
 
-    ])
+  //  ])
       .pipe($.newer('.tmp/scripts'))
       .pipe($.sourcemaps.init())
       .pipe($.babel())

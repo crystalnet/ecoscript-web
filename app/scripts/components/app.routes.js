@@ -29,6 +29,10 @@
         templateUrl: 'scripts/components/authentication/authenticationView.htm'
       })
 
+      .when('/order', {
+        templateUrl: 'scripts/components/order/orderView.htm'
+      })
+
       .otherwise({
         redirectTo: '/'
       });
