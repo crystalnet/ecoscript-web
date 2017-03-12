@@ -1,8 +1,7 @@
-node_modules
-dist/
+.idea
 .tmp
-app.yaml
-<<<<<<< HEAD
-=======
+app/libraries
+dist
 functions
->>>>>>> parent of 1d38c7a... commit of only relevant files
+node_modules
+app.yaml
