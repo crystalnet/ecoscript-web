@@ -176,7 +176,7 @@ gulp.task('html', () => {
   ])
     .pipe($.useref({
       searchPath: '{.tmp,app}',
-      noAssets: false
+      noAssets: true
     }))
 
     // Minify any HTML

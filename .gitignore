@@ -2,3 +2,7 @@ node_modules
 dist/
 .tmp
 app.yaml
+<<<<<<< HEAD
+=======
+functions
+>>>>>>> parent of 1d38c7a... commit of only relevant files
