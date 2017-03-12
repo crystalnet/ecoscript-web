@@ -52,10 +52,13 @@
     material.blue-orange.min.css
     material.purple-indigo.min.css
     -->
-  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.green-blue.min.css">
+  <!--link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.green-blue.min.css"-->
 
   <!-- Your styles -->
   <link rel="stylesheet" href="styles/main.css">
+  <!-- bower:css -->
+  <!-- endbower -->
+
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
@@ -180,26 +183,35 @@
 </div>
 
 <!-- Load libraries from CDN -->
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"></script>
+<!--script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-route.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
-<script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+<script src="https://code.getmdl.io/1.2.1/material.min.js"></script-->
+
+<!-- bower:js -->
+<!-- endbower -->
 
 <!-- build:js scripts/main.min.js -->
-<script src="scripts/initialize.js"></script>
-<script src="scripts/components/app.module.js"></script>
-<script src="scripts/components/app.routes.js"></script>
-<script src="scripts/components/navigation/navigationController.js"></script>
-<script src="scripts/components/landing/landingController.js"></script>
-
-<script src="scripts/components/order/order.module.js"></script>
-<script src="scripts/components/order/orderController.js"></script>
-
-<script src="scripts/components/authentication/authentication.module.js"></script>
-<script src="scripts/components/authentication/authenticationService.js"></script>
-<script src="scripts/components/authentication/loginController.js"></script>
-<script src="scripts/components/authentication/registerController.js"></script>
+<script src="scripts/scripts.min.js"></script>
+<!--script src="alter.js"></script-->
 <!-- endbuild -->
+
+<!-- TODO remove block -->
+<!-- REMOVEbuild:js scripts/main.min.js -->
+<!--script src="scripts/initialize.js"></script>
+<script src="components/app.module.js"></script>
+<script src="components/app.routes.js"></script>
+<script src="components/navigation/navigationController.js"></script>
+<script src="components/landing/landingController.js"></script>
+
+<script src="components/order/order.module.js"></script>
+<script src="components/order/orderController.js"></script>
+
+<script src="components/authentication/authentication.module.js"></script>
+<script src="components/authentication/authenticationService.js"></script>
+<script src="components/authentication/loginController.js"></script>
+<script src="components/authentication/registerController.js"></script-->
+<!-- REMOVEendbuild -->
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 <script>

@@ -34,7 +34,7 @@ import gulpLoadPlugins from 'gulp-load-plugins';
 import {output as pagespeed} from 'psi';
 import pkg from './package.json';
 
-const $ = gulpLoadPlugins();
+const $ = gulpLoadPlugins({DEBUG: false});
 const reload = browserSync.reload;
 
 // Lint JavaScript
@@ -106,12 +106,13 @@ gulp.task('styles', () => {
 // to enable ES2015 support remove the line `"only": "gulpfile.babel.js",` in the
 // `.babelrc` file.
 gulp.task('scripts', () =>
-   /* gulp.src([
+  //TODO remove obsolete blocks
+  /* gulp.src([
       // Note: Since we are not using useref in the scripts build pipeline,
       //       you need to explicitly list your scripts here in the right order
       //       to be correctly concatenated
       './app/scripts/initialize.js',
-      // Other scripts //TODO add the scripts from the project
+      // Other scripts // add the scripts from the project
       './app/scripts/components/app.module.js',
       './app/scripts/components/app.routes.js',
       './app/scripts/components/navigation/navigationController.js',
@@ -122,11 +123,16 @@ gulp.task('scripts', () =>
       './app/scripts/components/authentication/loginController.js',
       './app/scripts/components/authentication/registerController.js',
       */
-  gulp.src('app/scripts/components/**/*.js')
-    .pipe($.useref({
+  gulp.src([
+    'app/components/**/*.js',
+    //'app/libraries/**/*.js',
+    'app/scripts/**/*.js',
+    '!app/scripts/sw/**/*.js'
+  ])
+    /*.pipe($.useref({
       searchPath: '{app}',
       noAssets: true
-    }))
+    }))*/
 
   //  ])
       .pipe($.newer('.tmp/scripts'))
@@ -134,7 +140,7 @@ gulp.task('scripts', () =>
       .pipe($.babel())
       .pipe($.sourcemaps.write())
       .pipe(gulp.dest('.tmp/scripts'))
-      .pipe($.concat('main.min.js'))
+      .pipe($.concat('scripts.min.js'))
 
       // Custom angular annotation handling
       /*.pipe(ngAnnotate({
@@ -151,12 +157,26 @@ gulp.task('scripts', () =>
       .pipe(gulp.dest('.tmp/scripts'))
 );
 
+gulp.task('bower', function () {
+  var wiredep = require('wiredep').stream;
+  gulp.src('app/index.html')
+    .pipe(wiredep({
+      src: 'app/index.html',
+      directory: 'app/libraries'
+    }))
+    .pipe(gulp.dest('dist'));
+});
+
 // Scan your HTML for assets & optimize them
 gulp.task('html', () => {
-  return gulp.src('app/**/*.html')
+  return gulp.src([
+    'app/**/*.html',
+    'app/**/*.htm',
+    '!app/libraries/**/*.*'
+  ])
     .pipe($.useref({
       searchPath: '{.tmp,app}',
-      noAssets: true
+      noAssets: false
     }))
 
     // Minify any HTML
@@ -173,30 +193,6 @@ gulp.task('html', () => {
     })))
     // Output files
     .pipe($.if('*.html', $.size({title: 'html', showFiles: true})))
-    .pipe(gulp.dest('dist'));
-});
-
-// Scan your HTM for assets & optimize them
-gulp.task('htm', () => {
-  return gulp.src('app/**/*.htm')
-    .pipe($.useref({
-      searchPath: '{.tmp,app}',
-      noAssets: true
-    }))
-
-    // Minify any HTM
-    .pipe($.if('*.htm', $.htmlmin({
-      removeComments: true,
-      collapseWhitespace: true,
-      collapseBooleanAttributes: true,
-      removeAttributeQuotes: true,
-      removeRedundantAttributes: true,
-      removeEmptyAttributes: true,
-      removeScriptTypeAttributes: true,
-      removeStyleLinkTypeAttributes: true,
-      removeOptionalTags: true
-    })))
-    // Output files
     .pipe($.if('*.htm', $.size({title: 'htm', showFiles: true})))
     .pipe(gulp.dest('dist'));
 });
@@ -205,7 +201,7 @@ gulp.task('htm', () => {
 gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
 
 // Watch files for changes & reload
-gulp.task('serve', ['scripts', 'styles'], () => {
+gulp.task('serve', ['scripts', 'styles', 'bower', 'html'], () => {
   browserSync({
     notify: false,
     // Customize the Browsersync console logging prefix
@@ -247,7 +243,7 @@ gulp.task('serve:dist', ['default'], () =>
 gulp.task('default', ['clean'], cb =>
   runSequence(
     'styles',
-    [/* TODO 'lint',*/ 'html', 'htm', 'scripts', 'images', 'copy'],
+    [/* TODO 'lint',*/ 'html', 'scripts', 'images', 'copy'],
     'generate-service-worker',
     cb
   )

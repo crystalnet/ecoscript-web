@@ -22,15 +22,15 @@
 
     $routeProvider
       .when('/', {
-        templateUrl: 'scripts/components/landing/landingView.htm'
+        templateUrl: 'components/landing/landingView.htm'
       })
 
       .when('/login', {
-        templateUrl: 'scripts/components/authentication/authenticationView.htm'
+        templateUrl: 'components/authentication/authenticationView.htm'
       })
 
       .when('/order', {
-        templateUrl: 'scripts/components/order/orderView.htm'
+        templateUrl: 'components/order/orderView.htm'
       })
 
       .otherwise({
