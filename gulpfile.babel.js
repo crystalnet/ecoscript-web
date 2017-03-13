@@ -36,8 +36,73 @@ import pkg from './package.json';
 
 const $ = gulpLoadPlugins({DEBUG: false});
 const reload = browserSync.reload;
-let development = false;
-//const development = ($.util.env.serve || false);
+let development = ($.util.env.dev || false);
+
+// Inject dependencies into index.html
+gulp.task('inject', () => {
+  $.util.log($.util.colors.green('Development mode: ' + development));
+
+  let wiredep = require('wiredep').stream;
+  let injectOptions = {
+    ignorePath: ['.tmp/', 'app/', 'dist/'],
+    addRootSlash: false,
+    selfClosingTag: true,
+    transform: function (filepath) {
+      if (filepath.slice(-3) === '.js') {
+        return '<script src="' + filepath + '"></script></>\r\n';
+      }
+      if (filepath.slice(-4) === '.css') {
+        return '<link rel="stylesheet" href="' + filepath + '" />\r\n';
+      }
+      // Use the default transform as fallback:
+      return inject.transform.apply(inject.transform, arguments);
+    }
+  };
+  let wiredepOptions = {};
+
+  let injectStyles = gulp.src([
+      'app/styles/*.css'
+    ], { read: false }
+  );
+
+  let injectScripts = gulp.src([
+    // selects all js files from .tmp dir
+    'app/scripts/**/*.js',
+    '!app/scripts/sw/**/*.*',
+    'app/components/**/*.js'
+    // then uses the gulp-angular-filesort plugin
+    // to order the file injection
+  ]).pipe($.angularFilesort()
+    .on('error', $.util.log));
+
+  return gulp.src('app/index.html')
+    .pipe($.inject(injectStyles, injectOptions))
+    .pipe($.inject(injectScripts, injectOptions))
+    .pipe(wiredep(wiredepOptions))
+    // write the injections to the .tmp/index.html file
+    .pipe(gulp.dest('.tmp'))
+});
+
+
+// Collapse js and css imports and concatenate them
+gulp.task('collapse', () => {
+  return gulp.src([
+    '.tmp/index.html',
+    'app/**/*.html',
+    'app/**/*.htm',
+    '!app/index.html',
+    '!app/libraries/**/*.*'
+  ])
+    .pipe($.useref({
+      searchPath: 'app'
+  }))
+    .pipe($.replace(/<!--\s*build:css(\s|\S)*endbuild\s*-->/g, '<link rel="styles/main.min.css"/>'))
+    .pipe($.replace(/<!--\s*build:js(\s|\S)*endbuild\s*-->/g, '<script src="scripts/main.min.js"></script>'))
+    // Output files
+    .pipe($.if('*.html', $.size({title: 'html', showFiles: true})))
+    .pipe($.if('*.htm', $.size({title: 'htm', showFiles: true})))
+    .pipe(gulp.dest('.tmp'));
+});
 
 // Lint JavaScript
 gulp.task('lint', () =>
@@ -54,33 +119,28 @@ gulp.task('images', () =>
       progressive: true,
       interlaced: true
     })))
-    .pipe(gulp.dest('dist/images'))
     .pipe($.size({title: 'images'}))
+    .pipe(gulp.dest('.tmp/images'))
 );
 
 // Copy all files at the root level (app)
 gulp.task('copy', () =>
   gulp.src([
     'app/*.*',
-    '!app/*.html',
-    '!app/*.htm',
-    '!app/*.js',
-    '!app/*.css',
-    '!app/*.scss',
-    '.tmp/*.*',
-    '.tmp/**/*.min.*',
-    '!.tmp/libraries/**/*.min.*',
-    'node_modules/apache-server-configs/dist/.htaccess'
+    '.tmp/**/*.*',
+    'node_modules/apache-server-configs/dist/.htaccess',
+    'app/libraries/material-design-lite/material.min.css.map',
+    '!app/index.html'
   ], {
     dot: true
-  }).pipe(gulp.dest('dist'))
+  })
+    .pipe($.if(development, gulp.dest('.tmp')))
+    .pipe($.if(!development, gulp.dest('dist')))
     .pipe($.size({title: 'copy'}))
 );
 
 // Compile and automatically prefix stylesheets
 gulp.task('styles', () => {
-  $.util.log($.util.colors.green('Development mode: ' + development));
-
   const AUTOPREFIXER_BROWSERS = [
     'ie >= 10',
     'ie_mob >= 10',
@@ -95,17 +155,17 @@ gulp.task('styles', () => {
 
   // For best performance, don't add Sass partials to `gulp.src`
   return gulp.src([
-    'app/**/*.scss',
-    'app/**/*.css'
+    '.tmp/**/*.scss',
+    '.tmp/**/*.css'
   ])
-    .pipe($.newer('.tmp'))
+    //.pipe($.newer('.tmp'))
     .pipe($.sourcemaps.init())
     .pipe($.sass({
-      precision: 10
+      precision: 10,
+      includePaths : 'app/styles'
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
-    .pipe($.if(!development,
-      $.if('*.css', $.cssnano())))
+    .pipe($.if('*.css', $.cssnano()))
     .pipe($.size({title: 'styles'}))
     .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest('.tmp'));
@@ -116,60 +176,28 @@ gulp.task('styles', () => {
 // `.babelrc` file.
 gulp.task('scripts', () =>
   gulp.src([
-    'app/**/*.js',
-    '!app/scripts/sw/**/*.js'
+    '.tmp/**/*.js',
+    '!.tmp/scripts/sw/**/*.js'
   ])
-      .pipe($.newer('.tmp'))
-      .pipe($.sourcemaps.init())
-      .pipe($.babel())
-      .pipe($.sourcemaps.write())
-      .pipe($.if(!development, $.uglify({preserveComments: 'license'})))
-      .pipe($.size({title: 'scripts'}))
-      //.pipe($.sourcemaps.write('.'))
-      .pipe(gulp.dest('.tmp'))
+    //.pipe($.newer('.tmp'))
+    .pipe($.sourcemaps.init())
+    .pipe($.babel())
+    .pipe($.sourcemaps.write())
+    .pipe($.uglify({preserveComments: 'license'}))
+    .pipe($.size({title: 'scripts'}))
+    .pipe($.sourcemaps.write('.'))
+    .pipe(gulp.dest('.tmp'))
 );
-
-gulp.task('inject', () => {
-  let wiredep = require('wiredep').stream;
-  let injectOptions = {
-    ignorePath: ['.tmp', 'app', 'dist']
-  };
-  let wiredepOptions = {};
-
-  let injectStyles = gulp.src([
-      '.tmp/styles/*.css'
-    ], { read: false }
-  );
-
-  let injectScripts = gulp.src([
-    // selects all js files from .tmp dir
-    '.tmp/scripts/**/*.js',
-    '.tmp/components/**/*.js'
-    // then uses the gulp-angular-filesort plugin
-    // to order the file injection
-  ]).pipe($.angularFilesort()
-    .on('error', $.util.log));
-
-  return gulp.src('app/index.html')
-    .pipe($.inject(injectStyles, injectOptions))
-    .pipe($.inject(injectScripts, injectOptions))
-    .pipe(wiredep(wiredepOptions))
-    // write the injections to the .tmp/index.html file
-    .pipe(gulp.dest('.tmp'));
-});
 
 // Scan your HTML for assets & optimize them
 gulp.task('html', () => {
   return gulp.src([
     '.tmp/**/*.html',
-    'app/**/*.htm',
-    '!app/libraries/**/*.*'
+    '.tmp/**/*.htm',
+    '!app/libraries/**/*.*',
+    '!app/index.html'
   ])
-    .pipe($.if(!development, $.useref({
-      searchPath: '{.tmp, app}',
-      //noAssets: true,
-      //base: 'end'
-    })))
+
     // Minify any HTML
     .pipe($.if(!development,
       $.if('*.html', $.htmlmin({
@@ -186,7 +214,13 @@ gulp.task('html', () => {
     // Output files
     .pipe($.if('*.html', $.size({title: 'html', showFiles: true})))
     .pipe($.if('*.htm', $.size({title: 'htm', showFiles: true})))
-    .pipe(gulp.dest('.tmp'));
+    .pipe(gulp.dest('.tmp'))
+});
+
+// Copy over the scripts that are used in importScripts as part of the generate-service-worker task.
+gulp.task('copy-sw-scripts', () => {
+  return gulp.src(['node_modules/sw-toolbox/sw-toolbox.js', 'app/scripts/sw/runtime-caching.js'])
+    .pipe(gulp.dest('dist/scripts/sw'));
 });
 
 // See http://www.html5rocks.com/en/tutorials/service-worker/introduction/ for
@@ -237,10 +271,11 @@ gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
 // Build production files, the default task
 gulp.task('default', ['clean'], cb =>
   runSequence(
-    ['styles', 'scripts', 'images', /* TODO 'lint'*/],
     ['inject'],
-    ['html'],
-    ['copy', 'generate-service-worker'],
+    ['collapse'],
+    [/* TODO 'lint' ,*/'styles', 'scripts', 'images'],
+    ['copy'],
+    ['generate-service-worker'],
     cb
   )
 );
@@ -248,10 +283,10 @@ gulp.task('default', ['clean'], cb =>
 // Build development files
 gulp.task('development', ['clean'], cb => {
   development = true;
+
   runSequence(
-    ['styles', 'scripts'],
     ['inject'],
-    ['html'],
+    ['collapse'],
     cb
   )
 });
@@ -294,12 +329,6 @@ gulp.task('serve:dist', ['default'], () =>
     port: 3001
   })
 );
-
-// Copy over the scripts that are used in importScripts as part of the generate-service-worker task.
-gulp.task('copy-sw-scripts', () => {
-  return gulp.src(['node_modules/sw-toolbox/sw-toolbox.js', 'app/scripts/sw/runtime-caching.js'])
-    .pipe(gulp.dest('dist/scripts/sw'));
-});
 
 // Load custom tasks from the `tasks` directory
 // Run: `npm install --save-dev require-dir` from the command-line
