@@ -1,10 +1,6 @@
 {
   "name": "uniskripte_firebase",
   "description": "",
-  "main": [
-    "app/index.html",
-    "app/styles/main.css"
-  ],
   "authors": [
     "crystalneth <konsti7@gmx.net>"
   ],
@@ -20,9 +16,11 @@
     "tests"
   ],
   "dependencies": {
+    "jquery": "^3.1.1",
+    "angular": "^1.6.3",
     "angular-route": "^1.6.3",
-    "firebase": "^3.7.1",
     "ng-file-upload": "^12.2.13",
+    "firebase": "^3.7.1",
     "material-design-lite": "mdl#^1.3.0"
   }
 }

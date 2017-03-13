@@ -84,101 +84,81 @@ gulp.task('styles', () => {
 
   // For best performance, don't add Sass partials to `gulp.src`
   return gulp.src([
-    'app/styles/**/*.scss',
-    'app/styles/**/*.css'
+    'app/**/*.scss',
+    'app/**/*.css'
   ])
-    .pipe($.newer('.tmp/styles'))
+    .pipe($.newer('.tmp'))
     .pipe($.sourcemaps.init())
     .pipe($.sass({
       precision: 10
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
-    .pipe(gulp.dest('.tmp/styles'))
-    // Concatenate and minify styles
     .pipe($.if('*.css', $.cssnano()))
     .pipe($.size({title: 'styles'}))
     .pipe($.sourcemaps.write('./'))
-    .pipe(gulp.dest('dist/styles'))
-    .pipe(gulp.dest('.tmp/styles'));
+    .pipe(gulp.dest('.tmp'));
 });
 
 // Concatenate and minify JavaScript. Optionally transpiles ES2015 code to ES5.
 // to enable ES2015 support remove the line `"only": "gulpfile.babel.js",` in the
 // `.babelrc` file.
 gulp.task('scripts', () =>
-  //TODO remove obsolete blocks
-  /* gulp.src([
-      // Note: Since we are not using useref in the scripts build pipeline,
-      //       you need to explicitly list your scripts here in the right order
-      //       to be correctly concatenated
-      './app/scripts/initialize.js',
-      // Other scripts // add the scripts from the project
-      './app/scripts/components/app.module.js',
-      './app/scripts/components/app.routes.js',
-      './app/scripts/components/navigation/navigationController.js',
-      './app/scripts/components/order/orderController.js',
-      './app/scripts/components/landing/landingController.js',
-      './app/scripts/components/authentication/authentication.module.js',
-      './app/scripts/components/authentication/authenticationService.js',
-      './app/scripts/components/authentication/loginController.js',
-      './app/scripts/components/authentication/registerController.js',
-      */
   gulp.src([
-    'app/components/**/*.js',
-    //'app/libraries/**/*.js',
-    'app/scripts/**/*.js',
+    'app/**/*.js',
     '!app/scripts/sw/**/*.js'
   ])
-    /*.pipe($.useref({
-      searchPath: '{app}',
-      noAssets: true
-    }))*/
-
-  //  ])
-      .pipe($.newer('.tmp/scripts'))
+      .pipe($.newer('.tmp'))
       .pipe($.sourcemaps.init())
       .pipe($.babel())
       .pipe($.sourcemaps.write())
-      .pipe(gulp.dest('.tmp/scripts'))
-      .pipe($.concat('scripts.min.js'))
-
-      // Custom angular annotation handling
-      /*.pipe(ngAnnotate({
-        // true helps add where @ngInject is not used. It infers.
-        // Doesn't work with resolve, so we must be explicit there
-        add: true
-      }))*/
-
       .pipe($.uglify({preserveComments: 'some'}))
-      // Output files
       .pipe($.size({title: 'scripts'}))
       .pipe($.sourcemaps.write('.'))
-      .pipe(gulp.dest('dist/scripts'))
-      .pipe(gulp.dest('.tmp/scripts'))
+      .pipe(gulp.dest('.tmp'))
 );
 
-gulp.task('bower', function () {
+gulp.task('inject', () => {
   var wiredep = require('wiredep').stream;
-  gulp.src('app/index.html')
-    .pipe(wiredep({
-      src: 'app/index.html',
-      directory: 'app/libraries'
-    }))
-    .pipe(gulp.dest('dist'));
+  var injectOptions = {
+    ignorePath: ['.tmp', 'app', 'dist']
+  };
+  var wiredepOptions = {};
+
+  var injectStyles = gulp.src([
+      '.tmp/styles/*.css'
+    ], { read: false }
+  );
+
+  var injectScripts = gulp.src([
+    // selects all js files from .tmp dir
+    '.tmp/scripts/**/*.js',
+    '.tmp/components/**/*.js'
+    // then uses the gulp-angular-filesort plugin
+    // to order the file injection
+  ]).pipe($.angularFilesort()
+    .on('error', $.util.log));
+
+  return gulp.src('app/index.html')
+    .pipe($.inject(injectStyles, injectOptions))
+    .pipe($.inject(injectScripts, injectOptions))
+    .pipe(wiredep(wiredepOptions))
+    // write the injections to the .tmp/index.html file
+    .pipe(gulp.dest('.tmp'));
 });
 
 // Scan your HTML for assets & optimize them
 gulp.task('html', () => {
   return gulp.src([
-    'app/**/*.html',
+    //'app/**/*.html',
+    '.tmp/**/*.html',
     'app/**/*.htm',
     '!app/libraries/**/*.*'
   ])
     .pipe($.useref({
-      searchPath: '{.tmp,app}',
-      noAssets: true
+      searchPath: '{.tmp}',
+      noAssets: true,
+      base: 'final'
     }))
-
     // Minify any HTML
     .pipe($.if('*.html', $.htmlmin({
       removeComments: true,
@@ -194,14 +174,14 @@ gulp.task('html', () => {
     // Output files
     .pipe($.if('*.html', $.size({title: 'html', showFiles: true})))
     .pipe($.if('*.htm', $.size({title: 'htm', showFiles: true})))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('.tmp/final'));
 });
 
 // Clean output directory
 gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
 
 // Watch files for changes & reload
-gulp.task('serve', ['scripts', 'styles', 'bower', 'html'], () => {
+gulp.task('serve', ['scripts', 'styles', 'inject', 'html'], () => {
   browserSync({
     notify: false,
     // Customize the Browsersync console logging prefix
@@ -242,9 +222,11 @@ gulp.task('serve:dist', ['default'], () =>
 // Build production files, the default task
 gulp.task('default', ['clean'], cb =>
   runSequence(
-    'styles',
-    [/* TODO 'lint',*/ 'html', 'scripts', 'images', 'copy'],
-    'generate-service-worker',
+    ['styles', 'scripts'],
+    ['inject'],
+    ['html'],
+    //[/* TODO 'lint', 'html',*/ 'bower', 'scripts', 'images', 'copy'],
+    //'generate-service-worker',
     cb
   )
 );
