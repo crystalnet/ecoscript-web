@@ -88,7 +88,7 @@ gulp.task('inject', () => {
 gulp.task('collapse', () => {
   return gulp.src([
     '.tmp/index.html',
-    'app/**/*.html',
+    'app/*.html',
     'app/**/*.htm',
     '!app/index.html',
     '!app/libraries/**/*.*'
@@ -106,7 +106,10 @@ gulp.task('collapse', () => {
 
 // Lint JavaScript
 gulp.task('lint', () =>
-  gulp.src(['app/scripts/**/*.js','!node_modules/**'])
+  gulp.src([
+    'app/scripts/**/*.js',
+    'app/components/**/*.js',
+    '!node_modules/**'])
     .pipe($.eslint())
     .pipe($.eslint.format())
     .pipe($.if(!browserSync.active, $.eslint.failAfterError()))
@@ -153,10 +156,14 @@ gulp.task('styles', () => {
     'bb >= 10'
   ];
 
+  let src = development ? 'app/**/*.css' : '';
+
   // For best performance, don't add Sass partials to `gulp.src`
   return gulp.src([
     '.tmp/**/*.scss',
-    '.tmp/**/*.css'
+    '.tmp/**/*.css',
+    src,
+    '!app/styles/src/**/*.css'
   ])
     //.pipe($.newer('.tmp'))
     .pipe($.sourcemaps.init())
@@ -165,7 +172,8 @@ gulp.task('styles', () => {
       includePaths : 'app/styles'
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
-    .pipe($.if('*.css', $.cssnano()))
+    .pipe($.if(!development,
+      $.if('*.css', $.cssnano())))
     .pipe($.size({title: 'styles'}))
     .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest('.tmp'));
@@ -244,6 +252,7 @@ gulp.task('generate-service-worker', ['copy-sw-scripts'], () => {
       // Add/remove glob patterns to match your directory setup.
       `${rootDir}/images/**/*`,
       `${rootDir}/scripts/**/*.js`,
+      // TODO add components
       `${rootDir}/styles/**/*.css`,
       `${rootDir}/*.{html,json}`
     ],
@@ -285,7 +294,7 @@ gulp.task('development', ['clean'], cb => {
   development = true;
 
   runSequence(
-    ['inject'],
+    ['inject', 'styles'],
     //['collapse'],
     cb
   )
@@ -309,7 +318,7 @@ gulp.task('serve', ['development'], () => {
 
   gulp.watch(['app/**/*.html'], reload);
   gulp.watch(['app/**/*.htm'], reload);
-  gulp.watch(['app/styles/**/*.{scss,css}'], reload);
+  gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
   gulp.watch(['app/scripts/**/*.js'], reload);
   gulp.watch(['app/components/**/*.js'], reload);
   gulp.watch(['app/images/**/*'], reload);

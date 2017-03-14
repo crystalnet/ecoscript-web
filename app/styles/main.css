@@ -19,6 +19,7 @@ Note: any .css or .scss files included in the 'styles' directory
 will be correctly compiled during `gulp serve` and `gulp`
  */
 
+@import "src/material-design-lite";
 @import "_header.scss";
 @import "_footer.scss";
 @import "_order-eco.scss";
