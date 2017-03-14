@@ -1,8 +1,26 @@
-<main class="mdl-layout__content">
+<main class="mdl-layout__content" data-ng-controller="orderController as order">
   <div class="page-content">
 
     <!-- Your content goes here -->
     <!--<div id="my-container"></div> -->
+
+    <h4>Upload on file select</h4>
+    <button ngf-select="order.uploadFiles($files, $invalidFiles)" multiple
+            accept="image/*" ngf-max-height="1000" ngf-max-size="5MB">
+      Select Files</button>
+    <br><br>
+    Files:
+    <ul>
+      <li ng-repeat="f in order.files">{{f.name}} {{f.$errorParam}}
+        <span class="progress" ng-show="f.progress >= 0">
+        <div style="width:{{f.progress}}%"
+             ng-bind="f.progress + '%'"></div>
+      </span>
+      </li>
+      <li ng-repeat="f in order.errFiles">{{f.name}} {{f.$error}} {{f.$errorParam}}
+      </li>
+    </ul>
+    {{order.errorMsg}}
 
     <div class="flipbook-viewport">
       <div class="container">

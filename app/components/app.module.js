@@ -7,6 +7,6 @@
 
   // Define the module
   /* @ngInject */
-  angular.module('studyscriptApp', ['ngRoute', 'authentication', 'order']);
+  angular.module('studyscriptApp', ['ngRoute', 'authentication', 'order', 'ngFileUpload']);
 
 })();

@@ -286,7 +286,7 @@ gulp.task('development', ['clean'], cb => {
 
   runSequence(
     ['inject'],
-    ['collapse'],
+    //['collapse'],
     cb
   )
 });
@@ -303,14 +303,15 @@ gulp.task('serve', ['development'], () => {
     // Note: this uses an unsigned certificate which on first access
     //       will present a certificate warning in the browser.
     // https: true,
-    server: ['.tmp'],
+    server: ['.tmp', 'app'],
     port: 3000
   });
 
   gulp.watch(['app/**/*.html'], reload);
   gulp.watch(['app/**/*.htm'], reload);
-  gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
-  gulp.watch(['app/scripts/**/*.js'], ['lint', 'scripts', reload]);
+  gulp.watch(['app/styles/**/*.{scss,css}'], reload);
+  gulp.watch(['app/scripts/**/*.js'], reload);
+  gulp.watch(['app/components/**/*.js'], reload);
   gulp.watch(['app/images/**/*'], reload);
 });
 
