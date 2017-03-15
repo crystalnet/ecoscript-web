@@ -5,8 +5,8 @@
     <!--<div id="my-container"></div> -->
 
     <h4>Upload on file select</h4>
-    <button ngf-select="order.uploadFiles($files, $invalidFiles)" multiple
-            accept="image/*" ngf-max-height="1000" ngf-max-size="5MB">
+    <button ngf-select="order.uploadFiles($files, $invalidFiles)" multiple accept="application/pdf"
+            ngf-validate="{size: {max: '20MB'}, pattern: '.pdf'}" ngf-keep="distinct" >
       Select Files</button>
     <br><br>
     Files:

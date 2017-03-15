@@ -6,6 +6,6 @@
   'use strict';
 
   // Define the module
-  angular.module('authentication', []);
+  angular.module('authentication', ['firebase']);
 
 })();

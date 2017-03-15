@@ -11,18 +11,49 @@
   // Define service
     .service('AuthenticationService', AuthenticationService);
 
+  AuthenticationService.$inject = ['Auth'];
+
   // TODO docu
-  function AuthenticationService() {
+  function AuthenticationService(Auth) {
     var self = this;
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    Auth.$onAuthStateChanged(function(user) {
       if (user) {
-        console.log('state changed');
+        self.user = user;
+        console.log("Logged in as: " + user.uid);
       }
     });
 
-    self.login = function(email, password) {
-      firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
+    self.googleSignIn = function() {
+      //var provider = new Auth.$GoogleAuthProvider();
+      var provider = new firebase.auth.GoogleAuthProvider();
+      provider.addScope('https://www.googleapis.com/auth/plus.login');
+
+      self.providerSignIn(provider);
+    };
+
+    self.facebookSignIn = function() {
+      //var provider = new Auth.$GoogleAuthProvider();
+      var provider = new firebase.auth.FacebookAuthProvider();
+      provider.setCustomParameters({
+        'display': 'popup'
+      });
+
+      self.providerSignIn(provider);
+    };
+
+    self.providerSignIn = function(provider) {
+      Auth.$signInWithPopup(provider).then(function(result) {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        self.token = result.credential.accessToken;
+        // The signed-in user info.
+        self.user = result.user;
+        console.log(self.token, ' |', self.user);
+      });
+    };
+
+    self.signIn = function(email, password) {
+      Auth.$signInWithEmailAndPassword(email, password).catch(function (error) {
         // TODO Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
@@ -31,7 +62,7 @@
     };
 
     self.register = function(email, password) {
-      firebase.auth().createUserWithEmailAndPassword(email, password)
+      Auth.$createUserWithEmailAndPassword(email, password)
         .then(function (user) {
           user.sendEmailVerification();
         })
@@ -41,6 +72,10 @@
           var errorMessage = error.message;
           console.log(errorCode, ' :', errorMessage);
         });
+    };
+
+    self.getUser = function() {
+      return self.user;
     }
   }
 

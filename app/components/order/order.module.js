@@ -6,6 +6,6 @@
   'use strict';
 
   // Get the module
-  angular.module('order', [])
+  angular.module('order', ['firebase', 'authentication'])
 
 })();
