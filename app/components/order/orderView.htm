@@ -6,7 +6,8 @@
 
     <h4>Upload on file select</h4>
     <button ngf-select="order.uploadFiles($files, $invalidFiles)" multiple accept="application/pdf"
-            ngf-validate="{size: {max: '20MB'}, pattern: '.pdf'}" ngf-keep="distinct" >
+            ngf-validate="{size: {max: '20MB'}, pattern: '.pdf'}" ngf-keep="distinct"
+            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
       Select Files</button>
     <br><br>
     Files:
@@ -37,9 +38,164 @@
       </div>
     </div>
 
+    <div class="mdl-grid price-bg  mdl-color--grey-100">
+      <div class="mdl-cell mdl-cell--2-col">
+      </div>
+
+      <!--Black-->
+      <div class="mdl-card mdl-cell mdl-cell--2-col mdl-shadow--4dp">
+        <div class="mdl-card__title mdl-color--grey-800 mdl-color-text--white mdl-card--border">
+          <h2 class="mdl-card__title-text">Black<br>ab €12,99</h2>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+          <span><strong>Bis zu 300 Seiten auswählbar.</strong></span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+          <span>Inkl. Express Versand</span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+          <span>Viele Bindungsmögl.</span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+          <span><strong>Mattschwarzes Cover</strong></span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+          <span>In jeder Vorlesung Eindruck machen.</span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+          </span> <span>Ein geflanzter Baum</span>
+          <span><img src="images/tree.svg" width="23px" height="23px"></span>
+        </div>
+
+        <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--grey-800">
+          <a
+            class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
+            Auswählen
+          </a>
+        </div>
+      </div>
+
+      <!--Free-->
+      <div class="mdl-card mdl-cell mdl-cell--2-col mdl-shadow--4dp">
+        <div class="product-card-name mdl-card__title mdl-color--grey mdl-color-text--white">
+          <h2 class="mdl-card__title-text"><strong>Free</strong></h2>
+        </div>
+        <div class="product-card-price mdl-card__title mdl-color--grey mdl-color-text--white mdl-card--border">
+          <h2 class="mdl-card__title-text">€ 0.00 - gesponsort</h2>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+          <span><strong>Max. 125 Seiten </strong></span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+          <span>Kostenloser Versand</span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+          <span>Hochwertige Spiralbindung</span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+          <span>Farbdruck</span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+          <span>⠀</span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+          </span> <span>Ein geflanzter Baum</span>
+          <span><img src="images/tree.svg" width="23px" height="23px"></span>
+        </div>
+
+        <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--grey">
+          <a
+            class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
+            Auswählen
+          </a>
+        </div>
+      </div>
+
+      <!--Green Free-->
+      <div class=" mdl-card mdl-cell mdl-cell--2-col mdl-shadow--4dp">
+        <div class="product-card-name mdl-card__title mdl-color--green mdl-color-text--white">
+          <h2 class="mdl-card__title-text"><strong>Green Free</strong></h2>
+        </div>
+        <div class="product-card-price mdl-card__title mdl-color--green mdl-color-text--white mdl-card--border">
+          <h2 class="mdl-card__title-text">€ 0.00 - gesponsort</h2>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+          <span><strong>Max. 125 Seiten - Recyclingpapier</strong></span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+          <span>Kostenloser Versand</span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+          <span>Hochwertige Spiralbindung</span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+          <span>Bio-Farbdruck</span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+          <span>Klimaneutral*</span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+          </span> <span>Ein geflanzter Baum</span>
+          <span><img src="images/tree.svg" width="23px" height="23px"></span>
+        </div>
+
+        <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--green">
+          <a
+            class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
+            Auswählen
+          </a>
+        </div>
+      </div>
+
+      <!--Green-->
+      <div class=" mdl-card mdl-cell mdl-cell--2-col mdl-shadow--4dp">
+        <div class="product-card-name mdl-card__title mdl-color--green mdl-color-text--white">
+          <h2 class="mdl-card__title-text"><strong>Green</strong></h2>
+        </div>
+        <div class="product-card-price mdl-card__title mdl-color--green mdl-color-text--white mdl-card--border">
+          <h2 class="mdl-card__title-text">ab € 8.99</h2>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+          <span><strong>Max. 300 Seiten - Recyclingpapier</strong></span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+          <span>Kostenloser Versand</span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+          <span>Viele Bindungsmögl.</span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+          <span>Bio-Farbdruck</span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+          <span>Klimaneutral*</span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+          <span>Zwei gepflanzte Bäume</span>
+          <span><img src="images/tree.svg" width="23px" height="23px"></span>
+          <span><img src="images/tree.svg" width="23px" height="23px"></span>
+        </div>
+
+        <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--green">
+          <a
+            class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
+            Auswählen
+          </a>
+        </div>
+      </div>
+
+      <div class="mdl-cell mdl-cell--12-col"><br><br><br></div>
+    </div>
+
     <div class="mdl-grid select-product mdl-color--white grid-height-600">
       <div class="mdl-cell mdl-cell--4-col mdl-cell--6-offset">
         <h3>This are your options.</h3>
+        <select class="mdl-select mdl-list">
+          <option class="mdl-list-item" value="volvo">Volvo</option>
+          <option class="mdl-list-item" value="saab">Saab</option>
+          <option class="mdl-list-item" value="mercedes">Mercedes</option>
+          <option class="mdl-list-item" value="audi">Audi</option>
+        </select>
       </div>
     </div>
 

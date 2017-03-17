@@ -15,7 +15,7 @@
 
   /* @ngInject */
   function OrderController($location, UploadService) {
-    var self = this;
+    const self = this;
 
     self.uploadFiles = function (files, errFiles) {
       self.files = files;

@@ -21,7 +21,7 @@
 /* eslint linebreak-style: [0, "windows"]*/
 /* eslint-env browser */
 
-(function() {
+(function () {
   'use strict';
 
   // Check to make sure service workers are supported in the current browser,
@@ -40,9 +40,9 @@
   if ('serviceWorker' in navigator &&
     (window.location.protocol === 'https:' || isLocalhost)) {
     navigator.serviceWorker.register('service-worker.js')
-      .then(function(registration) {
+      .then(function (registration) {
         // updatefound is fired if service-worker.js changes.
-        registration.onupdatefound = function() {
+        registration.onupdatefound = function () {
           // updatefound is also fired the very first time the SW is installed,
           // and there's no need to prompt for a reload at that point.
           // So check here to see if the page is already controlled,
@@ -52,7 +52,7 @@
             // https://slightlyoff.github.io/ServiceWorker/spec/service_worker/index.html#service-worker-container-updatefound-event
             var installingWorker = registration.installing;
 
-            installingWorker.onstatechange = function() {
+            installingWorker.onstatechange = function () {
               switch (installingWorker.state) {
                 case 'installed':
                   // At this point, the old content will have been purged and the
@@ -71,13 +71,13 @@
             };
           }
         };
-      }).catch(function(e) {
+      }).catch(function (e) {
       console.error('Error during service worker registration:', e);
     });
   }
 
   // Initialize Firebase
-  var config = {
+  const config = {
     apiKey: 'AIzaSyAa6HhfTpQyeMV1-Wh2itJFX-uOIWRzSro',
     authDomain: 'studyscript-4a797.firebaseapp.com',
     databaseURL: 'https://studyscript-4a797.firebaseio.com',
@@ -85,4 +85,16 @@
     messagingSenderId: '1079844072661'
   };
   firebase.initializeApp(config);
+
+  const generateShortId = function() {
+    let ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    let ID_LENGTH = 8;
+
+    let rtn = '';
+    for (let i = 0; i < ID_LENGTH; i++) {
+      rtn += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
+    }
+    return rtn;
+  };
 })();
