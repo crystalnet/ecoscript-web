@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   // Get the module
@@ -13,5 +13,4 @@
   function Auth($firebaseAuth) {
     return $firebaseAuth();
   }
-
 })();

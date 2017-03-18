@@ -2,6 +2,7 @@
 .tmp
 app/libraries
 dist
-functions
+functions/node_modules
 node_modules
 app.yaml
+bower_modules

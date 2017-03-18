@@ -40,7 +40,7 @@
 
       if (!timer)
         timer = setInterval(function() {
-          if (num > 0 && currentUrl != window.location.href) {
+          if (num > 0 && currentUrl !== window.location.href) {
             currentUrl = window.location.href;
             window.Hash.check();
           }
@@ -96,7 +96,7 @@
 
     go: function(hash, params) {
 
-      if (this.fragment() != hash) {
+      if (this.fragment() !== hash) {
         var to = this.get(hash, params);
 
         if (pushState)

@@ -29,5 +29,4 @@
       AuthenticationService.signIn(self.email, self.password);
     };
   }
-
 })();

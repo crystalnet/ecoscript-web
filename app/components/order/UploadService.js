@@ -2,7 +2,7 @@
  * Created by dominik on 10/03/2017.
  */
 
-(function () {
+(function() {
   'use strict';
 
   // Get the module
@@ -17,7 +17,7 @@
   function UploadService(AuthenticationService) {
     const self = this;
 
-    self.uploadFile = function (file) {
+    self.uploadFile = function(file) {
       const id = generateShortId();
       const uid = AuthenticationService.getUser().uid;
 
@@ -29,10 +29,10 @@
         let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log('Upload is ' + progress + '% done');
         switch (snapshot.state) {
-          case firebase.storage.TaskState.PAUSED: // or 'paused'
+          case firebase.storage.TaskState.PAUSED:
             console.log('Upload is paused');
             break;
-          case firebase.storage.TaskState.RUNNING: // or 'running'
+          case firebase.storage.TaskState.RUNNING:
             console.log('Upload is running');
             break;
           default:
@@ -63,19 +63,20 @@
         }
       };
 
-      const completeFunction = function () {
+      const completeFunction = function() {
         // Upload completed successfully, now we can get the download URL
         console.log('Upload was successful');
-        //let downloadURL = uploadTask.snapshot.downloadURL;
-        let asdf = firebase.database().ref('uploads/' + uid + '/' + id + '/name').set(file.name).then(console.log('asdf'));
-        console.log(asdf);
-        return asdf;
+        // let downloadURL = uploadTask.snapshot.downloadURL;
+        return firebase.database().ref('uploads/' + uid + '/' + id + '/name')
+          .set(file.name)
+          .then(console.log('asdf'));
       };
 
       // Listen for state changes, errors, and completion of the upload.
-      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, nextFunction, errorFunction, completeFunction);// or 'state_changed'
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+        nextFunction,
+        errorFunction,
+        completeFunction);
     };
-
   }
-
 })();

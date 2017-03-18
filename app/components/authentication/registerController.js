@@ -22,5 +22,4 @@
       AuthenticationService.register(self.email, self.password);
     };
   }
-
 })();

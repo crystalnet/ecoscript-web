@@ -2,7 +2,7 @@
  * Created by dominik on 10/03/2017.
  */
 
-(function () {
+(function() {
   'use strict';
 
   // Get the module
@@ -20,23 +20,23 @@
     Auth.$onAuthStateChanged(function(user) {
       if (user) {
         self.user = user;
-        console.log("Logged in as: " + user.uid);
+        console.log('Logged in as: ' + user.uid);
       }
     });
 
     self.googleSignIn = function() {
-      //var provider = new Auth.$GoogleAuthProvider();
-      var provider = new firebase.auth.GoogleAuthProvider();
+      // var provider = new Auth.$GoogleAuthProvider();
+      const provider = new firebase.auth.GoogleAuthProvider();
       provider.addScope('https://www.googleapis.com/auth/plus.login');
 
       self.providerSignIn(provider);
     };
 
     self.facebookSignIn = function() {
-      //var provider = new Auth.$GoogleAuthProvider();
-      var provider = new firebase.auth.FacebookAuthProvider();
+      // var provider = new Auth.$GoogleAuthProvider();
+      const provider = new firebase.auth.FacebookAuthProvider();
       provider.setCustomParameters({
-        'display': 'popup'
+        display: 'popup'
       });
 
       self.providerSignIn(provider);
@@ -53,30 +53,29 @@
     };
 
     self.signIn = function(email, password) {
-      Auth.$signInWithEmailAndPassword(email, password).catch(function (error) {
+      Auth.$signInWithEmailAndPassword(email, password).catch(function(error) {
         // TODO Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
+        const errorCode = error.code;
+        const errorMessage = error.message;
         console.log(errorCode, ' :', errorMessage);
       });
     };
 
     self.register = function(email, password) {
       Auth.$createUserWithEmailAndPassword(email, password)
-        .then(function (user) {
+        .then(function(user) {
           user.sendEmailVerification();
         })
         .catch(function(error) {
           // TODO Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
+          const errorCode = error.code;
+          const errorMessage = error.message;
           console.log(errorCode, ' :', errorMessage);
         });
     };
 
     self.getUser = function() {
       return self.user;
-    }
+    };
   }
-
 })();

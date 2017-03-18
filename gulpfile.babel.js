@@ -47,7 +47,7 @@ gulp.task('inject', () => {
     ignorePath: ['.tmp/', 'app/', 'dist/'],
     addRootSlash: false,
     selfClosingTag: true,
-    transform: function (filepath) {
+    transform: function(filepath) {
       if (filepath.slice(-3) === '.js') {
         return '<script src="' + filepath + '"></script></>\r\n';
       }
@@ -61,8 +61,8 @@ gulp.task('inject', () => {
   let wiredepOptions = {};
 
   let injectStyles = gulp.src([
-      'app/styles/*.css'
-    ], { read: false }
+    'app/styles/*.css'
+  ], {read: false}
   );
 
   let injectScripts = gulp.src([
@@ -80,9 +80,8 @@ gulp.task('inject', () => {
     .pipe($.inject(injectScripts, injectOptions))
     .pipe(wiredep(wiredepOptions))
     // write the injections to the .tmp/index.html file
-    .pipe(gulp.dest('.tmp'))
+    .pipe(gulp.dest('.tmp'));
 });
-
 
 // Collapse js and css imports and concatenate them
 gulp.task('collapse', () => {
@@ -93,11 +92,13 @@ gulp.task('collapse', () => {
     '!app/index.html',
     '!app/libraries/**/*.*'
   ])
-    .pipe($.useref({
+    .pipe($.if(!development, $.useref({
       searchPath: 'app'
-  }))
-    .pipe($.replace(/<!--\s*build:css(\s|\S)*endbuild\s*-->/g, '<link rel="styles/main.min.css"/>'))
-    .pipe($.replace(/<!--\s*build:js(\s|\S)*endbuild\s*-->/g, '<script src="scripts/main.min.js"></script>'))
+    })))
+    .pipe($.if(!development,
+      $.replace(/<!--\s*build:css(\s|\S)*endbuild\s*-->/g, '<link rel="styles/main.min.css"/>')))
+    .pipe($.if(!development,
+      $.replace(/<!--\s*build:js(\s|\S)*endbuild\s*-->/g, '<script src="scripts/main.min.js"></script>')))
     // Output files
     .pipe($.if('*.html', $.size({title: 'html', showFiles: true})))
     .pipe($.if('*.htm', $.size({title: 'htm', showFiles: true})))
@@ -165,11 +166,11 @@ gulp.task('styles', () => {
     src,
     '!app/styles/src/**/*.css'
   ])
-    //.pipe($.newer('.tmp'))
+    // .pipe($.newer('.tmp'))
     .pipe($.sourcemaps.init())
     .pipe($.sass({
       precision: 10,
-      includePaths : 'app/styles'
+      includePaths: 'app/styles'
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
     .pipe($.if(!development,
@@ -187,7 +188,7 @@ gulp.task('scripts', () =>
     '.tmp/**/*.js',
     '!.tmp/scripts/sw/**/*.js'
   ])
-    //.pipe($.newer('.tmp'))
+    // .pipe($.newer('.tmp'))
     .pipe($.sourcemaps.init())
     .pipe($.babel())
     .pipe($.sourcemaps.write())
@@ -209,20 +210,20 @@ gulp.task('html', () => {
     // Minify any HTML
     .pipe($.if(!development,
       $.if('*.html', $.htmlmin({
-      removeComments: true,
-      collapseWhitespace: true,
-      collapseBooleanAttributes: true,
-      removeAttributeQuotes: true,
-      removeRedundantAttributes: true,
-      removeEmptyAttributes: true,
-      removeScriptTypeAttributes: true,
-      removeStyleLinkTypeAttributes: true,
-      removeOptionalTags: true
-    }))))
+        removeComments: true,
+        collapseWhitespace: true,
+        collapseBooleanAttributes: true,
+        removeAttributeQuotes: true,
+        removeRedundantAttributes: true,
+        removeEmptyAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        removeOptionalTags: true
+      }))))
     // Output files
     .pipe($.if('*.html', $.size({title: 'html', showFiles: true})))
     .pipe($.if('*.htm', $.size({title: 'htm', showFiles: true})))
-    .pipe(gulp.dest('.tmp'))
+    .pipe(gulp.dest('.tmp'));
 });
 
 // Copy over the scripts that are used in importScripts as part of the generate-service-worker task.
@@ -281,8 +282,8 @@ gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
 gulp.task('default', ['clean'], cb =>
   runSequence(
     ['inject'],
-    ['collapse'],
-    [/* TODO 'lint' ,*/'styles', 'scripts', 'images'],
+    ['collapse'/* TODO , 'lint'*/],
+    ['styles', 'scripts', 'images'],
     ['copy'],
     ['generate-service-worker'],
     cb
@@ -295,9 +296,9 @@ gulp.task('development', ['clean'], cb => {
 
   runSequence(
     ['inject', 'styles'],
-    //['collapse'],
+    // ['collapse'],
     cb
-  )
+  );
 });
 
 // Watch files for changes & reload

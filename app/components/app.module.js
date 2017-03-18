@@ -14,5 +14,4 @@
     'ngFileUpload',
     'firebase'
   ]);
-
 })();

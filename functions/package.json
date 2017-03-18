@@ -1,0 +1,10 @@
+{
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "dependencies": {
+    "firebase-admin": "^4.1.2",
+    "firebase-functions": "^0.5",
+    "shortid": "^2.2.8"
+  },
+  "private": true
+}

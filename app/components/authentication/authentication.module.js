@@ -1,5 +1,5 @@
 /**
- * Created by crystalneth on 11-Mar-17.
+  * Created by crystalneth on 11-Mar-17.
  */
 
 (function() {
@@ -7,5 +7,4 @@
 
   // Define the module
   angular.module('authentication', ['firebase']);
-
 })();

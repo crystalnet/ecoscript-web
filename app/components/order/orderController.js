@@ -17,13 +17,12 @@
   function OrderController($location, UploadService) {
     const self = this;
 
-    self.uploadFiles = function (files, errFiles) {
+    self.uploadFiles = function(files, errFiles) {
       self.files = files;
       self.errFiles = errFiles;
-      angular.forEach(self.files, function (file) {
+      angular.forEach(self.files, function(file) {
         UploadService.uploadFile(file);
       });
     };
   }
-
 })();
