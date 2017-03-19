@@ -36,12 +36,11 @@ import pkg from './package.json';
 
 const $ = gulpLoadPlugins({DEBUG: false});
 const reload = browserSync.reload;
-let development = ($.util.env.dev || false);
+let nocompression = ($.util.env.nocompression || false);
+let noconcat = ($.util.env.noconcat || false);
 
 // Inject dependencies into index.html
 gulp.task('inject', () => {
-  $.util.log($.util.colors.green('Development mode: ' + development));
-
   let wiredep = require('wiredep').stream;
   let injectOptions = {
     ignorePath: ['.tmp/', 'app/', 'dist/'],
@@ -49,13 +48,13 @@ gulp.task('inject', () => {
     selfClosingTag: true,
     transform: function(filepath) {
       if (filepath.slice(-3) === '.js') {
-        return '<script src="' + filepath + '"></script></>\r\n';
+        return '<script src="' + filepath + '"></script>\r\n';
       }
       if (filepath.slice(-4) === '.css') {
         return '<link rel="stylesheet" href="' + filepath + '" />\r\n';
       }
       // Use the default transform as fallback:
-      return inject.transform.apply(inject.transform, arguments);
+      return $.inject.transform.apply($.inject.transform, arguments);
     }
   };
   let wiredepOptions = {};
@@ -66,14 +65,16 @@ gulp.task('inject', () => {
   );
 
   let injectScripts = gulp.src([
-    // selects all js files from .tmp dir
+      // selects all js files from .tmp dir
+    'app/components/**/*.js',
     'app/scripts/**/*.js',
-    '!app/scripts/sw/**/*.*',
-    'app/components/**/*.js'
-    // then uses the gulp-angular-filesort plugin
-    // to order the file injection
-  ]).pipe($.angularFilesort()
-    .on('error', $.util.log));
+    '!app/scripts/sw/**/*.*'
+  ], {base: 'app/'}
+  )
+  // then uses the gulp-angular-filesort plugin
+  // to order the file injection
+    .pipe($.angularFilesort()
+      .on('error', $.util.log));
 
   return gulp.src('app/index.html')
     .pipe($.inject(injectStyles, injectOptions))
@@ -83,25 +84,20 @@ gulp.task('inject', () => {
     .pipe(gulp.dest('.tmp'));
 });
 
-// Collapse js and css imports and concatenate them
-gulp.task('collapse', () => {
+// Concatenate js and css imports collapse statements
+gulp.task('concat', () => {
   return gulp.src([
-    '.tmp/index.html',
-    'app/*.html',
-    'app/**/*.htm',
-    '!app/index.html',
-    '!app/libraries/**/*.*'
+    '.tmp/index.html'
   ])
-    .pipe($.if(!development, $.useref({
-      searchPath: 'app'
-    })))
-    .pipe($.if(!development,
-      $.replace(/<!--\s*build:css(\s|\S)*endbuild\s*-->/g, '<link rel="styles/main.min.css"/>')))
-    .pipe($.if(!development,
-      $.replace(/<!--\s*build:js(\s|\S)*endbuild\s*-->/g, '<script src="scripts/main.min.js"></script>')))
+    .pipe($.useref({
+      searchPath: '.tmp'
+    }))
+    .pipe($.replace(/<!--\s*build:css(\s|\S)*endbuild\s*-->/g,
+      '<link rel="styles/main.min.css"/>'))
+    .pipe($.replace(/<!--\s*build:js(\s|\S)*endbuild\s*-->/g,
+      '<script src="scripts/main.min.js"></script>'))
     // Output files
-    .pipe($.if('*.html', $.size({title: 'html', showFiles: true})))
-    .pipe($.if('*.htm', $.size({title: 'htm', showFiles: true})))
+    .pipe($.size({title: 'html', showFiles: true}))
     .pipe(gulp.dest('.tmp'));
 });
 
@@ -117,34 +113,87 @@ gulp.task('lint', () =>
 );
 
 // Optimize images
-gulp.task('images', () =>
-  gulp.src('app/images/**/*')
+gulp.task('compress-images', () => {
+  return gulp.src([
+    'app/images/**/*'
+  ], {base: 'app/'}
+  )
     .pipe($.cache($.imagemin({
       progressive: true,
       interlaced: true
     })))
-    .pipe($.size({title: 'images'}))
-    .pipe(gulp.dest('.tmp/images'))
+    .pipe($.size({title: 'compress-images'}))
+    .pipe(gulp.dest('.tmp/'));
+});
+
+// Copy all files at the root level (app)
+gulp.task('copy-tmp', () =>
+  gulp.src([
+    '.tmp/**/*.*',
+    'node_modules/apache-server-configs/dist/.htaccess',
+      // 'app/libraries/material-design-lite/material.min.css.map',
+  ], {dot: true}
+  )
+    .pipe(gulp.dest('dist'))
+    .pipe($.size({title: 'copy-tmp'}))
 );
 
 // Copy all files at the root level (app)
-gulp.task('copy', () =>
+gulp.task('copy-scripts', () =>
   gulp.src([
-    'app/*.*',
-    '.tmp/**/*.*',
-    'node_modules/apache-server-configs/dist/.htaccess',
-    'app/libraries/material-design-lite/material.min.css.map',
-    '!app/index.html'
-  ], {
-    dot: true
-  })
-    .pipe($.if(development, gulp.dest('.tmp')))
-    .pipe($.if(!development, gulp.dest('dist')))
-    .pipe($.size({title: 'copy'}))
+    'app/components/**/*.js',
+    'app/scripts/**/*.js',
+    '!app/scripts/sw/**/*.js'
+  ], {base: 'app/'}
+  )
+    .pipe(gulp.dest('.tmp'))
+    .pipe($.size({title: 'copy-scripts'}))
 );
 
-// Compile and automatically prefix stylesheets
-gulp.task('styles', () => {
+// Copy all files at the root level (app)
+gulp.task('copy-libraries', () =>
+  gulp.src([
+    'app/libraries/**/*.js'
+  ], {base: 'app/'}
+  )
+    .pipe(gulp.dest('.tmp'))
+    .pipe($.size({title: 'copy-scripts'}))
+);
+
+// Copy all files at the root level (app)
+gulp.task('copy-styles', () =>
+  gulp.src([
+    'app/styles/**/*.css',
+    '!app/styles/src/**/*.css'
+  ], {base: 'app/'}
+  )
+    .pipe(gulp.dest('.tmp'))
+    .pipe($.size({title: 'copy-htm'}))
+);
+
+// Copy all files at the root level (app)
+gulp.task('copy-htm', () =>
+  gulp.src([
+    'app/components/**/*.htm'
+  ], {base: 'app/'}
+  )
+    .pipe(gulp.dest('.tmp'))
+    .pipe($.size({title: 'copy-htm'}))
+);
+
+// Copy all files at the root level (app)
+gulp.task('copy-html', () =>
+  gulp.src([
+    'app/components/**/*.html',
+    '!app/index.html'
+  ], {base: 'app/'}
+  )
+    .pipe(gulp.dest('.tmp'))
+    .pipe($.size({title: 'copy-html'}))
+);
+
+// Compiles sass and prefixes them
+gulp.task('compile-styles', () => {
   const AUTOPREFIXER_BROWSERS = [
     'ie >= 10',
     'ie_mob >= 10',
@@ -157,72 +206,101 @@ gulp.task('styles', () => {
     'bb >= 10'
   ];
 
-  let src = development ? 'app/**/*.css' : '';
-
   // For best performance, don't add Sass partials to `gulp.src`
   return gulp.src([
-    '.tmp/**/*.scss',
-    '.tmp/**/*.css',
-    src,
-    '!app/styles/src/**/*.css'
-  ])
-    // .pipe($.newer('.tmp'))
+    'app/styles/*.css'
+  ], {base: 'app/'}
+  )
+  // .pipe($.newer('.tmp'))
     .pipe($.sourcemaps.init())
     .pipe($.sass({
       precision: 10,
       includePaths: 'app/styles'
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
-    .pipe($.if(!development,
-      $.if('*.css', $.cssnano())))
-    .pipe($.size({title: 'styles'}))
+    .pipe($.size({title: 'compile-styles'}))
+    .pipe($.sourcemaps.write('.tmp/'))
+    .pipe(gulp.dest('.tmp'));
+});
+
+// Compile and automatically prefix stylesheets
+gulp.task('compress-styles', () => {
+  // For best performance, don't add Sass partials to `gulp.src`
+  return gulp.src([
+    '.tmp/styles/**/*.css'
+  ], {base: '.tmp/'}
+  )
+  // .pipe($.newer('.tmp'))
+    .pipe($.sourcemaps.init())
+    .pipe($.if('*.css', $.cssnano()))
+    .pipe($.size({title: 'compress-styles'}))
     .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest('.tmp'));
 });
 
-// Minify JavaScript. Optionally transpiles ES2015 code to ES5.
-// to enable ES2015 support remove the line `"only": "gulpfile.babel.js",` in the
-// `.babelrc` file.
-gulp.task('scripts', () =>
+// Transpile JavsScript (only from user)
+gulp.task('transpile-scripts', () =>
   gulp.src([
-    '.tmp/**/*.js',
-    '!.tmp/scripts/sw/**/*.js'
-  ])
-    // .pipe($.newer('.tmp'))
+    'app/scripts/**/*.js',
+    'app/components/**/*.js',
+    '!app/scripts/sw/**/*.js'
+  ], {base: 'app/'}
+  )
+  // .pipe($.newer('.tmp'))
     .pipe($.sourcemaps.init())
-    .pipe($.babel())
-    .pipe($.sourcemaps.write())
-    .pipe($.uglify({preserveComments: 'license'}))
-    .pipe($.size({title: 'scripts'}))
-    .pipe($.sourcemaps.write('.'))
+    .pipe($.babel({
+      compact: false
+    }))
+    .pipe($.sourcemaps.write('.tmp/'))
+    .pipe($.size({title: 'transpile-scripts'}))
     .pipe(gulp.dest('.tmp'))
 );
 
-// Scan your HTML for assets & optimize them
-gulp.task('html', () => {
-  return gulp.src([
-    '.tmp/**/*.html',
-    '.tmp/**/*.htm',
-    '!app/libraries/**/*.*',
-    '!app/index.html'
-  ])
+// Minify JavaScript (only from user)
+gulp.task('compress-scripts', () => {
+  gulp.src([
+    '.tmp/scripts/**/*.js',
+    '.tmp/components/**/*.js',
+    '!.tmp/scripts/sw/**/*.js'
+  ], {base: '.tmp/'}
+  )
+  // .pipe($.newer('.tmp'))
+    .pipe($.sourcemaps.init())
+    .pipe($.uglify({
+      preserveComments: 'license',
+      hoist_funs: false,
+      compress: {hoist_funs: false}
+    }))
+    .on('error', function(err) {
+      $.util.log(err);
+    })
+    .pipe($.sourcemaps.write('./'))
+    .pipe($.size({title: 'compress-scripts'}))
+    .pipe(gulp.dest('.tmp'));
+});
 
-    // Minify any HTML
-    .pipe($.if(!development,
-      $.if('*.html', $.htmlmin({
-        removeComments: true,
-        collapseWhitespace: true,
-        collapseBooleanAttributes: true,
-        removeAttributeQuotes: true,
-        removeRedundantAttributes: true,
-        removeEmptyAttributes: true,
-        removeScriptTypeAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        removeOptionalTags: true
-      }))))
+// Scan your HTML for assets & optimize them
+gulp.task('compress-html', () => {
+  return gulp.src([
+    '.tmp/*.html',
+    '.tmp/components/**/*.html'
+  ], {base: 'app/'}
+  )
+
+  // Minify any HTML
+    .pipe($.htmlmin({
+      removeComments: true,
+      collapseWhitespace: true,
+      collapseBooleanAttributes: true,
+      removeAttributeQuotes: true,
+      removeRedundantAttributes: true,
+      removeEmptyAttributes: true,
+      removeScriptTypeAttributes: true,
+      removeStyleLinkTypeAttributes: true,
+      removeOptionalTags: true
+    }))
     // Output files
     .pipe($.if('*.html', $.size({title: 'html', showFiles: true})))
-    .pipe($.if('*.htm', $.size({title: 'htm', showFiles: true})))
     .pipe(gulp.dest('.tmp'));
 });
 
@@ -279,26 +357,57 @@ gulp.task('pagespeed', cb =>
 gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
 
 // Build production files, the default task
-gulp.task('default', ['clean'], cb =>
-  runSequence(
-    ['inject'],
-    ['collapse'/* TODO , 'lint'*/],
-    ['styles', 'scripts', 'images'],
-    ['copy'],
-    ['generate-service-worker'],
-    cb
-  )
-);
+// Files are compressed
+gulp.task('default', ['clean'], cb => {
+  nocompression = false;
+  $.util.log($.util.colors.green('Compression mode: ' + !nocompression));
+  $.util.log($.util.colors.green('Concatenation mode: ' + !noconcat));
+
+  if (noconcat) {
+    runSequence(
+      ['inject', 'copy-htm', 'copy-html', 'copy-libraries',
+        'compile-styles', 'transpile-scripts'],
+      ['compress-styles', 'compress-scripts', 'compress-images'],
+      ['compress-html'],
+      ['copy-tmp'],
+      ['generate-service-worker'],
+      cb
+    );
+  } else {
+    runSequence(
+      ['inject', 'copy-htm', 'copy-html', 'copy-libraries',
+        'compile-styles', 'transpile-scripts'],
+      ['compress-styles', 'compress-scripts', 'compress-images'],
+      ['concat'],
+      ['compress-html'],
+      ['copy-tmp'],
+      ['generate-service-worker'],
+      cb
+    );
+  }
+});
 
 // Build development files
+// Files are not compressed in development
 gulp.task('development', ['clean'], cb => {
-  development = true;
+  nocompression = true;
+  $.util.log($.util.colors.green('Compression mode: ' + !nocompression));
+  $.util.log($.util.colors.green('Concatenation mode: ' + !noconcat));
 
-  runSequence(
-    ['inject', 'styles'],
-    // ['collapse'],
-    cb
-  );
+  if (noconcat) {
+    runSequence(
+      ['inject', 'compile-styles', 'transpile-scripts', 'copy-htm',
+        'copy-html', 'copy-libraries'],
+      cb
+    );
+  } else {
+    runSequence(
+      ['inject', 'compile-styles', 'transpile-scripts', 'copy-htm',
+        'copy-html', 'copy-libraries'],
+      ['concat'],
+      cb
+    );
+  }
 });
 
 // Watch files for changes & reload
@@ -313,15 +422,15 @@ gulp.task('serve', ['development'], () => {
     // Note: this uses an unsigned certificate which on first access
     //       will present a certificate warning in the browser.
     // https: true,
-    server: ['.tmp', 'app'],
+    server: ['.tmp'],
     port: 3000
   });
 
   gulp.watch(['app/**/*.html'], reload);
   gulp.watch(['app/**/*.htm'], reload);
   gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
-  gulp.watch(['app/scripts/**/*.js'], reload);
-  gulp.watch(['app/components/**/*.js'], reload);
+  gulp.watch(['app/scripts/**/*.js'], ['inject', reload]);
+  gulp.watch(['app/components/**/*.js'], ['inject', reload]);
   gulp.watch(['app/images/**/*'], reload);
 });
 

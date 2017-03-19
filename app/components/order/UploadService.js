@@ -11,17 +11,18 @@
   // Define service
     .service('UploadService', UploadService);
 
-  UploadService.$inject = ['AuthenticationService'];
+  UploadService.$inject = ['AuthenticationService', '$timeout'];
 
   // TODO docu
-  function UploadService(AuthenticationService) {
+  function UploadService(AuthenticationService, $timeout) {
     const self = this;
 
     self.uploadFile = function(file) {
-      const id = generateShortId();
+      const id = self.generateShortId();
       const uid = AuthenticationService.getUser().uid;
 
-      const storage = firebase.storage().ref('uploads/' + uid + '/' + id + '.pdf');
+      const storage = firebase.storage().ref('uploads/' + uid + '/' + id +
+        '.pdf');
       const uploadTask = storage.put(file);
 
       const nextFunction = function(snapshot) {
@@ -48,7 +49,6 @@
             // User doesn't have permission to access the object
             console.log(error.code + ' :' + error.message);
             break;
-
           case 'storage/canceled':
             // User canceled the upload
             console.log(error.code + ' :' + error.message);
@@ -67,9 +67,10 @@
         // Upload completed successfully, now we can get the download URL
         console.log('Upload was successful');
         // let downloadURL = uploadTask.snapshot.downloadURL;
-        return firebase.database().ref('uploads/' + uid + '/' + id + '/name')
+        return $timeout(firebase.database().ref('uploads/' + uid + '/' + id + '/name')
           .set(file.name)
-          .then(console.log('asdf'));
+          .then(console.log('qwer')), 2000);
+
       };
 
       // Listen for state changes, errors, and completion of the upload.
@@ -78,5 +79,19 @@
         errorFunction,
         completeFunction);
     };
+
+    self.generateShortId = function() {
+      const alphabet = '0123456789abcdefghijklmnopqrstuvwxyz' +
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const idLength = 8;
+      let result = '';
+
+      for (let i = 0; i < idLength; i++) {
+        result += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+      }
+      return result;
+    };
   }
 })();
+
+//# sourceMappingURL=UploadService.js.map

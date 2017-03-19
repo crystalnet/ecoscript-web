@@ -29,11 +29,10 @@ exports.generateUploadEntry = functions.storage.object().onChange(event => {
     // Remove file extension
     const location = filePath.slice(0, filePath.lastIndexOf('.'));
 
-    return;
-    // return admin.database().ref(location).set({
-    //   pages: 42
-    // });
-  } else {
-    return;
+    // return;
+    return admin.database().ref(location).set({
+      pages: 42
+    });
   }
+  return null;
 });
