@@ -156,6 +156,7 @@ gulp.task('copy-libraries', () =>
     'app/libraries/**/*.js'
   ], {base: 'app/'}
   )
+    .pipe($.newer('.tmp/libraries'))
     .pipe(gulp.dest('.tmp'))
     .pipe($.size({title: 'copy-scripts'}))
 );
@@ -167,6 +168,7 @@ gulp.task('copy-styles', () =>
     '!app/styles/src/**/*.css'
   ], {base: 'app/'}
   )
+    .pipe($.newer('.tmp/styles'))
     .pipe(gulp.dest('.tmp'))
     .pipe($.size({title: 'copy-htm'}))
 );
@@ -177,6 +179,7 @@ gulp.task('copy-htm', () =>
     'app/components/**/*.htm'
   ], {base: 'app/'}
   )
+    .pipe($.newer('.tmp/components'))
     .pipe(gulp.dest('.tmp'))
     .pipe($.size({title: 'copy-htm'}))
 );
@@ -188,6 +191,7 @@ gulp.task('copy-html', () =>
     '!app/index.html'
   ], {base: 'app/'}
   )
+    .pipe($.newer('.tmp/components'))
     .pipe(gulp.dest('.tmp'))
     .pipe($.size({title: 'copy-html'}))
 );
@@ -247,6 +251,7 @@ gulp.task('transpile-scripts', () =>
   ], {base: 'app/'}
   )
   // .pipe($.newer('.tmp'))
+    .pipe($.newer('.tmp/'))
     .pipe($.sourcemaps.init())
     .pipe($.babel({
       compact: false
@@ -404,7 +409,6 @@ gulp.task('development', ['clean'], cb => {
     runSequence(
       ['inject', 'compile-styles', 'transpile-scripts', 'copy-htm',
         'copy-html', 'copy-libraries'],
-      ['concat'],
       cb
     );
   }
@@ -426,12 +430,12 @@ gulp.task('serve', ['development'], () => {
     port: 3000
   });
 
-  gulp.watch(['app/**/*.html'], reload);
-  gulp.watch(['app/**/*.htm'], reload);
-  gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
-  gulp.watch(['app/scripts/**/*.js'], ['inject', reload]);
-  gulp.watch(['app/components/**/*.js'], ['inject', reload]);
-  gulp.watch(['app/images/**/*'], reload);
+  gulp.watch(['app/**/*.html'], ['inject', reload]);
+  gulp.watch(['app/**/*.htm'], ['copy-htm', reload]);
+  gulp.watch(['app/styles/**/*.{scss,css}'], ['compiles-styles', reload]);
+  gulp.watch(['app/scripts/**/*.js'], ['transpile-scripts', reload]);
+  gulp.watch(['app/components/**/*.js'], ['transpile-scripts', reload]);
+  // gulp.watch(['app/images/**/*'], reload);
 });
 
 // Build and serve the output from the dist build
