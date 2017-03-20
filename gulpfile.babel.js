@@ -153,6 +153,7 @@ gulp.task('copy-scripts', () =>
 // Copy all files at the root level (app)
 gulp.task('copy-libraries', () =>
   gulp.src([
+    // TODO replace with your bower modules location
     'app/libraries/**/*.js'
   ], {base: 'app/'}
   )
@@ -402,13 +403,13 @@ gulp.task('development', ['clean'], cb => {
   if (noconcat) {
     runSequence(
       ['inject', 'compile-styles', 'transpile-scripts', 'copy-htm',
-        'copy-html', 'copy-libraries'],
+        'copy-html', 'copy-libraries', 'compress-images'],
       cb
     );
   } else {
     runSequence(
       ['inject', 'compile-styles', 'transpile-scripts', 'copy-htm',
-        'copy-html', 'copy-libraries'],
+        'copy-html', 'copy-libraries', 'compress-images'],
       cb
     );
   }
@@ -432,7 +433,7 @@ gulp.task('serve', ['development'], () => {
 
   gulp.watch(['app/**/*.html'], ['inject', reload]);
   gulp.watch(['app/**/*.htm'], ['copy-htm', reload]);
-  gulp.watch(['app/styles/**/*.{scss,css}'], ['compiles-styles', reload]);
+  gulp.watch(['app/styles/**/*.{scss,css}'], ['compile-styles', reload]);
   gulp.watch(['app/scripts/**/*.js'], ['transpile-scripts', reload]);
   gulp.watch(['app/components/**/*.js'], ['transpile-scripts', reload]);
   // gulp.watch(['app/images/**/*'], reload);
