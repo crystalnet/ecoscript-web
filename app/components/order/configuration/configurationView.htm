@@ -1,27 +1,8 @@
-<main class="mdl-layout__content" data-ng-controller="orderController as order">
+<main class="mdl-layout__content" data-ng-controller="configurationController as controller">
   <div class="page-content">
 
     <!-- Your content goes here -->
     <!--<div id="my-container"></div> -->
-
-    <h4>Upload on file select</h4>
-    <button ngf-select="order.uploadFiles($files, $invalidFiles)" multiple accept="application/pdf"
-            ngf-validate="{size: {max: '20MB'}, pattern: '.pdf'}" ngf-keep="distinct"
-            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-      Select Files</button>
-    <br><br>
-    Files:
-    <ul>
-      <li ng-repeat="f in order.files">{{f.name}} {{f.$errorParam}}
-        <span class="progress" ng-show="f.progress >= 0">
-        <div style="width:{{f.progress}}%"
-             ng-bind="f.progress + '%'"></div>
-      </span>
-      </li>
-      <li ng-repeat="f in order.errFiles">{{f.name}} {{f.$error}} {{f.$errorParam}}
-      </li>
-    </ul>
-    {{order.errorMsg}}
 
     <div class="flipbook-viewport">
       <div class="container">
@@ -68,8 +49,8 @@
         </div>
 
         <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--grey-800">
-          <a
-            class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
+          <a data-ng-click="controller.configuration.plan = controller.plans[3]"
+             class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
             Auswählen
           </a>
         </div>
@@ -104,7 +85,7 @@
         </div>
 
         <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--grey">
-          <a
+          <a data-ng-click="controller.configuration.plan = controller.plans[2]"
             class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
             Auswählen
           </a>
@@ -140,7 +121,7 @@
         </div>
 
         <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--green">
-          <a
+          <a data-ng-click="controller.configuration.plan = controller.plans[0]"
             class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
             Auswählen
           </a>
@@ -177,7 +158,7 @@
         </div>
 
         <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--green">
-          <a
+          <a data-ng-click="controller.configuration.plan = controller.plans[1]"
             class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
             Auswählen
           </a>
@@ -190,50 +171,30 @@
     <div class="mdl-grid select-product mdl-color--white grid-height-600">
       <div class="mdl-cell mdl-cell--4-col mdl-cell--6-offset">
         <h3>This are your options.</h3>
-        <select class="mdl-select mdl-list">
-          <option class="mdl-list-item" value="volvo">Volvo</option>
-          <option class="mdl-list-item" value="saab">Saab</option>
-          <option class="mdl-list-item" value="mercedes">Mercedes</option>
-          <option class="mdl-list-item" value="audi">Audi</option>
+        <select class="mdl-select mdl-list" data-ng-model="controller.configuration.plan"
+                data-ng-options="plan.name for plan in controller.plans track by plan.value"
+                name="plan" id="plan">
         </select>
+
+        <select class="mdl-select mdl-list" data-ng-model="controller.configuration.pagesPerSide"
+        data-ng-options="option.name for option in controller.pagesPerSide track by option.value">
+        </select>
+
+        <select class="mdl-select mdl-list" data-ng-model="controller.configuration.twoSided"
+                data-ng-options="option.name for option in controller.twoSided track by option.value">
+        </select>
+
+        <!-- Colored FAB button with ripple -->
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+        data-ng-click="">
+          <i class="material-icons">keyboard_arrow_left</i>
+        </button>
+
+        <!-- Colored FAB button with ripple -->
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">keyboard_arrow_right</i>
+        </button>
       </div>
     </div>
-
-    <div class="mdl-grid select-product mdl-color--grey-100">
-      <div class="mdl-cell mdl-cell--4-col mdl-cell--6-offset">
-        <h3>This are your options.</h3>
-      </div>
-    </div>
-
-    <div class="mdl-grid select-product mdl-color--grey-100">
-      <table
-        class="mdl-cell mdl-cell--4-col mdl-cell--6-offset mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
-        <thead>
-        <tr>
-          <th class="mdl-data-table__cell--non-numeric">Material</th>
-          <th>Quantity</th>
-          <th>Unit price</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td class="mdl-data-table__cell--non-numeric">Acrylic (Transparent)</td>
-          <td>25</td>
-          <td>$2.90</td>
-        </tr>
-        <tr>
-          <td class="mdl-data-table__cell--non-numeric">Plywood (Birch)</td>
-          <td>50</td>
-          <td>$1.25</td>
-        </tr>
-        <tr>
-          <td class="mdl-data-table__cell--non-numeric">Laminate (Gold on Blue)</td>
-          <td>10</td>
-          <td>$2.35</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
   </div>
 </main>

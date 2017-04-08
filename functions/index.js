@@ -13,25 +13,26 @@ admin.initializeApp(functions.config().firebase);
 exports.generateUploadEntry = functions.storage.object().onChange(event => {
   // The Storage object.
   const object = event.data;
-  // const user = event.auth.variable;
-
-  // The Storage bucket that contains the file.
-  const fileBucket = object.bucket;
-  // File path in the bucket.
+  // The File Path
   const filePath = object.name;
-  // File content type.
-  const contentType = object.contentType;
+  // The location for the database entry
+  const location = filePath.slice(0, filePath.lastIndexOf('.'));
+  // The id of the script
+  const id = filePath.split('/').pop();
+  // File metadata
+  const metadata = object.metadata;
+  // File meta
+  const fileName = metadata.name ? metadata.name : id;
   // The resourceState is 'exists' or 'not_exits' (for file/folder deletions).
   const resourceState = object.resourceState;
-  console.log(fileBucket, filePath, contentType, resourceState, event);
+  console.log(location, '--------------------------------', metadata, '------------------------------', fileName);
 
   if (resourceState === 'exists') {
-    // Remove file extension
-    const location = filePath.slice(0, filePath.lastIndexOf('.'));
-
     // return;
     return admin.database().ref(location).set({
-      pages: 42
+      pages: 42,
+      name: fileName,
+      id: id
     });
   }
   return null;

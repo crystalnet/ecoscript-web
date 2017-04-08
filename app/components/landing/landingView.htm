@@ -1,4 +1,4 @@
-<main class="mdl-layout__content" data-ng-controller="landingController as landing">
+<main class="mdl-layout__content" data-ng-controller="landingController as controller">
   <div class="page-content">
     <!-- Your content goes here -->
 
@@ -17,9 +17,10 @@
 
       <h1 id="title-test" class="header-font mdl-color-text--white">Kostenlos Scripte drucken und<br/>die Natur
         schützen.</h1>
-      <div class="upload-button">
-        <button data-ng-click="landing.order()"
-          class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+      <div class="upload-button" data-ng-controller="uploadController as controller">
+        <button ngf-select="controller.uploadFiles($files, $invalidFiles)" multiple accept="application/pdf"
+                ngf-validate="{size: {max: '20MB'}, pattern: '.pdf'}" ngf-keep="distinct"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
           PDF hochladen<i class="material-icons">file_upload</i>
         </button>
       </div>
@@ -41,11 +42,11 @@
       </div>
       <div id="how" class="mdl-cell mdl-cell--6-col">
         <h3>
-          Bestelle in 3 Minuten <br> kostenlos deinen Script.
+          Bestelle in 3 Minuten <br> kostenlos dein Script.
         </h3>
         <h1 style="font-size: 20px;">
           Direkt zu dir versendet und ohne versteckte Kosten.<br>
-          Und wenn dich Werbung stört, kannst du dich auch für die<br> Produkte Black oder Green entscheiden.
+          Und wenn dich die Werbung stört, kannst du dich auch für die<br> Produkte Black oder Green entscheiden.
         </h1>
       </div>
       <div class="mdl-cell mdl-cell--12-col"><br><br><br></div>
@@ -68,19 +69,19 @@
           <h2 class="mdl-card__title-text">Black<br>ab €12,99</h2>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-              <span><strong>Bis zu 300 Seiten auswählbar.</strong></span>
+          <span><strong>Bis zu 300 Seiten auswählbar.</strong></span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-                <span>Inkl. Express Versand</span>
+          <span>Inkl. Express Versand</span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-                <span>Viele Bindungsmögl.</span>
+          <span>Viele Bindungsmögl.</span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-                <span><strong>Mattschwarzes Cover</strong></span>
+          <span><strong>Mattschwarzes Cover</strong></span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-                <span>In jeder Vorlesung Eindruck machen.</span>
+          <span>In jeder Vorlesung Eindruck machen.</span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
           </span> <span>Ein geflanzter Baum</span>
@@ -104,19 +105,19 @@
           <h2 class="mdl-card__title-text">€ 0.00 - gesponsort</h2>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-              <span><strong>Max. 125 Seiten </strong></span>
+          <span><strong>Max. 125 Seiten </strong></span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-                <span>Kostenloser Versand</span>
+          <span>Kostenloser Versand</span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-                <span>Hochwertige Spiralbindung</span>
+          <span>Hochwertige Spiralbindung</span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-                <span>Farbdruck</span>
+          <span>Farbdruck</span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-                <span>⠀</span>
+          <span>⠀</span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
           </span> <span>Ein geflanzter Baum</span>
@@ -140,19 +141,19 @@
           <h2 class="mdl-card__title-text">€ 0.00 - gesponsort</h2>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-              <span><strong>Max. 125 Seiten - Recyclingpapier</strong></span>
+          <span><strong>Max. 125 Seiten - Recyclingpapier</strong></span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-                <span>Kostenloser Versand</span>
+          <span>Kostenloser Versand</span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-                <span>Hochwertige Spiralbindung</span>
+          <span>Hochwertige Spiralbindung</span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-                <span>Bio-Farbdruck</span>
+          <span>Bio-Farbdruck</span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-                <span>Klimaneutral*</span>
+          <span>Klimaneutral*</span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
           </span> <span>Ein geflanzter Baum</span>
@@ -176,19 +177,19 @@
           <h2 class="mdl-card__title-text">ab € 8.99</h2>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-              <span><strong>Max. 300 Seiten - Recyclingpapier</strong></span>
+          <span><strong>Max. 300 Seiten - Recyclingpapier</strong></span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-                <span>Kostenloser Versand</span>
+          <span>Kostenloser Versand</span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-                <span>Viele Bindungsmögl.</span>
+          <span>Viele Bindungsmögl.</span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-                <span>Bio-Farbdruck</span>
+          <span>Bio-Farbdruck</span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-                <span>Klimaneutral*</span>
+          <span>Klimaneutral*</span>
         </div>
         <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
           <span>Zwei geflanzte Bäume</span>

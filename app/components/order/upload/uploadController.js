@@ -1,5 +1,5 @@
 /**
- * Created by dominik on 10/03/2017.
+ * Created by crystalneth on 22-Mar-17.
  */
 
 (function() {
@@ -9,12 +9,12 @@
   angular.module('order')
 
   // Define controllers
-    .controller('orderController', OrderController);
+    .controller('uploadController', UploadController);
 
-  OrderController.$inject = ['$location', 'UploadService'];
+  UploadController.$inject = ['$location', 'UploadService'];
 
   /* @ngInject */
-  function OrderController($location, UploadService) {
+  function UploadController($location, UploadService) {
     const self = this;
 
     self.uploadFiles = function(files, errFiles) {
@@ -26,3 +26,4 @@
     };
   }
 })();
+

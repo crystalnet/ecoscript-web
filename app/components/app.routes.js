@@ -30,7 +30,7 @@
       })
 
       .when('/order', {
-        templateUrl: 'components/order/orderView.htm'
+        templateUrl: 'components/order/configuration/configurationView.htm'
       })
 
       .otherwise({

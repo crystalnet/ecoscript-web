@@ -13,17 +13,20 @@
 
   UploadService.$inject = ['AuthenticationService', '$timeout'];
 
-  // TODO docu
   function UploadService(AuthenticationService, $timeout) {
     const self = this;
 
     self.uploadFile = function(file) {
       const id = self.generateShortId();
       const uid = AuthenticationService.getUser().uid;
-
       const storage = firebase.storage().ref('uploads/' + uid + '/' + id +
         '.pdf');
-      const uploadTask = storage.put(file);
+      const metadata = {
+        customMetadata: {
+          name: file.name.slice(0, file.name.lastIndexOf('.'))
+        }
+      };
+      const uploadTask = storage.put(file, metadata);
 
       const nextFunction = function(snapshot) {
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
@@ -67,10 +70,9 @@
         // Upload completed successfully, now we can get the download URL
         console.log('Upload was successful');
         // let downloadURL = uploadTask.snapshot.downloadURL;
-        return $timeout(firebase.database().ref('uploads/' + uid + '/' + id + '/name')
-          .set(file.name)
-          .then(console.log('qwer')), 2000);
-
+        //return $timeout(firebase.database().ref('uploads/' + uid + '/' + id + '/name')
+        //  .set(file.name)
+        //  .then(console.log('qwer')), 2000);
       };
 
       // Listen for state changes, errors, and completion of the upload.
@@ -93,5 +95,3 @@
     };
   }
 })();
-
-//# sourceMappingURL=UploadService.js.map
