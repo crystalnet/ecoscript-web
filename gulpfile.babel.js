@@ -92,9 +92,9 @@ gulp.task('concat', () => {
     .pipe($.useref({
       searchPath: '.tmp'
     }))
-    .pipe($.replace(/<!--\s*build:css(\s|\S)*endbuild\s*-->/g,
-      '<link rel="styles/main.min.css"/>'))
-    .pipe($.replace(/<!--\s*build:js(\s|\S)*endbuild\s*-->/g,
+    .pipe($.replace(/<!--\s*build:css(\s|\S)*?endbuild\s*-->/g,
+      '<link rel="stylesheet" href="styles/main.min.css">'))
+    .pipe($.replace(/<!--\s*build:js(\s|\S)*?endbuild\s*-->/g,
       '<script src="scripts/main.min.js"></script>'))
     // Output files
     .pipe($.size({title: 'html', showFiles: true}))
@@ -129,10 +129,12 @@ gulp.task('compress-images', () => {
 // Copy all files at the root level (app)
 gulp.task('copy-tmp', () =>
   gulp.src([
-    '.tmp/**/*.*',
-    'node_modules/apache-server-configs/dist/.htaccess',
-      // 'app/libraries/material-design-lite/material.min.css.map',
-  ], {dot: true}
+    '.tmp/index.html',
+    '.tmp/images/*.*',
+    '.tmp/scripts/main.min.js',
+    '.tmp/styles/main.min.css',
+    '.tmp/components/**/*.htm'
+  ], {dot: true, base: '.tmp/'}
   )
     .pipe(gulp.dest('dist'))
     .pipe($.size({title: 'copy-tmp'}))
@@ -197,6 +199,23 @@ gulp.task('copy-html', () =>
     .pipe($.size({title: 'copy-html'}))
 );
 
+// Copy all files at the root level (app)
+gulp.task('copy-service-worker', () =>
+  gulp.src([
+    'app/service-worker.js'
+  ])
+    .pipe(gulp.dest('.tmp'))
+);
+
+// Copy all files at the root level (app)
+gulp.task('copy-htaccess', () =>
+  gulp.src([
+    'node_modules/apache-server-configs/dist/.htaccess'
+  ], {dot: true}
+  )
+    .pipe(gulp.dest('dist'))
+);
+
 // Compiles sass and prefixes them
 gulp.task('compile-styles', () => {
   const AUTOPREFIXER_BROWSERS = [
@@ -224,7 +243,7 @@ gulp.task('compile-styles', () => {
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
     .pipe($.size({title: 'compile-styles'}))
-    .pipe($.sourcemaps.write('.tmp/'))
+    .pipe($.sourcemaps.write('.'))
     .pipe(gulp.dest('.tmp'));
 });
 
@@ -239,7 +258,7 @@ gulp.task('compress-styles', () => {
     .pipe($.sourcemaps.init())
     .pipe($.if('*.css', $.cssnano()))
     .pipe($.size({title: 'compress-styles'}))
-    .pipe($.sourcemaps.write('./'))
+    .pipe($.sourcemaps.write('.'))
     .pipe(gulp.dest('.tmp'));
 });
 
@@ -257,7 +276,7 @@ gulp.task('transpile-scripts', () =>
     .pipe($.babel({
       compact: false
     }))
-    .pipe($.sourcemaps.write('.tmp/'))
+    .pipe($.sourcemaps.write('.'))
     .pipe($.size({title: 'transpile-scripts'}))
     .pipe(gulp.dest('.tmp'))
 );
@@ -280,7 +299,7 @@ gulp.task('compress-scripts', () => {
     .on('error', function(err) {
       $.util.log(err);
     })
-    .pipe($.sourcemaps.write('./'))
+    .pipe($.sourcemaps.write('.'))
     .pipe($.size({title: 'compress-scripts'}))
     .pipe(gulp.dest('.tmp'));
 });
@@ -290,7 +309,7 @@ gulp.task('compress-html', () => {
   return gulp.src([
     '.tmp/*.html',
     '.tmp/components/**/*.html'
-  ], {base: 'app/'}
+  ], {base: '.tmp/'}
   )
 
   // Minify any HTML
@@ -375,7 +394,7 @@ gulp.task('default', ['clean'], cb => {
         'compile-styles', 'transpile-scripts'],
       ['compress-styles', 'compress-scripts', 'compress-images'],
       ['compress-html'],
-      ['copy-tmp'],
+      ['copy-tmp', 'copy-htaccess'],
       ['generate-service-worker'],
       cb
     );
@@ -386,7 +405,7 @@ gulp.task('default', ['clean'], cb => {
       ['compress-styles', 'compress-scripts', 'compress-images'],
       ['concat'],
       ['compress-html'],
-      ['copy-tmp'],
+      ['copy-tmp', 'copy-htaccess'],
       ['generate-service-worker'],
       cb
     );
@@ -403,13 +422,16 @@ gulp.task('development', ['clean'], cb => {
   if (noconcat) {
     runSequence(
       ['inject', 'compile-styles', 'transpile-scripts', 'copy-htm',
-        'copy-html', 'copy-libraries', 'compress-images'],
+        'copy-html', 'copy-libraries', 'compress-images',
+        'copy-service-worker'],
       cb
     );
   } else {
     runSequence(
       ['inject', 'compile-styles', 'transpile-scripts', 'copy-htm',
-        'copy-html', 'copy-libraries', 'compress-images'],
+        'copy-html', 'copy-libraries', 'compress-images',
+        'copy-service-worker'],
+      ['concat'],
       cb
     );
   }
