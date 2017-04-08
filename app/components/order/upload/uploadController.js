@@ -23,6 +23,7 @@
       angular.forEach(self.files, function(file) {
         UploadService.uploadFile(file);
       });
+      $location.path('/order');
     };
   }
 })();
