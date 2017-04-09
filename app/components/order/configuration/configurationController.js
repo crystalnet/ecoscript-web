@@ -2,7 +2,7 @@
  * Created by dominik on 10/03/2017.
  */
 
-(function() {
+(function () {
   'use strict';
 
   // Get the module
@@ -11,11 +11,32 @@
   // Define controllers
     .controller('configurationController', ConfigurationController);
 
-  ConfigurationController.$inject = ['$location', 'UploadService'];
+  ConfigurationController.$inject = ['$location', 'OrderService', '$timeout'];
 
   /* @ngInject */
-  function ConfigurationController($location, UploadService) {
+  function ConfigurationController($location, OrderService, $timeout) {
     const self = this;
+
+    if (!OrderService.getSelected() === true) {
+      $timeout(function() {
+        angular.element('#uploadButton').triggerHandler('click')
+      }, 0);
+    }
+
+    self.uploadFiles = function (files, errFiles) {
+      self.files = files;
+      self.errFiles = errFiles;
+
+      if (self.files !== null) {
+        OrderService.scriptSelected = true;
+      }
+
+      angular.forEach(self.files, function (file) {
+        OrderService.uploadFile(file);
+      });
+      $location.path('/order');
+    };
+
     self.plans = [
       {value: 'greenfree', name: 'Green Free'},
       {value: 'green', name: 'Green'},

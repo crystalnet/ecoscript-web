@@ -1,5 +1,5 @@
 /**
- * Created by dominik on 10/03/2017.
+ * Created by crystalneth on 22-Mar-17.
  */
 
 (function() {
@@ -9,12 +9,28 @@
   angular.module('order')
 
   // Define service
-    .service('UploadService', UploadService);
+    .service('OrderService', OrderService);
 
-  UploadService.$inject = ['AuthenticationService', '$timeout'];
+  OrderService.$inject = ['AuthenticationService'];
 
-  function UploadService(AuthenticationService, $timeout) {
+  function OrderService(AuthenticationService) {
     const self = this;
+
+    self.scriptSelected = false;
+
+    self.getSelected = function() {
+      return self.scriptSelected;
+    };
+
+    self.setScriptSelected = function(selected) {
+      self.scriptSelected = selected;
+    };
+
+    self.order = {
+      scripts: [],
+      address: {},
+      total: 42.00
+    };
 
     self.uploadFile = function(file) {
       const id = self.generateShortId();
