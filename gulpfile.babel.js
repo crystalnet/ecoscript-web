@@ -431,7 +431,7 @@ gulp.task('development', ['clean'], cb => {
       ['inject', 'compile-styles', 'transpile-scripts', 'copy-htm',
         'copy-html', 'copy-libraries', 'compress-images',
         'copy-service-worker'],
-      ['concat'],
+      //['concat'],
       cb
     );
   }
