@@ -17,6 +17,15 @@
     const self = this;
 
     self.scriptSelected = false;
+    self.stage = 1;
+
+    self.getStage = function() {
+      return self.stage;
+    };
+
+    self.setStage = function(stage) {
+      self.stage = stage;
+    };
 
     self.getSelected = function() {
       return self.scriptSelected;
@@ -85,8 +94,9 @@
       const completeFunction = function() {
         // Upload completed successfully, now we can get the download URL
         console.log('Upload was successful');
+        self.stage = 2;
         // let downloadURL = uploadTask.snapshot.downloadURL;
-        //return $timeout(firebase.database().ref('uploads/' + uid + '/' + id + '/name')
+        // return $timeout(firebase.database().ref('uploads/' + uid + '/' + id + '/name')
         //  .set(file.name)
         //  .then(console.log('qwer')), 2000);
       };
