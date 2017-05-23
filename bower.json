@@ -1,11 +1,11 @@
 {
-  "name": "uniskripte_firebase",
+  "name": "ecoscript-web",
   "description": "",
   "authors": [
-    "crystalneth <konsti7@gmx.net>"
+    "Konstantin Schmidt <konstantin.schmidt@script.eco>"
   ],
   "license": "private",
-  "homepage": "https://github.com/dominikue/ecoscript",
+  "homepage": "https://bitbucket.org/ecoscript/ecoscript-web",
   "private": true,
   "ignore": [
     "**/.*",

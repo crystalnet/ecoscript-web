@@ -2,7 +2,7 @@
  * Created by dominik on 10/03/2017.
  */
 
-(function () {
+(function() {
   'use strict';
 
   // Get the module
@@ -21,12 +21,12 @@
     };
 
     if (!OrderService.getSelected() === true) {
-      $timeout(function () {
-        angular.element('#uploadButton').triggerHandler('click')
+      $timeout(function() {
+        angular.element('#uploadButton').triggerHandler('click');
       }, 0);
     }
 
-    self.uploadFiles = function (files, errFiles) {
+    self.uploadFiles = function(files, errFiles) {
       self.files = files;
       self.errFiles = errFiles;
 
@@ -34,17 +34,17 @@
         OrderService.scriptSelected = true;
       }
 
-      angular.forEach(self.files, function (file) {
+      angular.forEach(self.files, function(file) {
         OrderService.uploadFile(file);
       });
       $location.path('/order');
     };
 
-    self.next = function () {
+    self.next = function() {
       OrderService.setStage(self.stage() + 1);
     };
 
-    self.previous = function () {
+    self.previous = function() {
       OrderService.setStage(self.stage() - 1);
     };
 
