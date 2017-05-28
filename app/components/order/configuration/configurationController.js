@@ -2,13 +2,13 @@
  * Created by dominik on 10/03/2017.
  */
 
-(function() {
+(function () {
   'use strict';
 
   // Get the module
   angular.module('order')
 
-  // Define controllers
+  // Define controller
     .controller('configurationController', ConfigurationController);
 
   ConfigurationController.$inject = ['$location', 'OrderService', '$timeout'];
@@ -16,67 +16,48 @@
   /* @ngInject */
   function ConfigurationController($location, OrderService, $timeout) {
     const self = this;
-    self.stage = function() {
-      return OrderService.getStage();
-    };
+    self.order = OrderService;
 
-    if (!OrderService.getSelected() === true) {
-      $timeout(function() {
+    self.console = function() {
+      console.log(self.order);
+    }
+
+    if (self.order.scripts.length === 0) {
+      $timeout(function () {
         angular.element('#uploadButton').triggerHandler('click');
       }, 0);
     }
 
-    self.uploadFiles = function(files, errFiles) {
-      self.files = files;
+    self.uploadFiles = function (files, errFiles) {
       self.errFiles = errFiles;
 
-      if (self.files !== null) {
-        OrderService.scriptSelected = true;
-      }
+      angular.forEach(files, function (file) {
+        self.order.addScript(file).then(function (result) {
+          console.log(result);
 
-      angular.forEach(self.files, function(file) {
-        OrderService.uploadFile(file);
+          if (self.order.scripts.length > 0) {
+            self.order.stage = 2;
+            const script = self.order.scripts[0].configuration;
+            script.title = self.order.scripts[0].file.name;
+            script.title = script.title.substring(0, script.title.lastIndexOf('.'));
+
+            var arr = script.title.split(/\s|_/);
+            for (let i = 0, l = arr.length; i < l; i++) {
+              arr[i] = arr[i].substr(0, 1).toUpperCase() +
+                (arr[i].length > 1 ? arr[i].substr(1).toLowerCase() : '');
+            }
+            script.title = arr.join(' ');
+          }
+        });
       });
-      $location.path('/order');
     };
 
-    self.next = function() {
-      OrderService.setStage(self.stage() + 1);
+    self.next = function () {
+      self.order.stage = Math.min(self.order.stage + 1, 5);
     };
 
-    self.previous = function() {
-      OrderService.setStage(self.stage() - 1);
-    };
-
-    self.plans = [
-      {value: 'greenfree', name: 'Green Free'},
-      {value: 'green', name: 'Green'},
-      {value: 'free', name: 'Free'},
-      {value: 'black', name: 'Black'}
-    ];
-
-    self.color = [
-      {value: 'sw', name: 'Black and white'},
-      {value: 'color', name: 'Colored'}
-    ];
-
-    self.pagesPerSide = [
-      {value: '1', name: '1 Seite pro Blatt'},
-      {value: '2', name: '2 Seiten pro Blatt'},
-      {value: '4', name: '4 Seiten pro Blatt'},
-      {value: '8', name: '8 Seiten pro Blatt'}
-    ];
-
-    self.twoSided = [
-      {value: 'true', name: 'Vorder- und Rückseite'},
-      {value: 'false', name: 'nur Vorderseite'}
-    ];
-
-    self.configuration = {
-      plan: {value: 'green', name: 'Green'},
-      color: {value: 'sw', name: 'Black and white'},
-      pagesPerSide: {value: '2', name: '2 Seiten pro Blatt'},
-      twoSided: {value: 'true', name: 'Vorder- und Rückseite'}
+    self.previous = function () {
+      self.order.stage = Math.max(self.order.stage - 1, 1);
     };
   }
 })();

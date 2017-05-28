@@ -6,20 +6,20 @@
 
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell--2-col mdl-cell--2-offset">
-        Stage: {{controller.stage()}}
+        Stage: {{controller.order.stage}}
       </div>
 
-      <div class="mdl-cell mdl-cell--8-col" data-ng-show="controller.stage() == 1">
+      <div class="mdl-cell mdl-cell--8-col" data-ng-show="controller.order.stage == 1">
         <h3>Upload your script.</h3>
-        <button id="uploadButton" ngf-select="controller.uploadFiles($files, $invalidFiles)" accept="application/pdf"
-                ngf-validate="{size: {max: '20MB'}, pattern: '.pdf'}"
+        <button id="uploadButton" ngfSelect ngf-select="controller.uploadFiles($files, $invalidFiles)"
+                accept="application/pdf" ngf-validate="{size: {max: '20MB'}, pattern: '.pdf'}"
                 class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
           PDF hochladen<i class="material-icons">file_upload</i>
         </button>
         <br><br>
         File:
         <ul>
-          <li ng-repeat="f in controller.files" style="font:smaller">{{f.name}} {{f.$errorParam}}
+          <li ng-repeat="f in controller.order.scripts" style="font:smaller">{{f.name}} {{f.$errorParam}}
             <span class="progress" ng-show="f.progress >= 0">
         <div style="width:{{f.progress}}%"
              ng-bind="f.progress + '%'"></div>
@@ -32,179 +32,45 @@
         {{errorMsg}}
       </div>
 
-      <div class="mdl-cell mdl-cell--8-col" data-ng-show="controller.stage() == 2">
+      <div class="mdl-cell mdl-cell--8-col" data-ng-show="controller.order.stage == 2">
         <h3>Give it a title.</h3>
         <form action="#">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="title" data-ng-model="controller.title">
+            <input class="mdl-textfield__input" type="text" id="title"
+                   data-ng-model="controller.order.scripts[0].configuration.title">
             <label class="mdl-textfield__label" for="title">Title...</label>
           </div>
         </form>
       </div>
 
-      <div class="mdl-cell mdl-cell--8-col mdl-grid" data-ng-show="controller.stage() == 3">
-        <!--Black-->
-        <div class="mdl-card mdl-cell mdl-cell--3-col mdl-shadow--4dp">
-          <div class="mdl-card__title mdl-color--grey-800 mdl-color-text--white mdl-card--border">
-            <h2 class="mdl-card__title-text">Black<br>ab €12,99</h2>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-            <span><strong>Bis zu 300 Seiten auswählbar.</strong></span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-            <span>Inkl. Express Versand</span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-            <span>Viele Bindungsmögl.</span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-            <span><strong>Mattschwarzes Cover</strong></span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-            <span>In jeder Vorlesung Eindruck machen.</span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-            </span> <span>Ein geflanzter Baum</span>
-            <span><img src="images/tree.svg" width="23px" height="23px"></span>
-          </div>
-
-          <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--grey-800">
-            <a data-ng-click="controller.configuration.plan = controller.plans[3]"
-               class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
-              Auswählen
-            </a>
-          </div>
-        </div>
-
-        <!--Free-->
-        <div class="mdl-card mdl-cell mdl-cell--3-col mdl-shadow--4dp">
-          <div class="product-card-name mdl-card__title mdl-color--grey mdl-color-text--white">
-            <h2 class="mdl-card__title-text"><strong>Free</strong></h2>
-          </div>
-          <div class="product-card-price mdl-card__title mdl-color--grey mdl-color-text--white mdl-card--border">
-            <h2 class="mdl-card__title-text">€ 0.00 - gesponsort</h2>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-            <span><strong>Max. 125 Seiten </strong></span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-            <span>Kostenloser Versand</span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-            <span>Hochwertige Spiralbindung</span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-            <span>Farbdruck</span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-            <span>⠀</span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-            </span> <span>Ein geflanzter Baum</span>
-            <span><img src="images/tree.svg" width="23px" height="23px"></span>
-          </div>
-
-          <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--grey">
-            <a data-ng-click="controller.configuration.plan = controller.plans[2]"
-               class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
-              Auswählen
-            </a>
-          </div>
-        </div>
-
-        <!--Green Free-->
-        <div class=" mdl-card mdl-cell mdl-cell--3-col mdl-shadow--4dp">
-          <div class="product-card-name mdl-card__title mdl-color--green mdl-color-text--white">
-            <h2 class="mdl-card__title-text"><strong>Green Free</strong></h2>
-          </div>
-          <div class="product-card-price mdl-card__title mdl-color--green mdl-color-text--white mdl-card--border">
-            <h2 class="mdl-card__title-text">€ 0.00 - gesponsort</h2>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-            <span><strong>Max. 125 Seiten - Recyclingpapier</strong></span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-            <span>Kostenloser Versand</span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-            <span>Hochwertige Spiralbindung</span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-            <span>Bio-Farbdruck</span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-            <span>Klimaneutral*</span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-            </span> <span>Ein geflanzter Baum</span>
-            <span><img src="images/tree.svg" width="23px" height="23px"></span>
-          </div>
-
-          <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--green">
-            <a data-ng-click="controller.configuration.plan = controller.plans[0]"
-               class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
-              Auswählen
-            </a>
-          </div>
-        </div>
-
-        <!--Green-->
-        <div class=" mdl-card mdl-cell mdl-cell--3-col mdl-shadow--4dp">
-          <div class="product-card-name mdl-card__title mdl-color--green mdl-color-text--white">
-            <h2 class="mdl-card__title-text"><strong>Green</strong></h2>
-          </div>
-          <div class="product-card-price mdl-card__title mdl-color--green mdl-color-text--white mdl-card--border">
-            <h2 class="mdl-card__title-text">ab € 8.99</h2>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-            <span><strong>Max. 300 Seiten - Recyclingpapier</strong></span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-            <span>Kostenloser Versand</span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-            <span>Viele Bindungsmögl.</span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-            <span>Bio-Farbdruck</span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-            <span>Klimaneutral*</span>
-          </div>
-          <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-            <span>Zwei gepflanzte Bäume</span>
-            <span><img src="images/tree.svg" width="23px" height="23px"></span>
-            <span><img src="images/tree.svg" width="23px" height="23px"></span>
-          </div>
-
-          <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--green">
-            <a data-ng-click="controller.configuration.plan = controller.plans[1]"
-               class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
-              Auswählen
-            </a>
-          </div>
-        </div>
+      <div class="mdl-cell mdl-cell--8-col mdl-grid" data-ng-show="controller.order.stage == 3">
+        <button data-ng-repeat="plan in controller.order.plans"
+                data-ng-click="controller.order.scripts[0].configuration.plan = plan"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+          {{plan.name}}
+        </button>
       </div>
 
-      <div class="mdl-cell mdl-cell--8-col" data-ng-show="controller.stage() == 4">
-        <h3>These are your options.</h3>
-        <select class="mdl-select mdl-list" data-ng-model="controller.configuration.color"
-                data-ng-options="color.name for color in controller.color track by color.value"
-                name="color" id="color">
-        </select>
-
-        </select>
+      <div class="mdl-cell mdl-cell--8-col mdl-grid" data-ng-show="controller.order.stage == 4">
+        <button data-ng-repeat="color in controller.order.colors"
+                data-ng-click="controller.order.scripts[0].configuration.color = color"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+          {{color.name}}
+        </button>
       </div>
 
-      <div class="mdl-cell mdl-cell--8-col" data-ng-show="controller.stage() == 5">
-        <h3>These are your options.</h3>
-        <select class="mdl-select mdl-list" data-ng-model="controller.configuration.pagesPerSide"
-                data-ng-options="option.name for option in controller.pagesPerSide track by option.value">
-        </select>
+      <div class="mdl-cell mdl-cell--8-col mdl-grid" data-ng-show="controller.order.stage == 5">
+        <button data-ng-repeat="option in controller.order.pagesPerSide"
+                data-ng-click="controller.order.scripts[0].configuration.pagesPerSide = option"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+          {{option.name}}
+        </button>
 
-        <select class="mdl-select mdl-list" data-ng-model="controller.configuration.twoSided"
-                data-ng-options="option.name for option in controller.twoSided track by option.value">
-        </select>
+        <button data-ng-repeat="option in controller.order.twoSided"
+                data-ng-click="controller.order.scripts[0].configuration.twoSided = option"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+          {{option.name}}
+        </button>
       </div>
 
       <div class="mdl-cell mdl-cell--6-col mdl-cell--6-offset">
@@ -215,6 +81,10 @@
         <button data-ng-click="controller.next()"
                 class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
           Weiter
+        </button>
+        <button data-ng-click="controller.console()"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+          Show Order
         </button>
       </div>
 

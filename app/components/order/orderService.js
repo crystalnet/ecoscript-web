@@ -2,7 +2,7 @@
  * Created by crystalneth on 22-Mar-17.
  */
 
-(function() {
+(function () {
   'use strict';
 
   // Get the module
@@ -11,113 +11,57 @@
   // Define service
     .service('OrderService', OrderService);
 
-  OrderService.$inject = ['AuthenticationService'];
+  OrderService.$inject = ['UploadService'];
 
-  function OrderService(AuthenticationService) {
+  function OrderService(UploadService) {
     const self = this;
 
-    self.scriptSelected = false;
     self.stage = 1;
+    self.scripts = [];
 
-    self.getStage = function() {
-      return self.stage;
+    self.addScript = function (file) {
+      return UploadService.uploadFile(file)
+        .then(function (result) {
+          self.scripts = [{file: file, configuration: self.configuration}];
+          // For future extension
+          // self.scripts.push(file);
+          return result;
+        }, function (error) {
+          return error;
+        }, function (notification) {
+          return notification;
+        });
     };
 
-    self.setStage = function(stage) {
-      self.stage = stage;
-    };
+    self.plans = [
+      {value: 'greenfree', name: 'Green Free'},
+      {value: 'green', name: 'Green'},
+      {value: 'free', name: 'Free'},
+      {value: 'black', name: 'Black'}
+    ];
 
-    self.getSelected = function() {
-      return self.scriptSelected;
-    };
+    self.colors = [
+      {value: 'sw', name: 'Black and white'},
+      {value: 'color', name: 'Colored'}
+    ];
 
-    self.setScriptSelected = function(selected) {
-      self.scriptSelected = selected;
-    };
+    self.pagesPerSide = [
+      {value: '1', name: '1 Seite pro Blatt'},
+      {value: '2', name: '2 Seiten pro Blatt'},
+      {value: '4', name: '4 Seiten pro Blatt'},
+      {value: '8', name: '8 Seiten pro Blatt'}
+    ];
 
-    self.order = {
-      scripts: [],
-      address: {},
-      total: 42.00
-    };
+    self.twoSided = [
+      {value: 'true', name: 'Vorder- und Rückseite'},
+      {value: 'false', name: 'nur Vorderseite'}
+    ];
 
-    self.uploadFile = function(file) {
-      const id = self.generateShortId();
-      const uid = AuthenticationService.getUser().uid;
-      const storage = firebase.storage().ref('uploads/' + uid + '/' + id +
-        '.pdf');
-      const metadata = {
-        customMetadata: {
-          name: file.name.slice(0, file.name.lastIndexOf('.'))
-        }
-      };
-      const uploadTask = storage.put(file, metadata);
-
-      const nextFunction = function(snapshot) {
-        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
-        switch (snapshot.state) {
-          case firebase.storage.TaskState.PAUSED:
-            console.log('Upload is paused');
-            break;
-          case firebase.storage.TaskState.RUNNING:
-            console.log('Upload is running');
-            break;
-          default:
-            console.log(snapshot);
-        }
-      };
-
-      const errorFunction = function(error) {
-        // A full list of error codes is available at
-        // https://firebase.google.com/docs/storage/web/handle-errors
-        switch (error.code) {
-          case 'storage/unauthorized':
-            // User doesn't have permission to access the object
-            console.log(error.code + ' :' + error.message);
-            break;
-          case 'storage/canceled':
-            // User canceled the upload
-            console.log(error.code + ' :' + error.message);
-            break;
-
-          case 'storage/unknown':
-            // Unknown error occurred, inspect error.serverResponse
-            console.log(error.code + ' :' + error.message);
-            break;
-          default:
-            console.log(error.code + ' :' + error.message);
-        }
-      };
-
-      const completeFunction = function() {
-        // Upload completed successfully, now we can get the download URL
-        console.log('Upload was successful');
-        self.stage = 2;
-        // let downloadURL = uploadTask.snapshot.downloadURL;
-        // return $timeout(firebase.database().ref('uploads/' + uid + '/' + id + '/name')
-        //  .set(file.name)
-        //  .then(console.log('qwer')), 2000);
-      };
-
-      // Listen for state changes, errors, and completion of the upload.
-      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-        nextFunction,
-        errorFunction,
-        completeFunction);
-    };
-
-    self.generateShortId = function() {
-      const alphabet = '0123456789abcdefghijklmnopqrstuvwxyz' +
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      const idLength = 8;
-      let result = '';
-
-      for (let i = 0; i < idLength; i++) {
-        result += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-      }
-      return result;
+    self.configuration = {
+      plan: {value: 'green', name: 'Green'},
+      color: {value: 'sw', name: 'Black and white'},
+      pagesPerSide: {value: '2', name: '2 Seiten pro Blatt'},
+      twoSided: {value: 'true', name: 'Vorder- und Rückseite'}
     };
   }
 })();

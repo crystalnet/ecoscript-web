@@ -8,7 +8,7 @@
   // Get the module
   angular.module('studyscriptApp')
 
-  // Define routes
+    // Define routes
     .config(config);
 
   config.$inject = ['$routeProvider', '$locationProvider'];

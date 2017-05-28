@@ -86,15 +86,14 @@
   };
   firebase.initializeApp(config);
 
-  const generateShortId = function() {
-    let ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-    let ID_LENGTH = 8;
-
-    let rtn = '';
-    for (let i = 0; i < ID_LENGTH; i++) {
-      rtn += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
+  window.addEventListener('error', function (e) {
+    const stack = e.error.stack;
+    let message = e.error.toString();
+    if (stack) {
+      message += '\n' + stack;
     }
-    return rtn;
-  };
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/log', true);
+    xhr.send(message);
+  });
 })();
