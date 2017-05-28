@@ -2,7 +2,7 @@
  * Created by crystalneth on 11-Mar-17.
  */
 
-(function() {
+(function () {
   'use strict';
 
   // Define the module
@@ -13,5 +13,12 @@
     'order',
     'ngFileUpload',
     'firebase'
-  ]);
+  ])
+    .run(function($rootScope, $timeout) {
+      $rootScope.$on('$viewContentLoaded', function() {
+        $timeout(function() {
+          componentHandler.upgradeAllRegistered();
+        });
+      });
+    });
 })();
