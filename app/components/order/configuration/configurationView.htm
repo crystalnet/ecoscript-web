@@ -34,13 +34,11 @@
 
       <div class="mdl-cell mdl-cell--8-col" data-ng-show="controller.order.stage == 2">
         <h3>Give it a title.</h3>
-        <form action="#">
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="title"
-                   data-ng-model="controller.order.scripts[0].configuration.title">
-            <label class="mdl-textfield__label" for="title">Title...</label>
-          </div>
-        </form>
+        <div class="mdl-textfield mdl-js-textfield">
+          <input class="mdl-textfield__input" type="text" id="sample1"
+                 data-ng-model="controller.order.scripts[0].configuration.title">
+          <label class="mdl-textfield__label" for="sample1">Text...</label>
+        </div>
       </div>
 
       <div class="mdl-cell mdl-cell--8-col mdl-grid" data-ng-show="controller.order.stage == 3">
