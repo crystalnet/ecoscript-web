@@ -65,7 +65,7 @@ gulp.task('inject', () => {
   );
 
   let injectScripts = gulp.src([
-      // selects all js files from .tmp dir
+    // selects all js files from .tmp dir
     'app/components/**/*.js',
     'app/scripts/**/*.js',
     '!app/scripts/sw/**/*.*'
@@ -207,13 +207,22 @@ gulp.task('copy-service-worker', () =>
     .pipe(gulp.dest('.tmp'))
 );
 
-// Copy all files at the root level (app)
+// Copy htaccess
 gulp.task('copy-htaccess', () =>
   gulp.src([
     'node_modules/apache-server-configs/dist/.htaccess'
   ], {dot: true}
   )
     .pipe(gulp.dest('dist'))
+);
+
+// Copy htaccess
+gulp.task('copy-htaccess-tmp', () =>
+  gulp.src([
+    'node_modules/apache-server-configs/dist/.htaccess'
+  ], {dot: true}
+  )
+    .pipe(gulp.dest('.tmp'))
 );
 
 // Compiles sass and prefixes them
@@ -423,14 +432,14 @@ gulp.task('development', ['clean'], cb => {
     runSequence(
       ['inject', 'compile-styles', 'transpile-scripts', 'copy-htm',
         'copy-html', 'copy-libraries', 'compress-images',
-        'copy-service-worker'],
+        'copy-service-worker', 'copy-htaccess-tmp'],
       cb
     );
   } else {
     runSequence(
       ['inject', 'compile-styles', 'transpile-scripts', 'copy-htm',
         'copy-html', 'copy-libraries', 'compress-images',
-        'copy-service-worker'],
+        'copy-service-worker', 'copy-htaccess-tmp'],
       //['concat'],
       cb
     );

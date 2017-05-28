@@ -25,7 +25,6 @@ exports.generateUploadEntry = functions.storage.object().onChange(event => {
   const fileName = metadata.name ? metadata.name : id;
   // The resourceState is 'exists' or 'not_exits' (for file/folder deletions).
   const resourceState = object.resourceState;
-  console.log(location, '--------------------------------', metadata, '------------------------------', fileName);
 
   if (resourceState === 'exists') {
     // return;

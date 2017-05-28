@@ -21,7 +21,7 @@
 /* eslint linebreak-style: [0, "windows"]*/
 /* eslint-env browser */
 
-(function() {
+(function () {
   'use strict';
 
   // Check to make sure service workers are supported in the current browser,
@@ -40,9 +40,9 @@
   if ('serviceWorker' in navigator &&
     (window.location.protocol === 'https:' || isLocalhost)) {
     navigator.serviceWorker.register('service-worker.js')
-      .then(function(registration) {
+      .then(function (registration) {
         // updatefound is fired if service-worker.js changes.
-        registration.onupdatefound = function() {
+        registration.onupdatefound = function () {
           // updatefound is also fired the very first time the SW is installed,
           // and there's no need to prompt for a reload at that point.
           // So check here to see if the page is already controlled,
@@ -52,7 +52,7 @@
             // https://slightlyoff.github.io/ServiceWorker/spec/service_worker/index.html#service-worker-container-updatefound-event
             var installingWorker = registration.installing;
 
-            installingWorker.onstatechange = function() {
+            installingWorker.onstatechange = function () {
               switch (installingWorker.state) {
                 case 'installed':
                   // At this point, the old content will have been purged and the
@@ -71,9 +71,9 @@
             };
           }
         };
-      }).catch(function(e) {
-        console.error('Error during service worker registration:', e);
-      });
+      }).catch(function (e) {
+      console.error('Error during service worker registration:', e);
+    });
   }
 
   // Initialize Firebase
@@ -86,15 +86,51 @@
   };
   firebase.initializeApp(config);
 
-  const generateShortId = function() {
-    let ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-    let ID_LENGTH = 8;
-
-    let rtn = '';
-    for (let i = 0; i < ID_LENGTH; i++) {
-      rtn += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
+  window.addEventListener('error', function (e) {
+    const stack = e.error.stack;
+    let message = e.error.toString();
+    if (stack) {
+      message += '\n' + stack;
     }
-    return rtn;
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/log', true);
+    xhr.send(message);
+  });
+
+  window.intercomSettings = {
+    app_id: "sk50ctc9"
   };
+
+  (function () {
+    var w = window;
+    var ic = w.Intercom;
+    if (typeof ic === "function") {
+      ic('reattach_activator');
+      ic('update', intercomSettings);
+    } else {
+      var d = document;
+      var i = function () {
+        i.c(arguments)
+      };
+      i.q = [];
+      i.c = function (args) {
+        i.q.push(args)
+      };
+      w.Intercom = i;
+      function l() {
+        var s = d.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = 'https://widget.intercom.io/widget/sk50ctc9';
+        var x = d.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+      }
+
+      if (w.attachEvent) {
+        w.attachEvent('onload', l);
+      } else {
+        w.addEventListener('load', l, false);
+      }
+    }
+  })();
 })();

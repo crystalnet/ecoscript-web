@@ -1,11 +1,11 @@
 {
-  "name": "uniskripte_firebase",
+  "name": "ecoscript-web",
   "description": "",
   "authors": [
-    "crystalneth <konsti7@gmx.net>"
+    "Konstantin Schmidt <konstantin.schmidt@script.eco>"
   ],
   "license": "private",
-  "homepage": "https://github.com/dominikue/ecoscript",
+  "homepage": "https://bitbucket.org/ecoscript/ecoscript-web",
   "private": true,
   "ignore": [
     "**/.*",
@@ -22,6 +22,7 @@
     "ng-file-upload": "^12.2.13",
     "firebase": "^3.7.1",
     "studyscript-mdl": "^1.3.0",
-    "angularfire": "^2.3.0"
+    "angularfire": "^2.3.0",
+    "approvejs": "^3.1.1"
   }
 }
