@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>studyscript</title>
+  <title>script.eco</title>
 
   <!-- Set base path -->
   <base href="/">
@@ -55,31 +55,35 @@
 <body class="mdl-demo mdl-color--white mdl-color-text--grey-700 mdl-base" data-ng-app="studyscriptApp">
 
 <!-- Always shows a header, even in smaller screens. -->
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button mdl-color--white">
-  <header class="mdl-layout__header mdl-color--white mdl-color-text--grey-700"
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="site-header mdl-layout__header mdl-color--white mdl-layout__header--scroll mdl-color-text--grey-700"
           data-ng-controller="navigationController as navigation">
+
     <div class="mdl-layout__header-row">
       <!-- Title -->
       <div class="mdl-layout-spacer"></div>
 
-      <span data-ng-click="navigation.home()"><img src="images/logo_studyscript.svg" width="40px" height="40px"></span>
-      <span class="mdl-layout-title" data-ng-click="navigation.home()">
-          <h4><strong>study</strong>script</h4>
-            </span>
+      <span class="mdl-layout-title">
+        <a class="mdl-navigation__link mdl-color-text--primary mdl-layout--large-screen-only" data-ng-click="navigation.home()" href="">
+          <img src="images/script_eco_logo.png" height="38" width="141"/>
+        </a>
+      </span>
 
       <!-- Add spacer, to align navigation to the right -->
       <div class="mdl-layout-spacer"></div>
+
       <!-- Navigation. We hide it in small screens. -->
-      <nav class="mdl-navigation">
-        <a class="mdl-navigation__link mdl-layout--large-screen-only" href=""><h6>FAQ</h6></a>
-        <a class="mdl-navigation__link mdl-layout--large-screen-only" href="#products"><h6>Produkte</h6></a>
-        <a class="mdl-navigation__link" href="">
+      <nav class="mdl-navigation ">
+        <a class="mdl-navigation__link mdl-layout--large-screen-only mdl-color-text--primary" href=""><h6>FAQ</h6></a>
+        <a class="mdl-navigation__link mdl-layout--large-screen-only mdl-color-text--primary" href="#products"><h6>Produkte</h6></a>
+        <a class="mdl-navigation__link mdl-color-text--primary" href="">
           <button data-ng-click="navigation.authenticate()"
                   class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
             Anmelden
           </button>
         </a>
       </nav>
+
       <div class="mdl-layout-spacer"></div>
     </div>
   </header>

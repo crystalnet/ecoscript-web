@@ -94,9 +94,9 @@ $trim-color-classes: false !default;
 
 // Use color primarily for emphasis. Choose colors that fit with
 // your brand and provide good contrast between visual components.
-$color-primary: $palette-amber-500 !default;
-$color-primary-dark: $palette-amber-700 !default;
-$color-accent: $palette-light-blue-500 !default;
+$color-primary: $palette-green-500 !default;
+$color-primary-dark: $palette-green-700 !default;
+$color-accent: $palette-amber-500 !default;
 
 // Our primary is dark, so use $color-dark-contrast for overlaid text.
 $color-primary-contrast: $color-dark-contrast !default;

@@ -1,0 +1,130 @@
+.site-header {
+  height: 5rem;
+}
+
+
+.hero__bg-container-overlay {
+  background: none;
+  padding: 12% 5%;
+}
+
+
+.hero__bg-container-overlay {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  line-height: 20px;
+}
+
+.hero {
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+}
+
+
+.hero--home .hero__bg-container {
+  background-image:url("https://www.google.com/wallet/static/images/pages/home/sections/hero/hero-bg-1024-2x.jpg")
+}
+
+
+.hero__bg-container {
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: inline-block;
+  width: 100%;
+}
+
+
+.hero__fab {
+  display: block;
+}
+
+.hero__fab {
+  height: 3.5rem;
+  margin-left: -1.75rem;
+  width: 3.5rem;
+  background: #fff;
+  bottom: 0;
+  color: #448aff;
+  left: 50%;
+  position: absolute;
+}
+
+.mdl-button {
+  line-height: 5px;
+  line-height: .3125rem;
+  padding: 16px 20px;
+  padding: 1rem 1.25rem;
+  font-weight: 400;
+}
+
+.mdl-button--fab {
+  font-size: 24px;
+}
+
+.mdl-button--fab .mdl-button__ripple-container {
+  border-radius: 50%;
+}
+
+.mdl-button__ripple-container {
+  display: block;
+  height: 100%;
+  left: 0px;
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  z-index: 0;
+  overflow: hidden;
+}
+
+
+.hero h1 {
+  margin: 28px 0 42px 0;
+  color: #fff;
+}
+
+.hero a {
+  display: inline-block;
+}
+
+
+.mdl-button {
+  background: transparent;
+  border: none;
+  border-radius: 2px;
+  color: rgb(0,0,0);
+  position: relative;
+  height: 40px;
+  min-width: 64px;
+  padding: 0 16px;
+  display: inline-block;
+  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: 0;
+  overflow: hidden;
+  will-change: box-shadow, transform;
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1),background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  line-height: 36px;
+  vertical-align: middle;
+}
+
+
+.mdl-button--raised.mdl-button--white-colored {
+  background: #4CAF50;
+  color: #fff;
+  margin: 10px;
+  min-width: 180px;
+}
+
+
