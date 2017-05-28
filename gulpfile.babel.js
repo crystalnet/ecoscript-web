@@ -467,7 +467,7 @@ gulp.task('serve', ['development'], () => {
   gulp.watch(['app/styles/**/*.{scss,css}'], ['compile-styles', reload]);
   gulp.watch(['app/scripts/**/*.js'], ['transpile-scripts', reload]);
   gulp.watch(['app/components/**/*.js'], ['transpile-scripts', reload]);
-  gulp.watch(['app/images/**/*'], reload);
+  gulp.watch(['app/images/**/*'], ['compress-images', reload]);
 });
 
 // Build and serve the output from the dist build
