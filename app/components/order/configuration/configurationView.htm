@@ -8,20 +8,21 @@
         Stage: {{controller.order.stage}}
       </div>
 
-    <div class="mdl-cell mdl-cell--8-col" data-ng-show="controller.order.stage == 1">
-      <h3>Upload your script.</h3>
-      <button id="uploadButton" ngfSelect ngf-select="controller.uploadFiles($files, $invalidFiles)"
-              accept="application/pdf" ngf-validate="{size: {max: '20MB'}, pattern: '.pdf'}"
-              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-        PDF hochladen<i class="material-icons">file_upload</i>
-      </button>
-      <br><br>
-      File:
-      <ul>
-        <li ng-repeat="f in controller.order.scripts" style="font:smaller">{{f.name}} {{f.$errorParam}}
-          <span class="progress" ng-show="f.progress >= 0">
-        <div style="width:{{f.progress}}%"
-             ng-bind="f.progress + '%'"></div>
+      <div class="mdl-cell mdl-cell--8-col" data-ng-show="controller.order.stage == 1">
+        <h3>Upload your script.</h3>
+        <button id="uploadButton" ngfSelect ngf-select="controller.uploadFiles($files, $invalidFiles)"
+                accept="application/pdf" ngf-validate="{size: {max: '50MB'}, pattern: '.pdf'}"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+          PDF hochladen<i class="material-icons">file_upload</i>
+        </button>
+        <br><br>
+        File:
+        <ul>
+          <li ng-repeat="file in controller.files" style="font:smaller">{{file.name}} {{file.$errorParam}}
+            <span class="progress" ng-show="file.progress >= 0">
+        <div style="width:{{file.progress}}%"
+             >{{file.progress | number:2}}%</div>
+
       </span>
         </li>
         <li ng-repeat="f in controller.errFiles" style="font:smaller">Fehler: {{f.name}} {{f.$error}}

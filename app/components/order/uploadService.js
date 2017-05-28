@@ -21,14 +21,13 @@
 
       const nextFunction = function (snapshot) {
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        deferred.notify('Upload is ' + progress + '% done');
         switch (snapshot.state) {
           case firebase.storage.TaskState.PAUSED:
-            deferred.notify('Upload is paused');
-            break;
+          deferred.notify('Paused');
+          break;
           case firebase.storage.TaskState.RUNNING:
-            deferred.notify('Upload is running');
+            let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            deferred.notify(progress);
             break;
           default:
             deferred.notify(snapshot);

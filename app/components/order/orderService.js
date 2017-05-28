@@ -11,26 +11,30 @@
   // Define service
     .service('OrderService', OrderService);
 
-  OrderService.$inject = ['UploadService'];
+  OrderService.$inject = ['UploadService', '$q'];
 
-  function OrderService(UploadService) {
+  function OrderService(UploadService, $q) {
     const self = this;
 
     self.stage = 1;
     self.scripts = [];
 
     self.addScript = function (file) {
-      return UploadService.uploadFile(file)
+      const deferred = $q.defer();
+
+      UploadService.uploadFile(file)
         .then(function (result) {
           self.scripts = [{file: file, configuration: self.configuration}];
           // For future extension
           // self.scripts.push(file);
-          return result;
+          deferred.resolve(result);
         }, function (error) {
-          return error;
+          deferred.reject(error);
         }, function (notification) {
-          return notification;
+          deferred.notify(notification);
         });
+
+      return deferred.promise;
     };
 
     self.plans = [

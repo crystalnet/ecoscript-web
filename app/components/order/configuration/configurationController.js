@@ -18,7 +18,7 @@
     const self = this;
     self.order = OrderService;
 
-    self.console = function() {
+    self.console = function () {
       console.log(self.order);
     }
 
@@ -30,25 +30,33 @@
 
     self.uploadFiles = function (files, errFiles) {
       self.errFiles = errFiles;
+      self.files = files;
 
       angular.forEach(files, function (file) {
-        self.order.addScript(file).then(function (result) {
-          console.log(result);
+        self.order.addScript(file)
+          .then(function (result) {
+            console.log(result);
 
-          if (self.order.scripts.length > 0) {
-            self.order.stage = 2;
-            const script = self.order.scripts[0].configuration;
-            script.title = self.order.scripts[0].file.name;
-            script.title = script.title.substring(0, script.title.lastIndexOf('.'));
+            if (self.order.scripts.length > 0) {
+              self.order.stage = 2;
+              const script = self.order.scripts[0].configuration;
+              script.title = self.order.scripts[0].file.name;
+              script.title = script.title.substring(0, script.title.lastIndexOf('.'));
 
-            var arr = script.title.split(/\s|_/);
-            for (let i = 0, l = arr.length; i < l; i++) {
-              arr[i] = arr[i].substr(0, 1).toUpperCase() +
-                (arr[i].length > 1 ? arr[i].substr(1).toLowerCase() : '');
+              var arr = script.title.split(/\s|_/);
+              for (let i = 0, l = arr.length; i < l; i++) {
+                arr[i] = arr[i].substr(0, 1).toUpperCase() +
+                  (arr[i].length > 1 ? arr[i].substr(1).toLowerCase() : '');
+              }
+              script.title = arr.join(' ');
             }
-            script.title = arr.join(' ');
-          }
-        });
+          }, function(error) {
+            self.errFiles.push(file);
+            console.log('error uploading file');
+          }, function(notification) {
+            file.progress = notification;
+            console.log(notification);
+          });
       });
     };
 
