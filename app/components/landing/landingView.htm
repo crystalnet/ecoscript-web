@@ -1,187 +1,186 @@
+<div data-ng-controller="landingController as controller">
 
-  <div data-ng-controller="landingController as controller">
+  <!-- Your content goes here -->
+  <div class="hero hero--home" id="top">
+    <div class="hero__bg-container">
+      <div class=" hero__bg-container-overlay">
+        <h1>Der einfache Weg<br>umweltfreundlich zu drucken.</h1>
 
-    <!-- Your content goes here -->
-    <div class="hero hero--home">
-      <div class="hero__bg-container">
-        <div class=" hero__bg-container-overlay">
-          <h1 >Der einfache Weg<br>umweltfreundlich zu drucken.</h1>
+        <button data-ng-click="navigation.scrollTo('/order', '')"
+                class="hero__btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">
+          PDF hochladen<i class="material-icons">file_upload</i>
+        </button>
+      </div>
+    </div>
 
-          <button data-ng-click="controller.order()" class="hero__btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">
-              PDF hochladen<i class="material-icons">file_upload</i>
-          </button>
-        </div>
+    <div class="see-more-button">
+      <button data-ng-click="navigation.scrollTo('/', 'how')"
+              class="hero__fab mdl-layout--large-screen-only mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-color--white mdl-color-text--primary mdl-shadow--6dp">
+        <i class="material-icons">keyboard_arrow_down</i>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="welcome__bg_container mdl-grid">
+    <img class="mdl-cell mdl-cell--4-col mdl-cell--2-offset-desktop mdl-cell--top mdl-cell--order-2-phone"
+         src="http://via.placeholder.com/900x400">
+
+    <div id="how" class="mdl-cell mdl-grid--no-spacing mdl-cell--4-col mdl-cell--order-1-phone mdl-cell--top">
+      <h3 class="mdl-cell mdl-cell--12-col">
+        Bestelle in 3 Minuten <br> kostenlos deinen Skript.
+      </h3>
+      <h6 class="mdl-cell mdl-cell--12-col">
+        Direkt zu dir versendet und ohne versteckte Kosten.<br>
+        Und wenn du einen Skript ohne Sponsoren möchtest, nimm einfach unser Plus Model.
+      </h6>
+    </div>
+  </div>
+
+
+  <div class="mdl-grid price-bg  mdl-color--grey-100">
+    <div>
+
+    </div>
+  </div>
+
+  <div class="mdl-grid select-product">
+    <div id="products" class="mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
+      <h3 style="text-align: center;">Wähle deinen Skript.</h3>
+    </div>
+  </div>
+
+  <div class="mdl-grid price-bg">
+    <!--Green Free-->
+    <div class=" mdl-card mdl-cell mdl-cell--2-col mdl-cell--4-offset mdl-shadow--4dp">
+      <div class="product-card-name mdl-card__title mdl-color--green mdl-color-text--white">
+        <h2 class="mdl-card__title-text"><strong>Green Free</strong></h2>
+      </div>
+      <div class="product-card-price mdl-card__title mdl-color--green mdl-color-text--white mdl-card--border">
+        <h2 class="mdl-card__title-text">€ 0.00 - gesponsort</h2>
+      </div>
+      <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+        <span><strong>Max. 125 Seiten - Recyclingpapier</strong></span>
+      </div>
+      <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+        <span>Kostenloser Versand</span>
+      </div>
+      <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+        <span>Hochwertige Spiralbindung</span>
+      </div>
+      <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+        <span>Bio-Farbdruck</span>
+      </div>
+      <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+        <span>Klimaneutral*</span>
+      </div>
+      <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+          <span> <span>Ein geflanzter Baum</span>
+          <span><img class="mdl-color-text--green" src="../../images/tree.svg" width="23px" height="23px"></span>
       </div>
 
-      <div class="see-more-button">
-        <a href="#how">
-          <button
-            class="hero__fab mdl-layout--large-screen-only mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-color--white mdl-color-text--primary mdl-shadow--6dp">
-            <i class="material-icons">keyboard_arrow_down</i>
-          </button>
+      <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--green">
+        <a
+          class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
+          Auswählen
         </a>
       </div>
     </div>
 
+    <!--Green-->
+    <div class=" mdl-card mdl-cell mdl-cell--2-col mdl-shadow--4dp">
+      <div class="product-card-name mdl-card__title mdl-color--green mdl-color-text--white">
+        <h2 class="mdl-card__title-text"><strong>Green</strong></h2>
+      </div>
+      <div class="product-card-price mdl-card__title mdl-color--green mdl-color-text--white mdl-card--border">
+        <h2 class="mdl-card__title-text">ab € 8.99</h2>
+      </div>
+      <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+        <span><strong>Max. 300 Seiten - Recyclingpapier</strong></span>
+      </div>
+      <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+        <span>Kostenloser Versand</span>
+      </div>
+      <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+        <span>Viele Bindungsmögl.</span>
+      </div>
+      <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+        <span>Bio-Farbdruck</span>
+      </div>
+      <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+        <span>Klimaneutral*</span>
+      </div>
+      <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
+        <span>Zwei geflanzte Bäume</span>
+        <span><img src="images/tree.svg" width="23px" height="23px"></span>
+        <span><img src="images/tree.svg" width="23px" height="23px"></span>
+      </div>
 
-    <div class="welcome__bg_container mdl-grid">
-      <img class="mdl-cell mdl-cell--4-col mdl-cell--2-offset-desktop mdl-cell--top mdl-cell--order-2-phone" src="http://via.placeholder.com/900x400">
-
-      <div id="how" class="mdl-cell mdl-grid--no-spacing mdl-cell--4-col mdl-cell--order-1-phone mdl-cell--top">
-        <h3 class="mdl-cell mdl-cell--12-col">
-          Bestelle in 3 Minuten <br> kostenlos deinen Skript.
-        </h3>
-        <h6 class="mdl-cell mdl-cell--12-col">
-          Direkt zu dir versendet und ohne versteckte Kosten.<br>
-          Und wenn du einen Skript ohne Sponsoren möchtest, nimm einfach unser Plus Model.
-        </h6>
+      <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--green">
+        <a
+          class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
+          Auswählen
+        </a>
       </div>
     </div>
 
-
-    <div class="mdl-grid price-bg  mdl-color--grey-100">
-      <div>
-
-      </div>
-    </div>
-
-    <div class="mdl-grid select-product">
-      <div id="products" class="mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
-        <h3 style="text-align: center;">Wähle deinen Skript.</h3>
-      </div>
-    </div>
-
-    <div class="mdl-grid price-bg">
-      <!--Green Free-->
-      <div class=" mdl-card mdl-cell mdl-cell--2-col mdl-cell--4-offset mdl-shadow--4dp">
-        <div class="product-card-name mdl-card__title mdl-color--green mdl-color-text--white">
-          <h2 class="mdl-card__title-text"><strong>Green Free</strong></h2>
-        </div>
-        <div class="product-card-price mdl-card__title mdl-color--green mdl-color-text--white mdl-card--border">
-          <h2 class="mdl-card__title-text">€ 0.00 - gesponsort</h2>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-          <span><strong>Max. 125 Seiten - Recyclingpapier</strong></span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-          <span>Kostenloser Versand</span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-          <span>Hochwertige Spiralbindung</span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-          <span>Bio-Farbdruck</span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-          <span>Klimaneutral*</span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-          <span> <span>Ein geflanzter Baum</span>
-          <span><img class="mdl-color-text--green" src="../../images/tree.svg" width="23px" height="23px"></span>
-        </div>
-
-        <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--green">
-          <a
-            class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
-            Auswählen
-          </a>
-        </div>
-      </div>
-
-      <!--Green-->
-      <div class=" mdl-card mdl-cell mdl-cell--2-col mdl-shadow--4dp">
-        <div class="product-card-name mdl-card__title mdl-color--green mdl-color-text--white">
-          <h2 class="mdl-card__title-text"><strong>Green</strong></h2>
-        </div>
-        <div class="product-card-price mdl-card__title mdl-color--green mdl-color-text--white mdl-card--border">
-          <h2 class="mdl-card__title-text">ab € 8.99</h2>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-          <span><strong>Max. 300 Seiten - Recyclingpapier</strong></span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-          <span>Kostenloser Versand</span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-          <span>Viele Bindungsmögl.</span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-          <span>Bio-Farbdruck</span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-          <span>Klimaneutral*</span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-          <span>Zwei geflanzte Bäume</span>
-          <span><img src="images/tree.svg" width="23px" height="23px"></span>
-          <span><img src="images/tree.svg" width="23px" height="23px"></span>
-        </div>
-
-        <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--green">
-          <a
-            class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
-            Auswählen
-          </a>
-        </div>
-      </div>
-
-      <div class="mdl-cell mdl-cell--12-col"><br><br><br></div>
-    </div>
+    <div class="mdl-cell mdl-cell--12-col"><br><br><br></div>
+  </div>
 
 
-    <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--12-col"><br><br><br></div>
-      <div id="howitworks" class="mdl-cell mdl-cell--3-col mdl-cell--5-offset">
-        <h3>Und so funktioniert es.</h3>
-      </div>
-    </div>
-
-    <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--1-col mdl-cell--4-offset">
-        <i class="material-icons mdl-color-text--green" style="font-size:70px;">file_upload</i>
-      </div>
-      <div class="mdl-cell mdl-cell--1-col">
-        <i class="material-icons mdl-color-text--grey" style="font-size:70px;">keyboard_arrow_right</i>
-      </div>
-      <div class="mdl-cell mdl-cell--1-col">
-        <i class="material-icons mdl-color-text--green" style="font-size:70px;">email</i>
-      </div>
-      <div class="mdl-cell mdl-cell--1-col">
-        <i class="material-icons mdl-color-text--grey" style="font-size:70px;">keyboard_arrow_right</i>
-      </div>
-      <div class="mdl-cell mdl-cell--1-col">
-        <img src="images/tree.svg" width="70px" height="70px">
-      </div>
-    </div>
-
-    <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--1-col mdl-cell--4-offset">
-        Du lädst dein Skript als PDF hoch.
-      </div>
-      <div class="mdl-cell mdl-cell--1-col mdl-cell--1-offset">
-        Innerhalb von 3 Wertagen ist der Skript bei dir.
-      </div>
-      <div class="mdl-cell mdl-cell--1-col mdl-cell--1-offset">
-        Wir planzen bis zu zwei Bäume und schützen die Natur.
-      </div>
-      <div class="mdl-cell mdl-cell--12-col"><br><br><br></div>
-    </div>
-
-    <div class="mdl-grid mdl-color--grey-100">
-      <div class="mdl-cell mdl-cell--12-col "><br><br><br></div>
-      <div id="why" class="mdl-cell mdl-cell--3-col mdl-cell--3-offset">
-        <h3>
-          Wieso wir Bäume planzen.
-        </h3>
-        <h1 style="font-size: 20px;">
-          Skripte werden für die Uni benötigt, doch wir möchten die Natur erhalten.
-          Neben 100% Recyclingpapier, Bio-Farbdruck, Klimaneutraler Druck und Versand möchten wir noch mehr tun.
-          Wir planzen bis zu 2 Bäume im Ausgleich für einen Skript, denn Bäume sind für unsere Erde lebenswichtig.
-        </h1>
-      </div>
-
-      <div class="mdl-cell mdl-cell--3-col ">
-        <img src="images/oak-tree.png" width="80%" height="80%">
-      </div>
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col"><br><br><br></div>
+    <div id="howitworks" class="mdl-cell mdl-cell--3-col mdl-cell--5-offset">
+      <h3>Und so funktioniert es.</h3>
     </div>
   </div>
+
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--1-col mdl-cell--4-offset">
+      <i class="material-icons mdl-color-text--green" style="font-size:70px;">file_upload</i>
+    </div>
+    <div class="mdl-cell mdl-cell--1-col">
+      <i class="material-icons mdl-color-text--grey" style="font-size:70px;">keyboard_arrow_right</i>
+    </div>
+    <div class="mdl-cell mdl-cell--1-col">
+      <i class="material-icons mdl-color-text--green" style="font-size:70px;">email</i>
+    </div>
+    <div class="mdl-cell mdl-cell--1-col">
+      <i class="material-icons mdl-color-text--grey" style="font-size:70px;">keyboard_arrow_right</i>
+    </div>
+    <div class="mdl-cell mdl-cell--1-col">
+      <img src="images/tree.svg" width="70px" height="70px">
+    </div>
+  </div>
+
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--1-col mdl-cell--4-offset">
+      Du lädst dein Skript als PDF hoch.
+    </div>
+    <div class="mdl-cell mdl-cell--1-col mdl-cell--1-offset">
+      Innerhalb von 3 Wertagen ist der Skript bei dir.
+    </div>
+    <div class="mdl-cell mdl-cell--1-col mdl-cell--1-offset">
+      Wir planzen bis zu zwei Bäume und schützen die Natur.
+    </div>
+    <div class="mdl-cell mdl-cell--12-col"><br><br><br></div>
+  </div>
+
+  <div class="mdl-grid mdl-color--grey-100">
+    <div class="mdl-cell mdl-cell--12-col "><br><br><br></div>
+    <div id="why" class="mdl-cell mdl-cell--3-col mdl-cell--3-offset">
+      <h3>
+        Wieso wir Bäume planzen.
+      </h3>
+      <h1 style="font-size: 20px;">
+        Skripte werden für die Uni benötigt, doch wir möchten die Natur erhalten.
+        Neben 100% Recyclingpapier, Bio-Farbdruck, Klimaneutraler Druck und Versand möchten wir noch mehr tun.
+        Wir planzen bis zu 2 Bäume im Ausgleich für einen Skript, denn Bäume sind für unsere Erde lebenswichtig.
+      </h1>
+    </div>
+
+    <div class="mdl-cell mdl-cell--3-col ">
+      <img src="images/oak-tree.png" width="80%" height="80%">
+    </div>
+  </div>
+</div>

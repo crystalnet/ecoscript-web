@@ -55,9 +55,8 @@
 <body class="mdl-demo mdl-color--white mdl-color-text--grey-700 mdl-base" data-ng-app="studyscriptApp">
 
 <!-- Always shows a header, even in smaller screens. -->
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-  <header class="mdl-layout__header mdl-color--white mdl-color-text--grey-700"
-          data-ng-controller="navigationController as navigation">
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header" data-ng-controller="navigationController as navigation">
+  <header class="mdl-layout__header mdl-color--white mdl-color-text--grey-700">
 
     <div class="mdl-layout__header-row">
 
@@ -65,7 +64,7 @@
 
       <span class="mdl-layout-title">
 
-        <a class="mdl-navigation__link" data-ng-click="navigation.home()" href="">
+        <a class="mdl-navigation__link" data-ng-click="navigation.scrollTo('/', 'top')" href="">
            <img class="site-header__scripteco_logo" src="images/script_eco_logo.png" alt="scripteco Logo">
         </a>
       </span>
@@ -81,7 +80,7 @@
         <a class="mdl-navigation__link mdl-layout--large-screen-only mdl-color-text--primary" href="#products"><h6>Produkte</h6></a>
         <a class="mdl-navigation__link mdl-layout--large-screen-only mdl-color-text--primary" href=""><h6>Anmelden</h6></a>
         <a class="mdl-navigation__link mdl-color-text--primary" href="">
-          <button data-ng-click="navigation.authenticate()"
+          <button data-ng-click="navigation.scrollTo('/login', '')"
                   class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
             Drucken
           </button>

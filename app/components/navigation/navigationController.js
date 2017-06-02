@@ -11,18 +11,16 @@
   // Define controllers
     .controller('navigationController', NavigationController);
 
-  NavigationController.$inject = ['$location'];
+  NavigationController.$inject = ['$location', '$anchorScroll'];
 
   /* @ngInject */
-  function NavigationController($location) {
-    var self = this;
+  function NavigationController($location, $anchorScroll) {
+    const self = this;
 
-    self.authenticate = function() {
-      $location.path('/login');
-    };
-
-    self.home = function() {
-      $location.path('/');
+    self.scrollTo = function(path, hash) {
+      $location.path(path);
+      $location.hash(hash);
+      $anchorScroll();
     };
   }
 })();

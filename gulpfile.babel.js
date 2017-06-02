@@ -29,12 +29,15 @@ import gulp from 'gulp';
 import del from 'del';
 import runSequence from 'run-sequence';
 import browserSync from 'browser-sync';
+import historyApiFallback from 'connect-history-api-fallback';
 import swPrecache from 'sw-precache';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import {output as pagespeed} from 'psi';
 import pkg from './package.json';
 
-const $ = gulpLoadPlugins({DEBUG: false});
+const $ = gulpLoadPlugins({
+  DEBUG: false
+});
 const reload = browserSync.reload;
 let nocompression = ($.util.env.nocompression || false);
 let noconcat = ($.util.env.noconcat || false);
@@ -46,7 +49,7 @@ gulp.task('inject', () => {
     ignorePath: ['.tmp/', 'app/', 'dist/'],
     addRootSlash: false,
     selfClosingTag: true,
-    transform: function(filepath) {
+    transform: function (filepath) {
       if (filepath.slice(-3) === '.js') {
         return '<script src="' + filepath + '"></script>\r\n';
       }
@@ -60,16 +63,16 @@ gulp.task('inject', () => {
   let wiredepOptions = {};
 
   let injectStyles = gulp.src([
-    'app/styles/*.css'
-  ], {read: false}
+      'app/styles/*.css'
+    ], {read: false}
   );
 
   let injectScripts = gulp.src([
-    // selects all js files from .tmp dir
-    'app/components/**/*.js',
-    'app/scripts/**/*.js',
-    '!app/scripts/sw/**/*.*'
-  ], {base: 'app/'}
+      // selects all js files from .tmp dir
+      'app/components/**/*.js',
+      'app/scripts/**/*.js',
+      '!app/scripts/sw/**/*.*'
+    ], {base: 'app/'}
   )
   // then uses the gulp-angular-filesort plugin
   // to order the file injection
@@ -115,8 +118,8 @@ gulp.task('lint', () =>
 // Optimize images
 gulp.task('compress-images', () => {
   return gulp.src([
-    'app/images/**/*'
-  ], {base: 'app/'}
+      'app/images/**/*'
+    ], {base: 'app/'}
   )
     .pipe($.cache($.imagemin({
       progressive: true,
@@ -129,12 +132,12 @@ gulp.task('compress-images', () => {
 // Copy all files at the root level (app)
 gulp.task('copy-tmp', () =>
   gulp.src([
-    '.tmp/index.html',
-    '.tmp/images/*.*',
-    '.tmp/scripts/main.min.js',
-    '.tmp/styles/main.min.css',
-    '.tmp/components/**/*.htm'
-  ], {dot: true, base: '.tmp/'}
+      '.tmp/index.html',
+      '.tmp/images/*.*',
+      '.tmp/scripts/main.min.js',
+      '.tmp/styles/main.min.css',
+      '.tmp/components/**/*.htm'
+    ], {dot: true, base: '.tmp/'}
   )
     .pipe(gulp.dest('dist'))
     .pipe($.size({title: 'copy-tmp'}))
@@ -143,10 +146,10 @@ gulp.task('copy-tmp', () =>
 // Copy all files at the root level (app)
 gulp.task('copy-scripts', () =>
   gulp.src([
-    'app/components/**/*.js',
-    'app/scripts/**/*.js',
-    '!app/scripts/sw/**/*.js'
-  ], {base: 'app/'}
+      'app/components/**/*.js',
+      'app/scripts/**/*.js',
+      '!app/scripts/sw/**/*.js'
+    ], {base: 'app/'}
   )
     .pipe(gulp.dest('.tmp'))
     .pipe($.size({title: 'copy-scripts'}))
@@ -155,9 +158,9 @@ gulp.task('copy-scripts', () =>
 // Copy all files at the root level (app)
 gulp.task('copy-libraries', () =>
   gulp.src([
-    // TODO replace with your bower modules location
-    'app/libraries/**/*.js'
-  ], {base: 'app/'}
+      // TODO replace with your bower modules location
+      'app/libraries/**/*.js'
+    ], {base: 'app/'}
   )
     .pipe($.newer('.tmp/libraries'))
     .pipe(gulp.dest('.tmp'))
@@ -167,9 +170,9 @@ gulp.task('copy-libraries', () =>
 // Copy all files at the root level (app)
 gulp.task('copy-styles', () =>
   gulp.src([
-    'app/styles/**/*.css',
-    '!app/styles/src/**/*.css'
-  ], {base: 'app/'}
+      'app/styles/**/*.css',
+      '!app/styles/src/**/*.css'
+    ], {base: 'app/'}
   )
     .pipe($.newer('.tmp/styles'))
     .pipe(gulp.dest('.tmp'))
@@ -179,8 +182,8 @@ gulp.task('copy-styles', () =>
 // Copy all files at the root level (app)
 gulp.task('copy-htm', () =>
   gulp.src([
-    'app/components/**/*.htm'
-  ], {base: 'app/'}
+      'app/components/**/*.htm'
+    ], {base: 'app/'}
   )
     .pipe($.newer('.tmp/components'))
     .pipe(gulp.dest('.tmp'))
@@ -190,9 +193,9 @@ gulp.task('copy-htm', () =>
 // Copy all files at the root level (app)
 gulp.task('copy-html', () =>
   gulp.src([
-    'app/components/**/*.html',
-    '!app/index.html'
-  ], {base: 'app/'}
+      'app/components/**/*.html',
+      '!app/index.html'
+    ], {base: 'app/'}
   )
     .pipe($.newer('.tmp/components'))
     .pipe(gulp.dest('.tmp'))
@@ -210,8 +213,8 @@ gulp.task('copy-service-worker', () =>
 // Copy htaccess
 gulp.task('copy-htaccess', () =>
   gulp.src([
-    'node_modules/apache-server-configs/dist/.htaccess'
-  ], {dot: true}
+      'node_modules/apache-server-configs/dist/.htaccess'
+    ], {dot: true}
   )
     .pipe(gulp.dest('dist'))
 );
@@ -219,8 +222,8 @@ gulp.task('copy-htaccess', () =>
 // Copy htaccess
 gulp.task('copy-htaccess-tmp', () =>
   gulp.src([
-    'node_modules/apache-server-configs/dist/.htaccess'
-  ], {dot: true}
+      'node_modules/apache-server-configs/dist/.htaccess'
+    ], {dot: true}
   )
     .pipe(gulp.dest('.tmp'))
 );
@@ -241,8 +244,8 @@ gulp.task('compile-styles', () => {
 
   // For best performance, don't add Sass partials to `gulp.src`
   return gulp.src([
-    'app/styles/*.css'
-  ], {base: 'app/'}
+      'app/styles/*.css'
+    ], {base: 'app/'}
   )
   // .pipe($.newer('.tmp'))
     .pipe($.sourcemaps.init())
@@ -260,8 +263,8 @@ gulp.task('compile-styles', () => {
 gulp.task('compress-styles', () => {
   // For best performance, don't add Sass partials to `gulp.src`
   return gulp.src([
-    '.tmp/styles/**/*.css'
-  ], {base: '.tmp/'}
+      '.tmp/styles/**/*.css'
+    ], {base: '.tmp/'}
   )
   // .pipe($.newer('.tmp'))
     .pipe($.sourcemaps.init())
@@ -274,10 +277,10 @@ gulp.task('compress-styles', () => {
 // Transpile JavsScript (only from user)
 gulp.task('transpile-scripts', () =>
   gulp.src([
-    'app/scripts/**/*.js',
-    'app/components/**/*.js',
-    '!app/scripts/sw/**/*.js'
-  ], {base: 'app/'}
+      'app/scripts/**/*.js',
+      'app/components/**/*.js',
+      '!app/scripts/sw/**/*.js'
+    ], {base: 'app/'}
   )
   // .pipe($.newer('.tmp'))
     .pipe($.newer('.tmp/'))
@@ -293,10 +296,10 @@ gulp.task('transpile-scripts', () =>
 // Minify JavaScript (only from user)
 gulp.task('compress-scripts', () => {
   gulp.src([
-    '.tmp/scripts/**/*.js',
-    '.tmp/components/**/*.js',
-    '!.tmp/scripts/sw/**/*.js'
-  ], {base: '.tmp/'}
+      '.tmp/scripts/**/*.js',
+      '.tmp/components/**/*.js',
+      '!.tmp/scripts/sw/**/*.js'
+    ], {base: '.tmp/'}
   )
   // .pipe($.newer('.tmp'))
     .pipe($.sourcemaps.init())
@@ -305,7 +308,7 @@ gulp.task('compress-scripts', () => {
       hoist_funs: false,
       compress: {hoist_funs: false}
     }))
-    .on('error', function(err) {
+    .on('error', function (err) {
       $.util.log(err);
     })
     .pipe($.sourcemaps.write('.'))
@@ -316,9 +319,9 @@ gulp.task('compress-scripts', () => {
 // Scan your HTML for assets & optimize them
 gulp.task('compress-html', () => {
   return gulp.src([
-    '.tmp/*.html',
-    '.tmp/components/**/*.html'
-  ], {base: '.tmp/'}
+      '.tmp/*.html',
+      '.tmp/components/**/*.html'
+    ], {base: '.tmp/'}
   )
 
   // Minify any HTML
@@ -458,7 +461,10 @@ gulp.task('serve', ['development'], () => {
     // Note: this uses an unsigned certificate which on first access
     //       will present a certificate warning in the browser.
     // https: true,
-    server: ['.tmp'],
+    server: {
+      baseDir: '.tmp',
+      middleware: [historyApiFallback()]
+    },
     port: 3000
   });
 

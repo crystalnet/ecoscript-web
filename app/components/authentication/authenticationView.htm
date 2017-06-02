@@ -1,70 +1,68 @@
-<main class="mdl-layout__content">
-  <div class="page-content">
+<div>
 
-    <h1>Register</h1>
+  <h1>Register</h1>
 
-    <div data-ng-controller="registerController as register">
-      <!-- Textfield with Floating Label -->
-      <form action="#">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="email" id="usernamer" data-ng-model="register.email">
-          <label class="mdl-textfield__label mdl-color-text--white" for="usernamer">Email...</label>
-        </div>
-      </form>
+  <div data-ng-controller="registerController as register">
+    <!-- Textfield with Floating Label -->
+    <form action="#">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="email" id="usernamer" data-ng-model="register.email">
+        <label class="mdl-textfield__label mdl-color-text--white" for="usernamer">Email...</label>
+      </div>
+    </form>
 
-      <!-- Textfield with Floating Label -->
-      <form action="#">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="password" id="passwordr" data-ng-model="register.password">
-          <label class="mdl-textfield__label mdl-color-text--white" for="passwordr">Password...</label>
-        </div>
-      </form>
+    <!-- Textfield with Floating Label -->
+    <form action="#">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="password" id="passwordr" data-ng-model="register.password">
+        <label class="mdl-textfield__label mdl-color-text--white" for="passwordr">Password...</label>
+      </div>
+    </form>
 
-      <!-- Colored FAB button -->
-      <button id="register-btn" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored"
-              data-ng-click="register.send()">
-        <i class="material-icons">keyboard_arrow_right</i>
-      </button>
-    </div>
-
-
-    <h1>Login</h1>
-
-    <div data-ng-controller="signInController as signIn">
-      <!-- Textfield with Floating Label -->
-      <form action="#">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="email" id="usernamel" data-ng-model="signIn.email">
-          <label class="mdl-textfield__label mdl-color-text--white" for="usernamel">Email...</label>
-        </div>
-      </form>
-
-      <!-- Textfield with Floating Label -->
-      <form action="#">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="password" id="passwordl" data-ng-model="signIn.password">
-          <label class="mdl-textfield__label mdl-color-text--white" for="passwordl">Password...</label>
-        </div>
-      </form>
-
-      <!-- Colored FAB button -->
-      <button id="signIn-btn" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored"
-              data-ng-click="signIn.send()">
-        <i class="material-icons">keyboard_arrow_right</i>
-      </button>
-
-      <!-- Accent-colored raised button -->
-      <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
-              data-ng-click="signIn.googleSignIn()">
-        Google Sign-in
-      </button>
-
-      <!-- Accent-colored raised button -->
-      <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
-              data-ng-click="signIn.facebookSignIn()">
-        Facebook Sign-in
-      </button>
-    </div>
-
+    <!-- Colored FAB button -->
+    <button id="register-btn" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored"
+            data-ng-click="register.send()">
+      <i class="material-icons">keyboard_arrow_right</i>
+    </button>
   </div>
-</main>
+
+
+  <h1>Login</h1>
+
+  <div data-ng-controller="signInController as signIn">
+    <!-- Textfield with Floating Label -->
+    <form action="#">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="email" id="usernamel" data-ng-model="signIn.email">
+        <label class="mdl-textfield__label mdl-color-text--white" for="usernamel">Email...</label>
+      </div>
+    </form>
+
+    <!-- Textfield with Floating Label -->
+    <form action="#">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="password" id="passwordl" data-ng-model="signIn.password">
+        <label class="mdl-textfield__label mdl-color-text--white" for="passwordl">Password...</label>
+      </div>
+    </form>
+
+    <!-- Colored FAB button -->
+    <button id="signIn-btn" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored"
+            data-ng-click="signIn.send()">
+      <i class="material-icons">keyboard_arrow_right</i>
+    </button>
+
+    <!-- Accent-colored raised button -->
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
+            data-ng-click="signIn.googleSignIn()">
+      Google Sign-in
+    </button>
+
+    <!-- Accent-colored raised button -->
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
+            data-ng-click="signIn.facebookSignIn()">
+      Facebook Sign-in
+    </button>
+  </div>
+
+</div>

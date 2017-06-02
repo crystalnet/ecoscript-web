@@ -11,11 +11,11 @@
   // Define controllers
     .controller('landingController', LandingController);
 
-  LandingController.$inject = ['$location'];
+  LandingController.$inject = ['$location', '$anchorScroll'];
 
   /* @ngInject */
-  function LandingController($location) {
-    var self = this;
+  function LandingController($location, $anchorScroll) {
+    const self = this;
 
     self.order = function() {
       $location.path('/order');
