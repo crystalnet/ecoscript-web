@@ -56,7 +56,7 @@
 
 <!-- Always shows a header, even in smaller screens. -->
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-  <header class="site-header mdl-layout__header mdl-color--white mdl-layout__header--scroll mdl-color-text--grey-700"
+  <header class="mdl-layout__header mdl-color--white mdl-color-text--grey-700"
           data-ng-controller="navigationController as navigation">
 
     <div class="mdl-layout__header-row">
@@ -91,89 +91,20 @@
   <!-- Main content injected by angular -->
   <main class="mdl-layout__content">
     <div class="page-content" data-ng-view></div>
+
+    <!-- Footer-->
+    <footer class="mdl-mini-footer">
+      <div class="mdl-mini-footer__left-section">
+        <div class="mdl-logo">Title</div>
+        <ul class="mdl-mini-footer__link-list">
+          <li><a href="#">Help</a></li>
+          <li><a href="#">Privacy & Terms</a></li>
+        </ul>
+      </div>
+    </footer>
   </main>
 
-  <!-- Footer-->
-  <footer class="mdl-mega-footer">
-    <div class="mdl-mega-footer__middle-section">
 
-      <div class="mdl-mega-footer__drop-down-section">
-        <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
-        <h1 class="mdl-mega-footer__heading">Features</h1>
-        <ul class="mdl-mega-footer__link-list">
-          <li><a href="#">About</a></li>
-          <li><a href="#">Terms</a></li>
-          <li><a href="#">Partners</a></li>
-          <li><a href="#">Updates</a></li>
-        </ul>
-      </div>
-
-      <div class="mdl-mega-footer__drop-down-section">
-        <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
-        <h1 class="mdl-mega-footer__heading">Details</h1>
-        <ul class="mdl-mega-footer__link-list">
-          <li><a href="#">Specs</a></li>
-          <li><a href="#">Tools</a></li>
-          <li><a href="#">Resources</a></li>
-        </ul>
-      </div>
-
-
-      <div class="mdl-mega-footer__drop-down-section">
-        <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
-        <h1 class="mdl-mega-footer__heading">Technology</h1>
-        <ul class="mdl-mega-footer__link-list">
-          <li><a href="#">How it works</a></li>
-          <li><a href="#">Patterns</a></li>
-          <li><a href="#">Usage</a></li>
-          <li><a href="#">Products</a></li>
-          <li><a href="#">Contracts</a></li>
-        </ul>
-      </div>
-
-      <div class="mdl-mega-footer__drop-down-section">
-        <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
-        <h1 class="mdl-mega-footer__heading">FAQ</h1>
-        <ul class="mdl-mega-footer__link-list">
-          <li>
-            <!-- Textfield with Floating Label -->
-            <form action="#">
-              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="email" id="username">
-                <label class="mdl-textfield__label mdl-color-text--white" for="username">Email...</label>
-              </div>
-            </form>
-          </li>
-
-          <li>
-            <!-- Textfield with Floating Label -->
-            <form action="#">
-              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="password" id="password">
-                <label class="mdl-textfield__label mdl-color-text--white" for="password">Password...</label>
-              </div>
-            </form>
-          </li>
-          <li>
-
-            <!-- Colored FAB button -->
-            <button id="login-btn" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
-              <i class="material-icons">keyboard_arrow_right</i>
-            </button>
-          </li>
-        </ul>
-      </div>
-
-    </div>
-
-    <div class="mdl-mega-footer__bottom-section">
-      <div class="mdl-logo">Studyscript</div>
-      <ul class="mdl-mega-footer__link-list">
-        <li><a href="#">Help</a></li>
-        <li><a href="#">Privacy & Terms</a></li>
-      </ul>
-    </div>
-  </footer>
 
 </div>
 

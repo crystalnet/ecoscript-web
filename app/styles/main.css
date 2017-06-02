@@ -25,8 +25,21 @@ will be correctly compiled during `gulp serve` and `gulp`
 @import "_header.scss";
 @import "_footer.scss";
 
+/*  landingView*/
+@import "_hero.scss";
+@import "_welcome.scss";
+@import "_price.scss";
+
 html, body {
   font-family: 'Roboto', 'Helvetica', sans-serif;
   margin: 0;
   padding: 0;
+}
+
+.mdl-grid{
+  border:solid 2px lime;
+}
+
+.mdl-cell{
+  border:solid 2px violet;
 }

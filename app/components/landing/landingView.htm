@@ -1,163 +1,56 @@
 <main class="mdl-layout__content" data-ng-controller="landingController as controller">
   <div class="page-content">
+
     <!-- Your content goes here -->
-
-
-
-
 
     <div class="hero hero--home">
       <div class="hero__bg-container">
-        <div class="hero__bg-container-overlay">
-          <h1>An easy way to pay<br>friends and family</h1>
-          <a data-ng-click="controller.order()" class="get-app hero__btn mdl-button mdl-js-button mdl-button--raised mdl-button--white-colored">
-            PDF hochladen<i class="material-icons">file_upload</i>
-          </a>
+        <div class=" hero__bg-container-overlay">
+          <div class="mdl-layout-spacer"></div>
+           <h1 >Der einfache Weg<br>umweltfreundlich zu drucken.</h1>
+          <div class="mdl-layout-spacer"></div>
+
+          <button data-ng-click="controller.order()" class="hero__btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">
+              PDF hochladen<i class="material-icons">file_upload</i>
+          </button>
         </div>
       </div>
-      <button class="hero__fab mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--fab mdl-shadow--4dp" data-scroll-to="section--welcome" data-g-event="FAB" data-g-action="click" data-g-label="Down to content" data-upgraded=",MaterialButton,MaterialRipple">
-        <i class="material-icons"></i>
-        <span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></button>
-    </div>
-
-<!--
-    <div class="parent-relative">
-      <div class="child-absolute1">
-        <img src="http://placehold.it/1920x720">
-      </div>
-
-      <div class="child-absolute2">awdawd<img class="image-bg" src="http://placehold.it/200x200"></div>
-
-      </div>
-    </div>
-
-
-
-    <div class="image">
-      &lt;!&ndash;  CC0 License https://www.pexels.com/photo/action-celebration-club-crowd-341858/
-      https://www.pexels.com/photo/2-people-sitting-with-view-of-yellow-flowers-during-daytime-196666/
-      &ndash;&gt;
-
-      <img class="image-bg" src="http://placehold.it/1920x720">
-
-      <h1 id="title-test" class="header-font mdl-color-text&#45;&#45;white">Kostenlos Scripte drucken und<br/>die Natur
-        schützen.</h1>
-        <button data-ng-click="controller.order()"
-          class="mdl-button mdl-js-button mdl-button&#45;&#45;raised mdl-js-ripple-effect mdl-button&#45;&#45;colored mdl-color-text&#45;&#45;white">
-          PDF hochladen<i class="material-icons">file_upload</i>
-        </button>
 
       <div class="see-more-button">
         <a href="#how">
           <button
-            class="mdl-button mdl-js-button mdl-button&#45;&#45;fab mdl-js-ripple-effect mdl-color&#45;&#45;white mdl-color-text&#45;&#45;primary mdl-shadow&#45;&#45;6dp">
+            class="hero__fab mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-color--white mdl-color-text--primary mdl-shadow--6dp">
             <i class="material-icons">keyboard_arrow_down</i>
           </button>
         </a>
       </div>
+    </div>
 
-    </div>-->
 
+    <div class="welcome__bg_container mdl-grid">
+      <img class="mdl-cell mdl-cell--4-col mdl-cell--2-offset-desktop mdl-cell--top mdl-cell--order-2-phone" src="http://via.placeholder.com/900x400">
 
-    <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--12-col"><br><br><br></div>
-      <div class="mdl-cell mdl-cell--3-col mdl-cell--3-offset">
-        <img src="images/1203.png" width="300px" height="300px">
-      </div>
-      <div id="how" class="mdl-cell mdl-cell--6-col">
-        <h2>
-          Bestelle in 3 Minuten <br> kostenlos dein Script.
-        </h2>
-        <h1 style="font-size: 20px;">
+      <div id="how" class="mdl-cell mdl-grid--no-spacing mdl-cell--4-col mdl-cell--order-1-phone mdl-cell--top">
+        <h3 class="mdl-cell mdl-cell--12-col">
+          Bestelle in 3 Minuten <br> kostenlos deinen Skript.
+        </h3>
+        <h6 class="mdl-cell mdl-cell--12-col">
           Direkt zu dir versendet und ohne versteckte Kosten.<br>
           Und wenn dich die Werbung stört, kannst du dich auch für die<br> Produkte Black oder Green entscheiden.
-        </h1>
+        </h6>
       </div>
-      <div class="mdl-cell mdl-cell--12-col"><br><br><br></div>
     </div>
 
     <div class="mdl-grid select-product mdl-color--grey-100">
-      <div class="mdl-cell mdl-cell--12-col"><br><br><br></div>
-      <div id="products" class="mdl-cell mdl-cell--3-col mdl-cell--5-offset">
-        <h3>Wähle deinen Skript.</h3>
+      <div id="products" class="mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
+        <h3 style="text-align: center;">Wähle deinen Skript.</h3>
       </div>
     </div>
 
     <div class="mdl-grid price-bg  mdl-color--grey-100">
-      <div class="mdl-cell mdl-cell--2-col">
-      </div>
-
-      <!--Black-->
-      <div class="mdl-card mdl-cell mdl-cell--2-col mdl-shadow--4dp">
-        <div class="mdl-card__title mdl-color--grey-800 mdl-color-text--white mdl-card--border">
-          <h2 class="mdl-card__title-text">Black<br>ab €12,99</h2>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-          <span><strong>Bis zu 300 Seiten auswählbar.</strong></span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-          <span>Inkl. Express Versand</span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-          <span>Viele Bindungsmögl.</span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-          <span><strong>Mattschwarzes Cover</strong></span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-          <span>In jeder Vorlesung Eindruck machen.</span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-          </span> <span>Ein geflanzter Baum</span>
-          <span><img src="images/tree.svg" width="23px" height="23px"></span>
-        </div>
-
-        <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--grey-800">
-          <a
-            class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
-            Auswählen
-          </a>
-        </div>
-      </div>
-
-      <!--Free-->
-      <div class="mdl-card mdl-cell mdl-cell--2-col mdl-shadow--4dp">
-        <div class="product-card-name mdl-card__title mdl-color--grey mdl-color-text--white">
-          <h2 class="mdl-card__title-text"><strong>Free</strong></h2>
-        </div>
-        <div class="product-card-price mdl-card__title mdl-color--grey mdl-color-text--white mdl-card--border">
-          <h2 class="mdl-card__title-text">€ 0.00 - gesponsort</h2>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-          <span><strong>Max. 125 Seiten </strong></span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-          <span>Kostenloser Versand</span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-          <span>Hochwertige Spiralbindung</span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-          <span>Farbdruck</span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
-          <span>⠀</span>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-          </span> <span>Ein geflanzter Baum</span>
-          <span><img src="images/tree.svg" width="23px" height="23px"></span>
-        </div>
-
-        <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--grey">
-          <a
-            class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
-            Auswählen
-          </a>
-        </div>
-      </div>
 
       <!--Green Free-->
-      <div class=" mdl-card mdl-cell mdl-cell--2-col mdl-shadow--4dp">
+      <div class=" mdl-card mdl-cell mdl-cell--2-col mdl-cell--4-offset mdl-shadow--4dp">
         <div class="product-card-name mdl-card__title mdl-color--green mdl-color-text--white">
           <h2 class="mdl-card__title-text"><strong>Green Free</strong></h2>
         </div>

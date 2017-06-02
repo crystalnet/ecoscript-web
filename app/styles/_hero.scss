@@ -1,0 +1,40 @@
+.hero h1 {
+  color: #fff;
+}
+
+.hero {
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.hero__bg-container-overlay {
+  background: none;
+  padding: 12% 0 8% 0;
+  height: 100%;
+  width: 100%;
+}
+
+.hero--home .hero__bg-container {
+  background-image:url("../images/girl_bg3.jpg");
+
+}
+
+.hero__bg-container {
+  background-size: cover;
+  display: inline-block;
+  width: 100%;
+}
+
+.mdl-button__ripple-container {
+  display: block;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 0;
+  overflow: hidden;
+}
+
+
