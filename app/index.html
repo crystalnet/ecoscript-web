@@ -30,10 +30,10 @@
 
   <!-- Tile icon for Win8 (144x144 + tile color) -->
   <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
-  <meta name="msapplication-TileColor" content="#2F3BA2">
+  <meta name="msapplication-TileColor" content="#388E3C">
 
   <!-- Color the status bar on mobile devices -->
-  <meta name="theme-color" content="#2F3BA2">
+  <meta name="theme-color" content="#388E3C">
 
   <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
   <!--
@@ -60,31 +60,35 @@
           data-ng-controller="navigationController as navigation">
 
     <div class="mdl-layout__header-row">
-      <!-- Title -->
-      <div class="mdl-layout-spacer"></div>
+
+      <div class="mdl-layout-spacer mdl-layout--large-screen-only"></div>
 
       <span class="mdl-layout-title">
-        <a class="mdl-navigation__link mdl-color-text--primary mdl-layout--large-screen-only" data-ng-click="navigation.home()" href="">
-          <img src="images/script_eco_logo.png" height="38" width="141"/>
+
+        <a class="mdl-navigation__link" data-ng-click="navigation.home()" href="">
+           <img class="site-header__scripteco_logo" src="images/script_eco_logo.png" alt="scripteco Logo">
         </a>
       </span>
 
       <!-- Add spacer, to align navigation to the right -->
       <div class="mdl-layout-spacer"></div>
 
-      <!-- Navigation. We hide it in small screens. -->
+      <!-- Navigation. We hide it in small screens.  <a class="mdl-navigation__link mdl-color-text--primary " data-ng-click="navigation.home()" href="">
+          <img src="images/script_eco_logo.png" height="38" width="141"/>
+        </a> -->
       <nav class="mdl-navigation ">
         <a class="mdl-navigation__link mdl-layout--large-screen-only mdl-color-text--primary" href=""><h6>FAQ</h6></a>
         <a class="mdl-navigation__link mdl-layout--large-screen-only mdl-color-text--primary" href="#products"><h6>Produkte</h6></a>
+        <a class="mdl-navigation__link mdl-layout--large-screen-only mdl-color-text--primary" href=""><h6>Anmelden</h6></a>
         <a class="mdl-navigation__link mdl-color-text--primary" href="">
           <button data-ng-click="navigation.authenticate()"
                   class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-            Anmelden
+            Drucken
           </button>
         </a>
       </nav>
 
-      <div class="mdl-layout-spacer"></div>
+      <div class="mdl-layout-spacer mdl-layout--large-screen-only"></div>
     </div>
   </header>
 

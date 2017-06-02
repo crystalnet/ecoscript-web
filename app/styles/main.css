@@ -37,9 +37,9 @@ html, body {
 }
 
 .mdl-grid{
-  border:solid 2px lime;
+  border:solid 1px lime;
 }
 
 .mdl-cell{
-  border:solid 2px violet;
+  border:solid 1px violet;
 }
