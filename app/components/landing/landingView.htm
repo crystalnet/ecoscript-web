@@ -23,24 +23,25 @@
 
 
   <div class="welcome__bg_container mdl-grid">
-    <img class="mdl-cell mdl-cell--4-col mdl-cell--2-offset-desktop mdl-cell--top mdl-cell--order-2-phone"
-         src="http://via.placeholder.com/900x400">
+    <div class="mdl-cell mdl-cell--2-col mdl-cell--4-offset-desktop mdl-cell--1-offset-tablet mdl-cell--1-offset-phone mdl-cell--top mdl-cell--order-2-phone">
+      <img class="welcome__picture" src="../../images/skript_vorlage.png" >
+    </div>
+
 
     <div id="how" class="mdl-cell mdl-grid--no-spacing mdl-cell--4-col mdl-cell--order-1-phone mdl-cell--top">
-      <h3 class="mdl-cell mdl-cell--12-col">
+      <h2 class="mdl-cell mdl-cell--12-col section__title">
         Bestelle in 3 Minuten <br> kostenlos deinen Skript.
-      </h3>
-      <h6 class="mdl-cell mdl-cell--12-col">
+      </h2>
+      <p class="mdl-cell mdl-cell--8-col">
         Direkt zu dir versendet und ohne versteckte Kosten.<br>
         Und wenn du einen Skript ohne Sponsoren möchtest, nimm einfach unser Plus Model.
-      </h6>
+      </p>
     </div>
   </div>
 
-
-  <div class="mdl-grid price-bg  mdl-color--grey-100">
-    <div>
-
+  <div class="mdl-grid mdl-color--grey-100">
+    <div id="why" class="mdl-cell mdl-cell--3-col mdl-cell--3-offset">
+      <img src="http://via.placeholder.com/900x400" style="fill: red;">
     </div>
   </div>
 
@@ -52,15 +53,18 @@
 
   <div class="mdl-grid price-bg">
     <!--Green Free-->
-    <div class=" mdl-card mdl-cell mdl-cell--2-col mdl-cell--4-offset mdl-shadow--4dp">
+    <div class=" mdl-card mdl-cell mdl-cell--2-col mdl-cell--4-col-phone mdl-cell--3-col-tablet mdl-cell--4-offset-desktop mdl-cell--1-offset-tablet mdl-shadow--4dp">
       <div class="product-card-name mdl-card__title mdl-color--green mdl-color-text--white">
         <h2 class="mdl-card__title-text"><strong>Green Free</strong></h2>
       </div>
       <div class="product-card-price mdl-card__title mdl-color--green mdl-color-text--white mdl-card--border">
-        <h2 class="mdl-card__title-text">€ 0.00 - gesponsort</h2>
+        <h2 class="mdl-card__title-text">€ 0.00</h2>
       </div>
       <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
         <span><strong>Max. 125 Seiten - Recyclingpapier</strong></span>
+      </div>
+      <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+        <span>Gesponsort*</span>
       </div>
       <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
         <span>Kostenloser Versand</span>
@@ -76,19 +80,18 @@
       </div>
       <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
           <span> <span>Ein geflanzter Baum</span>
-          <span><img class="mdl-color-text--green" src="../../images/tree.svg" width="23px" height="23px"></span>
+          <span><img src="../../images/tree.svg" width="23px" height="23px"></span>
       </div>
 
-      <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--green">
-        <a
-          class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
+      <div class=" mdl-card__actions mdl-card--border mdl-color--green" style="text-align: center">
+        <a class="mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
           Auswählen
         </a>
       </div>
     </div>
 
     <!--Green-->
-    <div class=" mdl-card mdl-cell mdl-cell--2-col mdl-shadow--4dp">
+    <div class=" mdl-card mdl-cell mdl-cell--2-col mdl-cell--4-col-phone mdl-cell--3-col-tablet mdl-shadow--4dp">
       <div class="product-card-name mdl-card__title mdl-color--green mdl-color-text--white">
         <h2 class="mdl-card__title-text"><strong>Green</strong></h2>
       </div>
@@ -97,6 +100,9 @@
       </div>
       <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
         <span><strong>Max. 300 Seiten - Recyclingpapier</strong></span>
+      </div>
+      <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
+        <span>Werbefrei</span>
       </div>
       <div class="mdl-card__supporting-text mdl-color-text--grey-700 mdl-card--border">
         <span>Kostenloser Versand</span>
@@ -111,28 +117,23 @@
         <span>Klimaneutral*</span>
       </div>
       <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-        <span>Zwei geflanzte Bäume</span>
-        <span><img src="images/tree.svg" width="23px" height="23px"></span>
+        <span>Ein geflanzter Baume</span>
         <span><img src="images/tree.svg" width="23px" height="23px"></span>
       </div>
 
-      <div class="mdl-grid mdl-card__actions mdl-card--border mdl-color--green">
-        <a
-          class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
+      <div class=" mdl-card__actions mdl-card--border mdl-color--green" style="text-align: center">
+        <a class="mdl-button mdl-button--raised mdl-button--colored mdl-color--white mdl-js-button mdl-js-ripple-effect mdl-color-text--black">
           Auswählen
         </a>
       </div>
     </div>
-
-    <div class="mdl-cell mdl-cell--12-col"><br><br><br></div>
   </div>
 
 
   <div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--12-col"><br><br><br></div>
-    <div id="howitworks" class="mdl-cell mdl-cell--3-col mdl-cell--5-offset">
-      <h3>Und so funktioniert es.</h3>
-    </div>
+      <div class="how-work mdl-cell mdl-cell--4-col mdl-cell--4-offset">
+        <h3>Und so funktioniert es.</h3>
+      </div>
   </div>
 
   <div class="mdl-grid">
@@ -163,11 +164,10 @@
     <div class="mdl-cell mdl-cell--1-col mdl-cell--1-offset">
       Wir planzen bis zu zwei Bäume und schützen die Natur.
     </div>
-    <div class="mdl-cell mdl-cell--12-col"><br><br><br></div>
   </div>
 
+
   <div class="mdl-grid mdl-color--grey-100">
-    <div class="mdl-cell mdl-cell--12-col "><br><br><br></div>
     <div id="why" class="mdl-cell mdl-cell--3-col mdl-cell--3-offset">
       <h3>
         Wieso wir Bäume planzen.
@@ -179,8 +179,7 @@
       </h1>
     </div>
 
-    <div class="mdl-cell mdl-cell--3-col ">
-      <img src="images/oak-tree.png" width="80%" height="80%">
-    </div>
+    <img class="mdl-cell mdl-cell--4-col" src="http://via.placeholder.com/900x400">
+
   </div>
 </div>

@@ -1,0 +1,41 @@
+/***** Welcome section */
+.welcome__bg_container{
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.welcome__picture{
+  max-width:100%;
+}
+/***** Price section */
+
+
+/***** How it Work section */
+.how-work{
+  text-align: center;
+}
+
+
+/*****  section */
+
+@keyframes rotateIn {
+  from {
+    transform-origin: center;
+    transform: rotate3d(0, 0, 1, -200deg);
+    opacity: 0;
+  }
+
+  to {
+    transform-origin: center;
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.icon_turn {
+  font-size: 300px;
+  -webkit-animation-name: rotateIn;
+  -webkit-animation-delay: 1s;
+  -webkit-animation-duration: 5s;
+
+}
