@@ -1,14 +1,50 @@
 /***** Welcome section */
-.welcome__bg_container{
-  margin-top: 2%;
-  margin-bottom: 2%;
-}
-
 .welcome__picture{
   max-width:100%;
 }
+
+.welcome__logo-container{
+  margin-top: -1%;
+  margin-bottom: 1%;
+}
+
+.welcome__logo_img{
+  max-height: 100px;
+  width: auto;
+}
+
+/***** Why eco section */
+
+.section--subhead{
+  margin-top: 6%;
+  margin-bottom: 3%;
+}
+.section--header-rect {
+  background: #4CAF50;
+  bottom: 0;
+  content: '';
+  height: 3px;
+  left: 0;
+  width: 120px;
+}
+
+.why-eco-icons{
+  font-size: 42px;
+ }
+
+.why-eco--cell-img{
+
+}
+
+.why-eco--cell-text{
+  min-height: 100%;
+}
+
 /***** Price section */
 
+.price__container{
+ margin-bottom: 5%; 
+}
 
 /***** How it Work section */
 .how-work{
