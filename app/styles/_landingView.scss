@@ -43,7 +43,7 @@
 /***** Price section */
 
 .price__container{
- margin-bottom: 5%; 
+ margin-bottom: 5%;
 }
 
 /***** How it Work section */
@@ -51,27 +51,14 @@
   text-align: center;
 }
 
-
-/*****  section */
-
-@keyframes rotateIn {
-  from {
-    transform-origin: center;
-    transform: rotate3d(0, 0, 1, -200deg);
-    opacity: 0;
-  }
-
-  to {
-    transform-origin: center;
-    transform: none;
-    opacity: 1;
-  }
+/***** Why tree section */
+.why-tree__container{
+  background-image:url("../images/bg_africa_trees.jpg");
+  background-size: cover;
+  width: 100%;
 }
 
-.icon_turn {
-  font-size: 300px;
-  -webkit-animation-name: rotateIn;
-  -webkit-animation-delay: 1s;
-  -webkit-animation-duration: 5s;
-
+.why-tree__card{
+  margin-top: 10%;
+  margin-bottom: 10%;
 }
