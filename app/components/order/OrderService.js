@@ -22,10 +22,8 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
     UploadService.uploadFile(file)
       .then(function(result) {
         self.scripts = [{file: file, configuration: self.configuration}];
-        // For future extension
-        // self.scripts.push(file);
+        // For future extension self.scripts.push(file);
 
-        self.updateStage();
         const script = self.scripts[0].configuration;
         script.title = self.scripts[0].file.name;
         script.title = script.title.substring(0, script.title.lastIndexOf('.'));

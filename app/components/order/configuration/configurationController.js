@@ -33,10 +33,8 @@ function ConfigurationController($location, OrderService, $timeout) {
     angular.forEach(files, function (file) {
       self.order.addScript(file)
         .then(function (result) {
-          console.log(result);
-
           if (self.order.scripts.length > 0) {
-
+            self.next();
           }
         }, function (error) {
           self.errFiles.push(file);
@@ -50,13 +48,13 @@ function ConfigurationController($location, OrderService, $timeout) {
 
   self.next = function () {
     // self.validateInputs();
-    self.order.update();
+    // self.order.update();
     self.stage = Math.min(self.stage + 1, 5);
   };
 
   self.previous = function () {
     // self.validateInputs();
-    self.order.update();
+    // self.order.update();
     self.stage = Math.max(self.stage - 1, 1);
   };
 
