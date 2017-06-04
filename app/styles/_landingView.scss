@@ -3,14 +3,46 @@
   max-width:100%;
 }
 
-.welcome__logo-container{
-  margin-top: -1%;
-  margin-bottom: 1%;
+.welcome__logo_img{
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 5em;
 }
 
-.welcome__logo_img{
-  max-height: 100px;
-  width: auto;
+@media only screen and (min-width: 48rem) {
+  .welcome__logo_img{
+    height: 6em;
+  }
+}
+
+@media only screen and (min-width: 64rem) {
+  .welcome__logo_img{
+    height: 7em;
+  }
+}
+
+.welcome__logo_img-1{
+  background-image: url("../images/Logo/green-brand.png");
+}
+
+.welcome__logo_img-2{
+  background-image: url("../images/Logo/fsc.png");
+}
+
+.welcome__logo_img-3{
+  background-image: url("../images/Logo/iso.png");
+}
+
+.welcome__logo_img-4{
+  background-image: url("../images/Logo/wwf.png");
+}
+
+.welcome__logo_img-5{
+  background-image: url("../images/Logo/umweltallianz_hessen.png");
+}
+.welcome__logo_img-6{
+  background-image: url("../images/Logo/klimaneutral.png");
 }
 
 /***** Why eco section */
@@ -53,7 +85,7 @@
 
 /***** Why tree section */
 .why-tree__container{
-  background-image:url("../images/bg_africa_trees.jpg");
+  background-image: url("../images/bg_africa_trees.jpg");
   background-size: cover;
   width: 100%;
 }
