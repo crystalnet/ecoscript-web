@@ -39,7 +39,6 @@
       </div>
     </div>
 
-
   <div class="welcome__bg_container mdl-grid">
     <div class="mdl-cell mdl-cell--2-col mdl-cell--4-offset-desktop mdl-cell--1-offset-tablet mdl-cell--1-offset-phone mdl-cell--top mdl-cell--order-2-phone">
       <img class="welcome__picture" src="../../images/skript_vorlage.png" >
@@ -47,15 +46,27 @@
 
     <div id="how" class="mdl-cell mdl-grid--no-spacing mdl-cell--4-col mdl-cell--order-1-phone mdl-cell--top">
       <h2 class="mdl-cell mdl-cell--12-col section__title">
-        Bestelle in 3 Minuten <br> kostenlos deinen Skript.
+        Bestelle in 3 Minuten <br> kostenlos dein Skript.
       </h2>
       <p class="mdl-cell mdl-cell--8-col">
         Direkt zu dir versendet und ohne versteckte Kosten.<br>
-        Und wenn du einen Skript ohne Sponsoren möchtest, nimm einfach unseren Premium Skript..
+        Und wenn du ein Skript ohne Sponsoren möchtest, nimm einfach unseren Premium Skript..
       </p>
+
+      <div class="mdl-grid mdl-cell mdl-cell--6-col">
+          <!-- Button for free script -->
+          <button data-ng-click="navigation.scrollTo('/', 'products')"
+                  class="mdl-cell mdl-cell--6-col mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">
+            Kostenlos
+          </button>
+
+          <button data-ng-click="navigation.scrollTo('/', 'products')"
+                  class="mdl-cell mdl-cell--6-col mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">
+            Premium
+          </button>
+      </div>
     </div>
   </div>
-
 
   <!-- Unsere Vorteile - 1. Spalte -->
   <div class="mdl-grid mdl-color--grey-100">
@@ -163,6 +174,42 @@
     </div>
   </div>
 
+  <div class="mdl-grid mdl-color--primary">
+    <div class="how-work mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop mdl-cell--2-offset-tablet">
+      <h3 class="mdl-color-text--white">Und so funktioniert es.</h3>
+    </div>
+  </div>
+
+  <div class="mdl-grid mdl-color--primary">
+    <div class="mdl-cell mdl-cell--1-col mdl-cell--4-offset">
+      <i class="material-icons mdl-color-text--white" style="font-size:70px;">file_upload</i>
+    </div>
+    <div class="mdl-cell mdl-cell--1-col">
+      <i class="material-icons mdl-color-text--white" style="font-size:70px;">keyboard_arrow_right</i>
+    </div>
+    <div class="mdl-cell mdl-cell--1-col">
+      <i class="material-icons mdl-color-text--white" style="font-size:70px;">email</i>
+    </div>
+    <div class="mdl-cell mdl-cell--1-col">
+      <i class="material-icons mdl-color-text--white" style="font-size:70px;">keyboard_arrow_right</i>
+    </div>
+    <div class="mdl-cell mdl-cell--1-col">
+      <i class="material-icons mdl-color-text--white" style="font-size:70px;">nature_people</i>
+    </div>
+  </div>
+
+  <div class="mdl-grid mdl-color--primary mdl-color-text--white">
+    <div class="mdl-cell mdl-cell--1-col mdl-cell--4-offset">
+      Du lädst dein Skript als PDF hoch.
+    </div>
+    <div class="mdl-cell mdl-cell--1-col mdl-cell--1-offset">
+      Innerhalb von 3 Wertagen ist der Skript bei dir.
+    </div>
+    <div class="mdl-cell mdl-cell--1-col mdl-cell--1-offset">
+      Wir planzen bis zu zwei Bäume und schützen die Natur.
+    </div>
+  </div>
+
   <div class="mdl-grid select-product">
     <div id="products" class="mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop mdl-cell--2-offset-tablet">
       <h3 style="text-align: center;">Wähle deinen Skript.</h3>
@@ -197,8 +244,8 @@
         <span>Klimaneutral*</span>
       </div>
       <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
-          <span> <span>Ein geflanzter Baum</span>
-          <span><img src="../../images/tree.svg" width="23px" height="23px"></span>
+          <span><span>Ein geflanzter Baum</span>
+          <span><span<i class="material-icons mdl-color-text--green" style="font-size:24px;">nature</i></span></span>
       </div>
 
       <div class=" mdl-card__actions mdl-card--border mdl-color--green" style="text-align: center">
@@ -236,7 +283,7 @@
       </div>
       <div class="mdl-card__supporting-text mdl-color-text--green mdl-card--border">
         <span>Ein geflanzter Baume</span>
-        <span><img src="images/tree.svg" width="23px" height="23px"></span>
+        <span<i class="material-icons mdl-color-text--green" style="font-size:24px;">nature</i></span>
       </div>
 
       <div class=" mdl-card__actions mdl-card--border mdl-color--green" style="text-align: center">
@@ -247,42 +294,6 @@
     </div>
   </div>
 
-
-  <div class="mdl-grid mdl-color--primary">
-      <div class="how-work mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop mdl-cell--2-offset-tablet">
-        <h3 class="mdl-color-text--white">Und so funktioniert es.</h3>
-      </div>
-  </div>
-
-  <div class="mdl-grid mdl-color--primary">
-    <div class="mdl-cell mdl-cell--1-col mdl-cell--4-offset">
-      <i class="material-icons mdl-color-text--white" style="font-size:70px;">file_upload</i>
-    </div>
-    <div class="mdl-cell mdl-cell--1-col">
-      <i class="material-icons mdl-color-text--white" style="font-size:70px;">keyboard_arrow_right</i>
-    </div>
-    <div class="mdl-cell mdl-cell--1-col">
-      <i class="material-icons mdl-color-text--white" style="font-size:70px;">email</i>
-    </div>
-    <div class="mdl-cell mdl-cell--1-col">
-      <i class="material-icons mdl-color-text--white" style="font-size:70px;">keyboard_arrow_right</i>
-    </div>
-    <div class="mdl-cell mdl-cell--1-col">
-      <i class="material-icons mdl-color-text--white" style="font-size:70px;">nature_people</i>
-    </div>
-  </div>
-
-  <div class="mdl-grid mdl-color--primary mdl-color-text--white">
-    <div class="mdl-cell mdl-cell--1-col mdl-cell--4-offset">
-      Du lädst dein Skript als PDF hoch.
-    </div>
-    <div class="mdl-cell mdl-cell--1-col mdl-cell--1-offset">
-      Innerhalb von 3 Wertagen ist der Skript bei dir.
-    </div>
-    <div class="mdl-cell mdl-cell--1-col mdl-cell--1-offset">
-      Wir planzen bis zu zwei Bäume und schützen die Natur.
-    </div>
-  </div>
 
   <div class="why-tree__container mdl-grid">
     <div class="why-tree__card mdl-cell mdl-cell--3-col  mdl-cell--4-col-tablet mdl-cell--4-col-phone  mdl-cell--2-offset-desktop mdl-cell--1-offset-tablet mdl-card mdl-shadow--4dp">
@@ -298,7 +309,14 @@
           Wir planzen bis zu 2 Bäume im Ausgleich für einen Skript, denn Bäume sind für unsere Erde lebenswichtig.
         </p>
       </div>
+      <div class="mdl-card__actions mdl-card--border">
+        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+          Erfahre mehr
+        </a>
+      </div>
     </div>
   </div>
+
+
 
 </div>

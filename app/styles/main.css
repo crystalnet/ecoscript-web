@@ -35,3 +35,10 @@ html, body {
   padding: 0;
 }
 
+.mdl-grid{
+  border:solid 0.1px yellow;
+}
+
+.mdl-cell{
+  border:solid 0.1px orange;
+}
