@@ -49,13 +49,13 @@ function ConfigurationController($location, OrderService, $timeout) {
   };
 
   self.next = function () {
-    self.validateInputs();
+    // self.validateInputs();
     self.order.update();
     self.stage = Math.min(self.stage + 1, 5);
   };
 
   self.previous = function () {
-    self.validateInputs();
+    // self.validateInputs();
     self.order.update();
     self.stage = Math.max(self.stage - 1, 1);
   };
