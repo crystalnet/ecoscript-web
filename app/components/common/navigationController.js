@@ -8,17 +8,17 @@ angular.module('studyscriptApp')
 // Define controllers
   .controller('navigationController', NavigationController);
 
-NavigationController.$inject = ['$location', 'PageContext', '$anchorScroll'];
+NavigationController.$inject = ['$location', 'PageContextService', '$anchorScroll'];
 
-/* @ngInject */
-function NavigationController($location, PageContext, $anchorScroll) {
+function NavigationController($location, PageContextService, $anchorScroll) {
   const self = this;
 
-  self.pageContext = PageContext;
+  self.pageContext = PageContextService;
 
   self.scrollTo = function(path, hash){
     $location.path(path);
     $location.hash(hash);
     $anchorScroll();
+    console.log('asdf');
   };
 }

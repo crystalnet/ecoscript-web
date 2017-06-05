@@ -6,30 +6,24 @@
 angular.module('studyscriptApp')
 
 // Define service
-  .service('PageContext', PageContext);
+  .service('PageContextService', PageContext);
 
-function PageContext() {
-  const self = this
+PageContext.$inject = ['$rootScope'];
 
-  self.defaultCtx = {
+function PageContext($rootScope) {
+  const self = this;
+
+  self.defaultContext = {
     title: 'Default Title',
-    headerUrl: 'default-header.tmpl.html',
-    footerUrl: 'default-footer.tmpl.html'
+    headerUrl: 'components/common/defaultHeader.htm',
+    footerUrl: 'components/common/defaultFooter.htm'
   };
 
-  self.currentCtx = angular.copy(self.defaultCtx);
+  self.currentContext = angular.copy(self.defaultContext);
 
-  return {
-    $get: function ($rootScope) {
+  $rootScope.$on('$locationChangeStart', function () {
+    angular.extend(self.currentContext, self.defaultContext);
+  });
 
-      // We probably want to revert back to the default whenever
-      // the location is changed.
-
-      $rootScope.$on('$locationChangeStart', function () {
-        angular.extend(self.currentCtx, self.defaultCtx);
-      });
-
-      return self.currentCtx;
-    }
-  };
+  return self.currentContext;
 }

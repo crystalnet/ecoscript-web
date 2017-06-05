@@ -46,49 +46,20 @@
 
   <!-- STYLESHEETS -->
   <!-- build:css styles/main.min.css -->
-    <!-- bower:css --><!-- endbower -->
-    <!-- inject:css --><!-- endinject -->
+  <!-- bower:css --><!-- endbower -->
+  <!-- inject:css --><!-- endinject -->
   <!-- endbuild -->
 
 </head>
 
-<body class="mdl-demo mdl-color--white mdl-color-text--grey-700 mdl-base" data-ng-app="studyscriptApp" data-ng-controller="navigationController as navigation">
+<body class="mdl-demo mdl-color--white mdl-color-text--grey-700 mdl-base" data-ng-app="studyscriptApp" ng-strict-di
+      data-ng-controller="navigationController as navigation">
 
 <!-- Always shows a header, even in smaller screens. -->
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button mdl-color--white">
   <header class="mdl-layout__header mdl-color--white mdl-color-text--grey-700">
-
-    <div class="mdl-layout__header-row">
-
-      <div class="mdl-layout-spacer mdl-layout--large-screen-only"></div>
-
-      <span class="mdl-layout-title">
-
-        <a class="mdl-navigation__link" data-ng-click="navigation.scrollTo('/', 'top')" href="">
-           <img class="site-header__scripteco_logo" src="images/script_eco_logo.png" alt="scripteco Logo">
-        </a>
-      </span>
-
-      <!-- Add spacer, to align navigation to the right -->
-      <div class="mdl-layout-spacer"></div>
-
-      <!-- Navigation. We hide it in small screens.  <a class="mdl-navigation__link mdl-color-text--primary " data-ng-click="navigation.scrollTo('/', '')" href="">
-          <img src="images/script_eco_logo.png" height="38" width="141"/>
-        </a> -->
-      <nav class="mdl-navigation ">
-        <a class="mdl-navigation__link mdl-layout--large-screen-only mdl-color-text--primary" data-ng-click="navigation.scrollTo('/faq', '')" href=""><h6>FAQ</h6></a>
-        <a class="mdl-navigation__link mdl-layout--large-screen-only mdl-color-text--primary" data-ng-click="navigation.scrollTo('/', 'products')" href=""><h6>Produkte</h6></a>
-        <a class="mdl-navigation__link mdl-layout--large-screen-only mdl-color-text--primary" data-ng-click="navigation.scrollTo('/login', '')" href=""><h6>Anmelden</h6></a>
-        <a class="mdl-navigation__link mdl-color-text--primary" href="">
-          <button data-ng-click="navigation.scrollTo('/order', '')"
-                  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-            Drucken
-          </button>
-        </a>
-      </nav>
-
-      <div class="mdl-layout-spacer mdl-layout--large-screen-only"></div>
-    </div>
+    <div data-ng-include="navigation.pageContext.headerUrl"></div>
+    <!--div data-ng-include="'components/common/defaultHeader.htm'"></div-->
   </header>
 
   <!-- Main content injected by angular -->
@@ -97,24 +68,17 @@
 
     <!-- Footer-->
     <footer class="mdl-mini-footer">
-      <div class="mdl-mini-footer__left-section">
-        <div class="mdl-logo">Title</div>
-        <ul class="mdl-mini-footer__link-list">
-          <li><a href="#">Help</a></li>
-          <li><a href="#">Privacy & Terms</a></li>
-        </ul>
-      </div>
+      <div data-ng-include="navigation.pageContext.footerUrl"></div>
     </footer>
   </main>
-
 
 
 </div>
 
 <!-- JAVASCRIPT -->
 <!-- build:js scripts/main.min.js -->
-  <!-- bower:js --><!-- endbower -->
-  <!-- inject:js --><!-- endinject -->
+<!-- bower:js --><!-- endbower -->
+<!-- inject:js --><!-- endinject -->
 <!-- endbuild -->
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->

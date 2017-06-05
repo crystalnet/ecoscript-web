@@ -10,7 +10,6 @@ angular.module('authentication')
 
 signInController.$inject = ['AuthenticationService'];
 
-/* @ngInject */
 function signInController(AuthenticationService) {
   const self = this;
 

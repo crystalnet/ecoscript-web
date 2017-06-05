@@ -3,7 +3,6 @@
  */
 
   // Define the module
-  /* @ngInject */
   angular.module('studyscriptApp', [
     'ngRoute',
     'authentication',

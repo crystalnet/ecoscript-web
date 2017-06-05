@@ -8,13 +8,14 @@ angular.module('order')
 // Define controller
   .controller('configurationController', ConfigurationController);
 
-ConfigurationController.$inject = ['$location', 'OrderService', '$timeout'];
+ConfigurationController.$inject = ['$location', 'OrderService', '$timeout', 'PageContextService'];
 
-/* @ngInject */
-function ConfigurationController($location, OrderService, $timeout) {
+function ConfigurationController($location, OrderService, $timeout, PageContextService) {
   const self = this;
   self.order = OrderService;
   self.stage = 1;
+
+  PageContextService.headerUrl = 'components/order/orderHeader.htm';
 
   self.console = function () {
     console.log(self.order);

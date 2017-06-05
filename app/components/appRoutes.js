@@ -11,7 +11,6 @@ angular.module('studyscriptApp')
 config.$inject = ['$routeProvider', '$locationProvider'];
 
 // TODO documentation
-/* @ngInject */
 function config($routeProvider, $locationProvider) {
   $locationProvider.html5Mode({
     enabled: true

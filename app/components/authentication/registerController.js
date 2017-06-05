@@ -11,7 +11,6 @@ angular.module('authentication')
 RegisterController.$inject = ['$scope', 'AuthenticationService'];
 
 // TODO docu
-/* @ngInject */
 function RegisterController($scope, AuthenticationService) {
   var self = this;
 
