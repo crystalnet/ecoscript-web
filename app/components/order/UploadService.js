@@ -13,7 +13,7 @@ UploadService.$inject = ['AuthenticationService', '$q', 'UtilsService'];
 function UploadService(AuthenticationService, $q, UtilsService) {
   const self = this;
 
-  self.uploadFile = function (file) {
+  self.uploadScript = function (script) {
     const deferred = $q.defer();
 
     const nextFunction = function (snapshot) {
@@ -63,16 +63,15 @@ function UploadService(AuthenticationService, $q, UtilsService) {
       //  .then(console.log('qwer')), 2000);
     };
 
-    const id = UtilsService.generateShortId();
     const uid = AuthenticationService.getUser().uid;
-    const storage = firebase.storage().ref('uploads/' + uid + '/' + id +
+    const storage = firebase.storage().ref('uploads/' + uid + '/' + script.id +
       '.pdf');
     const metadata = {
       customMetadata: {
-        name: file.name.slice(0, file.name.lastIndexOf('.'))
+        name: script.file.name
       }
     };
-    const uploadTask = storage.put(file, metadata);
+    const uploadTask = storage.put(script.file, metadata);
 
     // Listen for state changes, errors, and completion of the upload.
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,

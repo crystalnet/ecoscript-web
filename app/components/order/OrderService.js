@@ -16,41 +16,56 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
   self.scripts = [];
   self.id = UtilsService.generateShortId();
 
-  self.addScript = function(file) {
+  self.addScript = function (file) {
     const deferred = $q.defer();
 
-    UploadService.uploadFile(file)
-      .then(function(result) {
-        self.scripts = [{file: file, configuration: self.configuration}];
-        // For future extension self.scripts.push(file);
+    let script = {
+      id: UtilsService.generateShortId(),
+      file: file,
+      configuration: angular.copy(self.configuration)
+    };
 
-        const script = self.scripts[0].configuration;
-        script.title = self.scripts[0].file.name;
-        script.title = script.title.substring(0, script.title.lastIndexOf('.'));
+    UploadService.uploadScript(script)
+      .then(function (result) {
+        self.scripts.push(script);
 
-        let arr = script.title.split(/\s|_/);
-        for (let i = 0, l = arr.length; i < l; i++) {
-          arr[i] = arr[i].substr(0, 1).toUpperCase() +
-            (arr[i].length > 1 ? arr[i].substr(1).toLowerCase() : '');
+        let title = script.file.name;
+        title = title.substring(0, title.lastIndexOf('.'));
+        title = title.split(/\s|_/);
+        for (let i = 0, l = title.length; i < l; i++) {
+          title[i] = title[i].substr(0, 1).toUpperCase() +
+            (title[i].length > 1 ? title[i].substr(1).toLowerCase() : '');
         }
-        script.title = arr.join(' ');
+        script.configuration.title = title.join(' ');
 
         deferred.resolve(result);
-      }, function(error) {
+      }, function (error) {
         deferred.reject(error);
-      }, function(notification) {
+      }, function (notification) {
         deferred.notify(notification);
       });
 
     return deferred.promise;
   };
 
-  self.update = function() {
-    let location = 'orders/' + AuthenticationService.getUser().uid + '/' + self.id;
-    firebase.database().ref(location).set({
-      scripts: self.scripts,
-      adress: 'Dies ist eine Adresse'
-    });
+  self.update = function () {
+    const uid = AuthenticationService.getUser().uid;
+    let location = 'orders/' + uid + '/' + self.id;
+
+    let data = {
+      address: 'Dies ist eine Adresse',
+      scripts: {}
+    };
+
+    for (let script of self.scripts) {
+      data.scripts[script.id] = script.configuration;
+    }
+
+    // Remove Angular Properties
+    data = angular.toJson(data);
+    data = angular.fromJson(data);
+
+    firebase.database().ref(location).set(data);
   };
 
   self.plans = [
