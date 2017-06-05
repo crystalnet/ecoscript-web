@@ -55,20 +55,14 @@
               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
         {{option.name}}
       </button>
-    </div>
 
-    <div class="mdl-cell mdl-cell--8-col mdl-grid" data-ng-show="controller.order.stage == 5">
-      <button data-ng-repeat="option in controller.order.pagesPerSide"
-              data-ng-click="controller.order.scripts[0].configuration.pagesPerSide = option"
-              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-        {{option.name}}
-      </button>
-
+      <div>
       <button data-ng-repeat="option in controller.order.twoSided"
               data-ng-click="controller.order.scripts[0].configuration.twoSided = option"
               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
         {{option.name}}
       </button>
+      </div>
     </div>
 
     <div class="mdl-cell mdl-cell--6-col mdl-cell--6-offset">
