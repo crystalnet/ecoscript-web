@@ -10,16 +10,9 @@ angular.module('order')
 
 ConfigurationController.$inject = ['$location', 'OrderService', '$timeout', 'PageContextService'];
 
-function ConfigurationController($location, OrderService, $timeout, PageContextService) {
+function ConfigurationController($location, OrderService, $timeout) {
   const self = this;
   self.order = OrderService;
-  self.stage = 1;
-
-  PageContextService.headerUrl = 'components/order/orderHeader.htm';
-
-  self.console = function () {
-    console.log(self.order);
-  };
 
   if (self.order.scripts.length === 0) {
     $timeout(function () {
@@ -46,25 +39,4 @@ function ConfigurationController($location, OrderService, $timeout, PageContextS
         });
     });
   };
-
-  self.next = function () {
-    self.validateInputs();
-    self.order.update();
-    self.stage = Math.min(self.stage + 1, 5);
-  };
-
-  self.previous = function () {
-    self.validateInputs();
-    self.order.update();
-    self.stage = Math.max(self.stage - 1, 1);
-  };
-
-  self.validateInputs = function () {
-    // const isScriptUploaded = self.order.scripts.length > 0;
-    // const isTitleSelected = Boolean(self.order.scripts[0].configuration.title);
-    // const isPlanValid = self.order.plans.indexOf(self.order.scripts[0].configuration.plan) > -1;
-    // const isColorValid = self.order.colors.indexOf(self.order.scripts[0].configuration.color) > -1;
-    // const isScaleValid = self.order.pagesPerSide.indexOf(self.order.scripts[0].configuration.pagesPerSide) > -1;
-    // const isSideValid = self.order.twoSided.indexOf(self.order.scripts[0].configuration.twoSided) > -1;
-  }
 }

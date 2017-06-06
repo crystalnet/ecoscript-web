@@ -1,84 +1,63 @@
-<div data-ng-controller="configurationController as controller">
+<div class="mdl-cell mdl-cell--8-col" data-ng-controller="configurationController as controller">
 
-  <div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--2-col mdl-cell--2-offset">
-      Stage: {{controller.stage}}
+  <div data-ng-show="order.Order.stage == 1">
+    <h3>Upload your script.</h3>
+    <button id="uploadButton" ngfSelect ngf-select="controller.uploadFiles($files, $invalidFiles)"
+            accept="application/pdf" ngf-validate="{size: {max: '50MB'}, pattern: '.pdf'}"
+            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+      PDF hochladen<i class="material-icons">file_upload</i>
+    </button>
+    <br><br>
+    File:
+    <ul>
+      <li ng-repeat="file in controller.files" style="font:smaller">{{file.name}} {{file.$errorParam}}
+        <span class="progress" ng-show="file.progress >= 0"/>
+        <div style="width:{{file.progress}}%"
+        >{{file.progress | number:2}}%
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="mdl-cell mdl-cell--8-col" data-ng-show="order.Order.stage == 2">
+    <h3>Give it a title.</h3>
+    <div class="mdl-textfield mdl-js-textfield">
+      <input class="mdl-textfield__input" type="text" id="sample1"
+             data-ng-model="controller.order.scripts[0].configuration.title">
+      <label class="mdl-textfield__label" for="sample1">Text...</label>
     </div>
+  </div>
 
-    <div class="mdl-cell mdl-cell--8-col" data-ng-show="controller.stage == 1">
-      <h3>Upload your script.</h3>
-      <button id="uploadButton" ngfSelect ngf-select="controller.uploadFiles($files, $invalidFiles)"
-              accept="application/pdf" ngf-validate="{size: {max: '50MB'}, pattern: '.pdf'}"
-              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-        PDF hochladen<i class="material-icons">file_upload</i>
-      </button>
-      <br><br>
-      File:
-      <ul>
-        <li ng-repeat="file in controller.files" style="font:smaller">{{file.name}} {{file.$errorParam}}
-          <span class="progress" ng-show="file.progress >= 0"/>
-          <div style="width:{{file.progress}}%"
-          >{{file.progress | number:2}}%
-          </div>
-        </li>
-      </ul>
-    </div>
+  <div class="mdl-cell mdl-cell--8-col mdl-grid" data-ng-show="order.Order.stage == 3">
+    <button data-ng-repeat="plan in controller.order.plans"
+            data-ng-click="controller.order.scripts[0].configuration.plan = plan"
+            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+      {{plan.name}}
+    </button>
+  </div>
 
-    <div class="mdl-cell mdl-cell--8-col" data-ng-show="controller.stage == 2">
-      <h3>Give it a title.</h3>
-      <div class="mdl-textfield mdl-js-textfield">
-        <input class="mdl-textfield__input" type="text" id="sample1"
-               data-ng-model="controller.order.scripts[0].configuration.title">
-        <label class="mdl-textfield__label" for="sample1">Text...</label>
-      </div>
-    </div>
+  <div class="mdl-cell mdl-cell--8-col mdl-grid" data-ng-show="order.Order.stage == 4">
+    <button data-ng-repeat="color in controller.order.colors"
+            data-ng-click="controller.order.scripts[0].configuration.color = color"
+            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+      {{color.name}}
+    </button>
+  </div>
 
-    <div class="mdl-cell mdl-cell--8-col mdl-grid" data-ng-show="controller.stage == 3">
-      <button data-ng-repeat="plan in controller.order.plans"
-              data-ng-click="controller.order.scripts[0].configuration.plan = plan"
-              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-        {{plan.name}}
-      </button>
-    </div>
+  <div class="mdl-cell mdl-cell--8-col mdl-grid" data-ng-show="order.Order.stage == 5">
+    <button data-ng-repeat="option in controller.order.pagesPerSide"
+            data-ng-click="controller.order.scripts[0].configuration.pagesPerSide = option"
+            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+      {{option.name}}
+    </button>
 
-    <div class="mdl-cell mdl-cell--8-col mdl-grid" data-ng-show="controller.stage == 4">
-      <button data-ng-repeat="color in controller.order.colors"
-              data-ng-click="controller.order.scripts[0].configuration.color = color"
-              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-        {{color.name}}
-      </button>
-    </div>
-
-    <div class="mdl-cell mdl-cell--8-col mdl-grid" data-ng-show="controller.stage == 5">
-      <button data-ng-repeat="option in controller.order.pagesPerSide"
-              data-ng-click="controller.order.scripts[0].configuration.pagesPerSide = option"
-              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-        {{option.name}}
-      </button>
-
-      <div>
+    <div>
       <button data-ng-repeat="option in controller.order.twoSided"
               data-ng-click="controller.order.scripts[0].configuration.twoSided = option"
               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
         {{option.name}}
       </button>
-      </div>
     </div>
-
-    <div class="mdl-cell mdl-cell--6-col mdl-cell--6-offset">
-      <button data-ng-click="controller.previous()"
-              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-        Zurück
-      </button>
-      <button data-ng-click="controller.next()"
-              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-        Weiter
-      </button>
-      <button data-ng-click="controller.console()"
-              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-        Show Order
-      </button>
-    </div>
-
   </div>
+
 </div>

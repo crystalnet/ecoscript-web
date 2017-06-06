@@ -13,8 +13,9 @@ OrderService.$inject = ['UploadService', '$q', 'UtilsService', 'AuthenticationSe
 function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
   const self = this;
 
-  self.scripts = [];
+  self.stage = 1;
   self.id = UtilsService.generateShortId();
+  self.scripts = [];
   AuthenticationService.anonymousSignIn();
 
   self.addScript = function (file) {
@@ -68,6 +69,31 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
     data = angular.fromJson(data);
 
     firebase.database().ref(location).set(data);
+  };
+
+  self.next = function() {
+    self.validateInputs();
+    self.update();
+    self.stage = Math.min(self.stage + 1, 7);
+  };
+
+  self.previous = function() {
+    self.validateInputs();
+    self.update();
+    self.stage = Math.max(self.stage - 1, 1);
+  };
+
+  self.console = function () {
+    console.log(self);
+  };
+
+  self.validateInputs = function () {
+    // const isScriptUploaded = self.order.scripts.length > 0;
+    // const isTitleSelected = Boolean(self.order.scripts[0].configuration.title);
+    // const isPlanValid = self.order.plans.indexOf(self.order.scripts[0].configuration.plan) > -1;
+    // const isColorValid = self.order.colors.indexOf(self.order.scripts[0].configuration.color) > -1;
+    // const isScaleValid = self.order.pagesPerSide.indexOf(self.order.scripts[0].configuration.pagesPerSide) > -1;
+    // const isSideValid = self.order.twoSided.indexOf(self.order.scripts[0].configuration.twoSided) > -1;
   };
 
   self.plans = [

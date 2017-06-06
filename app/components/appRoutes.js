@@ -26,7 +26,7 @@ function config($routeProvider, $locationProvider) {
     })
 
     .when('/order', {
-      templateUrl: 'components/order/configuration/configurationView.htm'
+      templateUrl: 'components/order/orderView.htm'
     })
 
     .otherwise({
