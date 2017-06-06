@@ -15,6 +15,7 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
 
   self.scripts = [];
   self.id = UtilsService.generateShortId();
+  AuthenticationService.anonymousSignIn();
 
   self.addScript = function (file) {
     const deferred = $q.defer();
@@ -49,7 +50,7 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
   };
 
   self.update = function () {
-    const uid = AuthenticationService.getUser().uid;
+    const uid = AuthenticationService.uid;
     let location = 'orders/' + uid + '/' + self.id;
 
     let data = {
@@ -57,7 +58,8 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
       scripts: {}
     };
 
-    for (let script of self.scripts) {
+    for (var i = 0; i < self.scripts.length; i++) {
+      let script = self.scripts[i];
       data.scripts[script.id] = script.configuration;
     }
 

@@ -19,6 +19,5 @@ function NavigationController($location, PageContextService, $anchorScroll) {
     $location.path(path);
     $location.hash(hash);
     $anchorScroll();
-    console.log('asdf');
   };
 }
