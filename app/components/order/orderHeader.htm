@@ -1,0 +1,34 @@
+<div class="mdl-layout__header-row">
+
+  <div class="mdl-layout-spacer mdl-layout--large-screen-only"></div>
+
+  <span class="mdl-layout-title">
+
+        <a class="mdl-navigation__link" data-ng-click="navigation.scrollTo('/', 'top')" href="">
+           <img class="site-header__scripteco_logo" src="images/script_eco_logo.png" alt="scripteco Logo">
+        </a>
+      </span>
+
+  <!-- Add spacer, to align navigation to the right -->
+  <div class="mdl-layout-spacer"></div>
+
+  <!-- Navigation. We hide it in small screens.  <a class="mdl-navigation__link mdl-color-text--primary " data-ng-click="navigation.scrollTo('/', '')" href="">
+      <img src="images/script_eco_logo.png" height="38" width="141"/>
+    </a> -->
+  <nav class="mdl-navigation ">
+    <a class="mdl-navigation__link mdl-layout--large-screen-only mdl-color-text--primary"
+       data-ng-click="navigation.scrollTo('/faq', '')" href=""><h6>Lalala</h6></a>
+    <a class="mdl-navigation__link mdl-layout--large-screen-only mdl-color-text--primary"
+       data-ng-click="navigation.scrollTo('/', 'products')" href=""><h6>Produkte</h6></a>
+    <a class="mdl-navigation__link mdl-layout--large-screen-only mdl-color-text--primary"
+       data-ng-click="navigation.scrollTo('/login', '')" href=""><h6>Anmelden</h6></a>
+    <a class="mdl-navigation__link mdl-color-text--primary" href="">
+      <button data-ng-click="navigation.scrollTo('/order', '')"
+              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+        Drucken
+      </button>
+    </a>
+  </nav>
+
+  <div class="mdl-layout-spacer mdl-layout--large-screen-only"></div>
+</div>

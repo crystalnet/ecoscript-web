@@ -2,11 +2,7 @@
  * Created by crystalneth on 11-Mar-17.
  */
 
-(function () {
-  'use strict';
-
   // Define the module
-  /* @ngInject */
   angular.module('studyscriptApp', [
     'ngRoute',
     'authentication',
@@ -14,6 +10,7 @@
     'ngFileUpload',
     'firebase'
   ])
+    // Prevent MDL issues
     .run(function($rootScope, $timeout) {
       $rootScope.$on('$viewContentLoaded', function() {
         $timeout(function() {
@@ -21,4 +18,3 @@
         });
       });
     });
-})();

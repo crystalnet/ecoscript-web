@@ -2,24 +2,19 @@
  * Created by dominik on 10/03/2017.
  */
 
-(function() {
-  'use strict';
+// Get the module
+angular.module('authentication')
 
-  // Get the module
-  angular.module('authentication')
+// Define controllers
+  .controller('registerController', RegisterController);
 
-  // Define controllers
-    .controller('registerController', RegisterController);
+RegisterController.$inject = ['$scope', 'AuthenticationService'];
 
-  RegisterController.$inject = ['$scope', 'AuthenticationService'];
+// TODO docu
+function RegisterController($scope, AuthenticationService) {
+  var self = this;
 
-  // TODO docu
-  /* @ngInject */
-  function RegisterController($scope, AuthenticationService) {
-    var self = this;
-
-    self.send = function() {
-      AuthenticationService.register(self.email, self.password);
-    };
-  }
-})();
+  self.send = function() {
+    AuthenticationService.register(self.email, self.password);
+  };
+}

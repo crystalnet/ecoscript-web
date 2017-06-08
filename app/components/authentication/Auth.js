@@ -1,16 +1,13 @@
-(function() {
-  'use strict';
+// Get the module
+angular.module('authentication')
 
-  // Get the module
-  angular.module('authentication')
+// Define service
+  .factory('Auth', Auth);
 
-  // Define service
-    .factory('Auth', Auth);
+Auth.$inject = ['$firebaseAuth'];
 
-  Auth.$inject = ['$firebaseAuth'];
+// TODO docu
+function Auth($firebaseAuth) {
+  return $firebaseAuth();
+}
 
-  // TODO docu
-  function Auth($firebaseAuth) {
-    return $firebaseAuth();
-  }
-})();

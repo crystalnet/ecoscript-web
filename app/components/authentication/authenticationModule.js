@@ -1,10 +1,6 @@
 /**
-  * Created by crystalneth on 11-Mar-17.
+ * Created by crystalneth on 11-Mar-17.
  */
 
-(function() {
-  'use strict';
-
-  // Define the module
-  angular.module('authentication', ['firebase']);
-})();
+// Define the module
+angular.module('authentication', ['firebase']);

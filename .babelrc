@@ -1,5 +1,6 @@
 {
   "presets": ["es2015"],
+  "plugins": ["angularjs-annotate"],
   // Remove the line below to enable ES2015 support.
 //  "only": [
 //    "gulpfile.babel.js",
