@@ -16,6 +16,7 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
   self.stage = 1;
   self.id = UtilsService.generateShortId();
   self.scripts = [];
+  self.particulars = {};
   AuthenticationService.anonymousSignIn();
 
   self.addScript = function (file) {
@@ -50,12 +51,14 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
     return deferred.promise;
   };
 
+
+
   self.update = function () {
     const uid = AuthenticationService.uid;
     let location = 'orders/' + uid + '/' + self.id;
 
     let data = {
-      address: 'Dies ist eine Adresse',
+      particulars: self.particulars,
       scripts: {}
     };
 
@@ -68,13 +71,15 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
     data = angular.toJson(data);
     data = angular.fromJson(data);
 
+    console.log(data);
+
     firebase.database().ref(location).set(data);
   };
 
   self.next = function() {
     self.validateInputs();
     self.update();
-    self.stage = Math.min(self.stage + 1, 7);
+    self.stage = Math.min(self.stage + 1, 8);
   };
 
   self.previous = function() {

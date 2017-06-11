@@ -28,7 +28,7 @@ function ConfigurationController($location, OrderService, $timeout) {
       self.order.addScript(file)
         .then(function (result) {
           if (self.order.scripts.length > 0) {
-            self.next();
+            self.order.next();
           }
         }, function (error) {
           self.errFiles.push(file);

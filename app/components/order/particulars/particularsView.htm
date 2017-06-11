@@ -68,14 +68,38 @@
 
   <div data-ng-show="order.Order.stage == 7">
     <h3>Send it to where?</h3>
-    <button data-ng-click="controller.previous()"
-            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-      At home
-    </button>
-    <button data-ng-click="controller.previous()"
-            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-      Far away
-    </button>
+    <div class="mdl-textfield mdl-js-textfield">
+      <input class="mdl-textfield__input" type="text" id="firstname"
+             data-ng-model="controller.order.particulars.firstname">
+      <label class="mdl-textfield__label" for="firstname">Vorname...</label>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield">
+      <input class="mdl-textfield__input" type="text" id="lastname"
+             data-ng-model="controller.order.particulars.lastname">
+      <label class="mdl-textfield__label" for="lastname">Nachname...</label>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield">
+      <input class="mdl-textfield__input" type="text" id="street"
+             data-ng-model="controller.order.particulars.street">
+      <label class="mdl-textfield__label" for="street">Straße...</label>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield">
+      <input class="mdl-textfield__input" type="text" id="zip"
+             data-ng-model="controller.order.particulars.zip">
+      <label class="mdl-textfield__label" for="zip">PLZ...</label>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield">
+      <input class="mdl-textfield__input" type="text" id="city"
+             data-ng-model="controller.order.particulars.city">
+      <label class="mdl-textfield__label" for="city">Ort...</label>
+    </div>
   </div>
 
+  <div data-ng-show="order.Order.stage == 8">
+    <h3>Let p(l)ay!</h3>
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+            data-ng-click="">
+      Defür musst du bezahlen.
+    </button>
+  </div>
 </div>
