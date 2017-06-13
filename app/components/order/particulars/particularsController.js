@@ -8,25 +8,50 @@ angular.module('order')
 // Define controller
   .controller('particularsController', particularController);
 
-particularController.$inject = ['$location', 'OrderService', '$timeout', 'PageContextService'];
+particularController.$inject = ['$location', 'OrderService', '$timeout', 'PageContextService', 'AuthenticationService'];
 
-function particularController($location, OrderService, $timeout) {
+function particularController($location, OrderService, $timeout, PageContextService, AuthenticationService) {
   const self = this;
+  const Authentication = AuthenticationService;
   self.order = OrderService;
 
   self.toggle = function(element) {
     switch (element) {
       case 'login':
-        self.login = true;
-        self.register = false;
+        self.createNewAccount = false;
         break;
       case 'register':
-        self.login = false;
-        self.register = true;
+        self.createNewAccount = true;
         break;
       default:
-        self.login = false;
-        self.register = false;
+        self.createNewAccount = true;
     }
+  };
+
+  self.register = function() {
+    Authentication.register(self.credentials.email, self.credentials.password);
+  };
+
+  self.googleRegister = function() {
+    Authentication.googleRegister();
+  };
+
+  self.facebookRegister = function() {
+    Authentication.facebookRegister();
+  };
+
+  self.signIn = function() {
+    Authentication.signIn(self.credentials.email, self.credentials.password);
+    self.order.update();
+  };
+
+  self.googleSignIn = function() {
+    Authentication.googleSignIn();
+    self.order.update();
+  };
+
+  self.facebookSignIn = function() {
+    Authentication.facebookSignIn();
+    self.order.update();
   };
 }

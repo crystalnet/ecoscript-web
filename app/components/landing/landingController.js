@@ -12,9 +12,9 @@ LandingController.$inject = ['$location'];
 
 /* @ngInject */
 function LandingController($location) {
-  var self = this;
+  let self = this;
 
-  self.order = function () {
-    $location.path('/order');
-  };
+  // self.order = function () {
+  //   $location.path('/order');
+  // };
 }

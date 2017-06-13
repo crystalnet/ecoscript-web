@@ -8,13 +8,13 @@ angular.module('authentication')
 // Define service
   .service('AuthenticationService', AuthenticationService);
 
-AuthenticationService.$inject = ['Auth'];
+AuthenticationService.$inject = ['Auth', '$location'];
 
 // TODO docu
-function AuthenticationService(Auth) {
+function AuthenticationService(Auth, $location) {
   const self = this;
 
-  self.uid = '';
+  // self.uid = '';
 
   Auth.$onAuthStateChanged(function (user) {
     if (user) {
@@ -22,49 +22,14 @@ function AuthenticationService(Auth) {
       self.uid = user.uid;
       self.isAnonymous = user.isAnonymous;
       console.log('Logged in as: ' + user.uid);
+    } else {
+      self.user = null;
+      self.uid = null;
+      self.isAnonymous = null;
+      $location.path('/');
+      console.log('Logged out');
     }
   });
-
-
-  self.googleSignIn = function () {
-    // var provider = new Auth.$GoogleAuthProvider();
-    const provider = new firebase.auth.GoogleAuthProvider();
-    // provider.addScope('https://www.googleapis.com/auth/plus.login');
-
-    // self.providerSignIn(provider);
-    self.linkWithProvider(provider);
-  };
-
-  self.facebookSignIn = function () {
-    // var provider = new Auth.$GoogleAuthProvider();
-    const provider = new firebase.auth.FacebookAuthProvider();
-    // provider.setCustomParameters({
-    //   display: 'popup'
-    // });
-
-    self.providerSignIn(provider);
-  };
-
-  self.providerSignIn = function (provider) {
-    Auth.$signInWithPopup(provider).then(function (result) {
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      let token = result.credential.accessToken;
-      let credential = firebase.auth.GoogleAuthProvider.credential(token);
-      self.user.link(credential);
-      // The signed-in user info.
-      self.user = result.user;
-      console.log(self.token, ' |', self.user);
-    });
-  };
-
-  self.signIn = function (email, password) {
-    Auth.$signInWithEmailAndPassword(email, password).catch(function (error) {
-      // TODO Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, ' :', errorMessage);
-    });
-  };
 
   self.anonymousSignIn = function () {
     if (!self.user) {
@@ -75,40 +40,94 @@ function AuthenticationService(Auth) {
         console.log(errorCode, errorMessage);
       });
     } else {
-      console.log('alredy logged in');
+      console.log('already logged in');
     }
   };
 
   self.register = function (email, password) {
-    Auth.$createUserWithEmailAndPassword(email, password)
-      .then(function (user) {
-        user.sendEmailVerification();
-      })
-      .catch(function (error) {
+    if (!self.user) {
+      Auth.$createUserWithEmailAndPassword(email, password)
+        .then(function (user) {
+          user.sendEmailVerification();
+        })
+        .catch(function (error) {
+          // TODO Handle Errors here.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, ' :', errorMessage);
+        });
+    } else if (self.isAnonymous) {
+      console.log(email, ', ', password);
+      let credential = firebase.auth.EmailAuthProvider.credential(email, password);
+      self.user.linkWithCredential(credential).then(function (user) {
+        console.log('Account linking success', user);
+      }, function (error) {
+        console.log('Account linking error', error);
+      });
+    } else {
+      console.log('You are already logged in');
+    }
+  };
+
+  self.signIn = function (email, password) {
+    console.log('im here');
+    if (!self.user) {
+      Auth.$signInWithEmailAndPassword(email, password).catch(function (error) {
         // TODO Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, ' :', errorMessage);
       });
+    } else if (self.user.isAnonymous) {
+      console.log('User is anonymous');
+      self.signOut().signIn(email, password);
+    } else {
+      console.log('You are already logged in');
+    }
   };
 
-  self.linkUser = function (email, password) {
-    let credential = firebase.auth.EmailAuthProvider.credential(email, password);
-
-    self.user.link(credential).then(function (user) {
-      console.log("Account linking success", user);
-    }, function (error) {
-      console.log("Account linking error", error);
-    });
+  self.googleSignIn = function () {
+    self.providerSignIn(new firebase.auth.GoogleAuthProvider());
   };
 
-  self.linkWithProvider = function (provider) {
-    self.user.linkWithPopup(provider).then(function (result) {
-      // Accounts successfully linked.
-      let credential = result.credential;
-      self.user = result.user;
+  self.facebookSignIn = function () {
+    self.providerSignIn(new firebase.auth.FacebookAuthProvider());
+  };
+
+  self.providerSignIn = function (provider) {
+    if (!self.user) {
+      Auth.$signInWithPopup(provider).then(function (result) {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        let token = result.credential.accessToken;
+        let credential = firebase.auth.GoogleAuthProvider.credential(token);
+      });
+    } else if (self.user.isAnonymous) {
+      self.signOut().providerSignIn(provider);
+    } else {
+      console.log('You are already logged in');
+    }
+  };
+
+  self.providerRegister = function (provider) {
+    if (!self.user) {
+      self.providerSignIn(provider);
+    } else if (self.user.isAnonymous) {
+      self.user.linkWithPopup(provider).then(function (result) {
+        // Accounts successfully linked.
+        let credential = result.credential;
+      }).catch(function (error) {
+        // Handle Errors here.
+      });
+    } else {
+      console.log('You are already logged in');
+    }
+  };
+
+  self.signOut = function () {
+    firebase.auth().signOut().then(function () {
+      // Logged out
     }).catch(function (error) {
-      // Handle Errors here.
+      // An error happened.
     });
   };
 }

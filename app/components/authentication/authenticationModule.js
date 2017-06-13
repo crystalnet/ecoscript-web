@@ -3,4 +3,4 @@
  */
 
 // Define the module
-angular.module('authentication', ['firebase']);
+angular.module('authentication', ['firebase', 'order']);

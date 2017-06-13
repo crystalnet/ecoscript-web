@@ -15,52 +15,52 @@
       No, continue anonymously
     </button>
 
-    <div data-ng-show="controller.login" data-ng-controller="signInController as signIn">
+    <div data-ng-show="!controller.createNewAccount">
 
       <h4>Login</h4>
 
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="email" id="usernamel" data-ng-model="signIn.email">
+        <input class="mdl-textfield__input" type="email" id="usernamel" data-ng-model="controller.credentials.email">
         <label class="mdl-textfield__label" for="usernamel">Email...</label>
       </div>
 
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="password" id="passwordl" data-ng-model="signIn.password">
+        <input class="mdl-textfield__input" type="password" id="passwordl" data-ng-model="controller.credentials.password">
         <label class="mdl-textfield__label" for="passwordl">Password...</label>
       </div>
 
       <button id="signIn-btn" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored"
-              data-ng-click="signIn.send()">
+              data-ng-click="controller.signIn()">
         <i class="material-icons">keyboard_arrow_right</i>
       </button>
 
       <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
-              data-ng-click="signIn.googleSignIn()">
+              data-ng-click="controller.googleSignIn()">
         Google Sign-in
       </button>
 
       <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
-              data-ng-click="signIn.facebookSignIn()">
+              data-ng-click="controller.facebookSignIn()">
         Facebook Sign-in
       </button>
     </div>
 
-    <div data-ng-show="controller.register" data-ng-controller="registerController as register">
+    <div data-ng-show="controller.createNewAccount">
 
       <h4>Register</h4>
 
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="email" id="usernamer" data-ng-model="register.email">
+        <input class="mdl-textfield__input" type="email" id="usernamer" data-ng-model="controller.credentials.email">
         <label class="mdl-textfield__label" for="usernamer">Email...</label>
       </div>
 
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="password" id="passwordr" data-ng-model="register.password">
+        <input class="mdl-textfield__input" type="password" id="passwordr" data-ng-model="controller.credentials.password">
         <label class="mdl-textfield__label" for="passwordr">Password...</label>
       </div>
 
       <button id="register-btn" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored"
-              data-ng-click="register.send()">
+              data-ng-click="controller.register()">
         <i class="material-icons">keyboard_arrow_right</i>
       </button>
     </div>
