@@ -147,8 +147,12 @@ function AuthenticationService(Auth, $location, $q) {
     }
   };
 
-  self.signOut = function (redirect = true) {
+  self.signOut = function (redirect) {
+    if (redirect == undefined) {
+      redirect = true;
+    }
     const deferred = $q.defer();
+
     firebase.auth().signOut().then(function () {
       self.user = null;
       if (redirect) {

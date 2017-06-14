@@ -1,5 +1,5 @@
-var functions = require('firebase-functions');
-var shortid = require('shortid');
+const functions = require('firebase-functions');
+const PDFJS = require('pdfjs-dist');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
@@ -26,10 +26,19 @@ exports.generateUploadEntry = functions.storage.object().onChange(event => {
   // The resourceState is 'exists' or 'not_exits' (for file/folder deletions).
   const resourceState = object.resourceState;
 
+  let numPages = -1;
+  PDFJS.getDocument(object.name)
+    .then(function (doc) {
+      numPages = doc.numPages;
+    })
+    .catch(function () {
+      numPages = 42;
+    });
+
   if (resourceState === 'exists') {
     // return;
     return admin.database().ref(location).set({
-      pages: 42,
+      pages: numPages,
       name: fileName,
       id: id
     });
