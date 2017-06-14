@@ -21,7 +21,7 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
     AuthenticationService.anonymousSignIn();
   };
 
-  self.reset();
+  // self.reset();
 
   self.checkReset = function() {
     if (!Boolean(AuthenticationService.user)) {
@@ -64,7 +64,7 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
 
 
   self.update = function () {
-    const uid = AuthenticationService.uid;
+    const uid = AuthenticationService.user.uid;
     let location = 'orders/' + uid + '/' + self.id;
 
     let data = {

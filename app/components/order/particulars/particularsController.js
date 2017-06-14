@@ -15,7 +15,7 @@ function particularController($location, OrderService, $timeout, PageContextServ
   const Authentication = AuthenticationService;
   self.order = OrderService;
 
-  self.toggle = function(element) {
+  self.toggle = function (element) {
     switch (element) {
       case 'login':
         self.createNewAccount = false;
@@ -28,30 +28,35 @@ function particularController($location, OrderService, $timeout, PageContextServ
     }
   };
 
-  self.register = function() {
+  self.register = function () {
     Authentication.register(self.credentials.email, self.credentials.password);
   };
 
-  self.googleRegister = function() {
+  self.googleRegister = function () {
     Authentication.googleRegister();
   };
 
-  self.facebookRegister = function() {
+  self.facebookRegister = function () {
     Authentication.facebookRegister();
   };
 
-  self.signIn = function() {
-    Authentication.signIn(self.credentials.email, self.credentials.password);
-    self.order.update();
+  self.signIn = function () {
+    Authentication.signIn(self.credentials.email, self.credentials.password)
+      .then(function () {
+        self.order.next();
+      });
   };
 
-  self.googleSignIn = function() {
-    Authentication.googleSignIn();
-    self.order.update();
+  self.googleSignIn = function () {
+    Authentication.googleSignIn().then(function () {
+      self.order.next();
+    });
   };
 
-  self.facebookSignIn = function() {
-    Authentication.facebookSignIn();
-    self.order.update();
+  self.facebookSignIn = function () {
+    Authentication.facebookSignIn()
+      .then(function () {
+        self.order.next();
+      });
   };
 }

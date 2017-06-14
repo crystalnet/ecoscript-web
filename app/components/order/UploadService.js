@@ -63,7 +63,7 @@ function UploadService(AuthenticationService, $q, UtilsService) {
       //  .then(console.log('qwer')), 2000);
     };
 
-    const uid = AuthenticationService.uid;
+    const uid = AuthenticationService.user.uid;
     const storage = firebase.storage().ref('uploads/' + uid + '/' + script.id +
       '.pdf');
     const metadata = {

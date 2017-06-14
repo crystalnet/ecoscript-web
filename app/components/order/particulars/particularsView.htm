@@ -1,4 +1,4 @@
-<div class="mdl-cell mdl-cell--8-col" data-ng-controller="particularsController as controller">
+<div data-ng-controller="particularsController as controller">
 
   <div data-ng-show="order.Order.stage == 6">
     <h3>Do you have a account?</h3>
@@ -19,13 +19,14 @@
 
       <h4>Login</h4>
 
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <div class="mdl-textfield mdl-js-textfield">
         <input class="mdl-textfield__input" type="email" id="usernamel" data-ng-model="controller.credentials.email">
         <label class="mdl-textfield__label" for="usernamel">Email...</label>
       </div>
 
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="password" id="passwordl" data-ng-model="controller.credentials.password">
+      <div class="mdl-textfield mdl-js-textfield">
+        <input class="mdl-textfield__input" type="password" id="passwordl"
+               data-ng-model="controller.credentials.password">
         <label class="mdl-textfield__label" for="passwordl">Password...</label>
       </div>
 
@@ -49,13 +50,14 @@
 
       <h4>Register</h4>
 
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <div class="mdl-textfield mdl-js-textfield">
         <input class="mdl-textfield__input" type="email" id="usernamer" data-ng-model="controller.credentials.email">
         <label class="mdl-textfield__label" for="usernamer">Email...</label>
       </div>
 
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="password" id="passwordr" data-ng-model="controller.credentials.password">
+      <div class="mdl-textfield mdl-js-textfield">
+        <input class="mdl-textfield__input" type="password" id="passwordr"
+               data-ng-model="controller.credentials.password">
         <label class="mdl-textfield__label" for="passwordr">Password...</label>
       </div>
 
@@ -97,8 +99,9 @@
 
   <div data-ng-show="order.Order.stage == 8">
     <h3>Let p(l)ay!</h3>
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-            data-ng-click="">
+    <button
+      class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+      data-ng-click="">
       Defür musst du bezahlen.
     </button>
   </div>
