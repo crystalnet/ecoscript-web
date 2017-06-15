@@ -8,107 +8,162 @@ angular.module('authentication')
 // Define service
   .service('AuthenticationService', AuthenticationService);
 
-AuthenticationService.$inject = ['Auth'];
+AuthenticationService.$inject = ['Auth', '$location', '$q'];
 
 // TODO docu
-function AuthenticationService(Auth) {
+function AuthenticationService(Auth, $location, $q) {
   const self = this;
 
-  self.uid = '';
+  // self.uid = '';
 
   Auth.$onAuthStateChanged(function (user) {
     if (user) {
-      self.user = user;
-      self.uid = user.uid;
-      self.isAnonymous = user.isAnonymous;
+      //self.user = user;
       console.log('Logged in as: ' + user.uid);
+    } else {
+      //self.user = null;
+      console.log('Logged out');
     }
   });
 
-
-  self.googleSignIn = function () {
-    // var provider = new Auth.$GoogleAuthProvider();
-    const provider = new firebase.auth.GoogleAuthProvider();
-    // provider.addScope('https://www.googleapis.com/auth/plus.login');
-
-    // self.providerSignIn(provider);
-    self.linkWithProvider(provider);
-  };
-
-  self.facebookSignIn = function () {
-    // var provider = new Auth.$GoogleAuthProvider();
-    const provider = new firebase.auth.FacebookAuthProvider();
-    // provider.setCustomParameters({
-    //   display: 'popup'
-    // });
-
-    self.providerSignIn(provider);
-  };
-
-  self.providerSignIn = function (provider) {
-    Auth.$signInWithPopup(provider).then(function (result) {
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      let token = result.credential.accessToken;
-      let credential = firebase.auth.GoogleAuthProvider.credential(token);
-      self.user.link(credential);
-      // The signed-in user info.
-      self.user = result.user;
-      console.log(self.token, ' |', self.user);
-    });
-  };
-
-  self.signIn = function (email, password) {
-    Auth.$signInWithEmailAndPassword(email, password).catch(function (error) {
-      // TODO Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, ' :', errorMessage);
-    });
-  };
-
   self.anonymousSignIn = function () {
     if (!self.user) {
-      firebase.auth().signInAnonymously().catch(function (error) {
-        // TODO Handle Errors here.
-        let errorCode = error.code;
-        let errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
+      firebase.auth().signInAnonymously()
+        .then(function (user) {
+          self.user = user;
+        })
+        .catch(function (error) {
+          // TODO Handle Errors here.
+          let errorCode = error.code;
+          let errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+        });
     } else {
-      console.log('alredy logged in');
+      console.log('already logged in');
     }
   };
 
   self.register = function (email, password) {
-    Auth.$createUserWithEmailAndPassword(email, password)
-      .then(function (user) {
-        user.sendEmailVerification();
-      })
-      .catch(function (error) {
-        // TODO Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, ' :', errorMessage);
+    if (!self.user) {
+      Auth.$createUserWithEmailAndPassword(email, password)
+        .then(function (user) {
+          self.user = user;
+          user.sendEmailVerification();
+        })
+        .catch(function (error) {
+          // TODO Handle Errors here.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, ' :', errorMessage);
+        });
+    } else if (self.user.isAnonymous) {
+      console.log(email, ', ', password);
+      let credential = firebase.auth.EmailAuthProvider.credential(email, password);
+      self.user.linkWithCredential(credential).then(function (user) {
+        console.log('Account linking success', user);
+      }, function (error) {
+        console.log('Account linking error', error);
       });
+    } else {
+      console.log('You are already logged in');
+    }
   };
 
-  self.linkUser = function (email, password) {
-    let credential = firebase.auth.EmailAuthProvider.credential(email, password);
-
-    self.user.link(credential).then(function (user) {
-      console.log("Account linking success", user);
-    }, function (error) {
-      console.log("Account linking error", error);
-    });
+  self.signIn = function (email, password) {
+    const deferred = $q.defer();
+    if (!self.user) {
+      Auth.$signInWithEmailAndPassword(email, password)
+        .then(function (user) {
+          self.user = user;
+          deferred.resolve('signed in');
+        })
+        .catch(function (error) {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, ' :', errorMessage);
+          deferred.reject('unable to login');
+        });
+    } else if (self.user.isAnonymous) {
+      self.signOut(false).then(function () {
+        self.signIn(email, password)
+          .then(function () {
+            deferred.resolve('merged account');
+          })
+          .catch(function () {
+            deferred.resolve('unable to merge accounts');
+          });
+      });
+    } else {
+      console.log('You are already logged in');
+      deferred.resolve('already logged in');
+    }
+    return deferred.promise;
   };
 
-  self.linkWithProvider = function (provider) {
-    self.user.linkWithPopup(provider).then(function (result) {
-      // Accounts successfully linked.
-      let credential = result.credential;
-      self.user = result.user;
+  self.googleSignIn = function () {
+    self.providerSignIn(new firebase.auth.GoogleAuthProvider());
+  };
+
+  self.facebookSignIn = function () {
+    self.providerSignIn(new firebase.auth.FacebookAuthProvider());
+  };
+
+  self.providerSignIn = function (provider) {
+    const deferred = $q.defer();
+    if (!self.user) {
+      Auth.$signInWithPopup(provider)
+        .then(function (result) {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          let token = result.credential.accessToken;
+          let credential = firebase.auth.GoogleAuthProvider.credential(token);
+          deferred.resolve('signed in');
+        })
+        .catch(function (error) {
+          deferred.resolve('unable to sign in');
+        });
+    } else if (self.user.isAnonymous) {
+      self.signOut(false).then(function () {
+        self.providerSignIn(provider);
+      });
+    } else {
+      console.log('You are already logged in');
+      deferred.resolve('already logged in');
+    }
+    return deferred.promise;
+  };
+
+  self.providerRegister = function (provider) {
+    if (!self.user) {
+      self.providerSignIn(provider);
+    } else if (self.user.isAnonymous) {
+      self.user.linkWithPopup(provider).then(function (result) {
+        // Accounts successfully linked.
+        let credential = result.credential;
+      }).catch(function (error) {
+        // Handle Errors here.
+      });
+    } else {
+      console.log('You are already logged in');
+    }
+  };
+
+  self.signOut = function (redirect) {
+    if (redirect == undefined) {
+      redirect = true;
+    }
+    const deferred = $q.defer();
+
+    firebase.auth().signOut().then(function () {
+      self.user = null;
+      if (redirect) {
+        $location.path('/');
+      }
+      // Logged out
+      deferred.resolve('logged out');
     }).catch(function (error) {
-      // Handle Errors here.
+      // An error happened.
+      deferred.reject('problem with log out');
     });
+    return deferred.promise;
   };
 }

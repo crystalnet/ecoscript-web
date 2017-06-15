@@ -17,11 +17,23 @@
     </a> -->
   <nav class="mdl-navigation ">
     <a class="mdl-navigation__link mdl-layout--large-screen-only mdl-color-text--primary"
-       data-ng-click="navigation.scrollTo('/faq', '')" href=""><h6>FAQ</h6></a>
+       data-ng-click="navigation.scrollTo('/faq', '')" href="">
+      <h6>FAQ</h6>
+    </a>
     <a class="mdl-navigation__link mdl-layout--large-screen-only mdl-color-text--primary"
-       data-ng-click="navigation.scrollTo('/', 'products')" href=""><h6>Produkte</h6></a>
+       data-ng-click="navigation.scrollTo('/', 'products')" href="">
+      <h6>Produkte</h6>
+    </a>
     <a class="mdl-navigation__link mdl-layout--large-screen-only mdl-color-text--primary"
-       data-ng-click="navigation.scrollTo('/login', '')" href=""><h6>Anmelden</h6></a>
+       data-ng-click="navigation.scrollTo('/login', '')" href=""
+       data-ng-hide="navigation.signedIn()">
+      <h6>Anmelden</h6>
+    </a>
+    <a class="mdl-navigation__link mdl-layout--large-screen-only mdl-color-text--primary"
+       data-ng-click="navigation.signOut()" href=""
+       data-ng-show="navigation.signedIn()">
+      <h6>Abmelden</h6>
+    </a>
     <a class="mdl-navigation__link mdl-color-text--primary" data-ng-click="navigation.scrollTo('/order', '')" href="">
       <button
               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">

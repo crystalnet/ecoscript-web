@@ -1,4 +1,4 @@
-<div class="mdl-cell mdl-cell--8-col" data-ng-controller="configurationController as controller">
+<div data-ng-controller="configurationController as controller">
 
   <div data-ng-show="order.Order.stage == 1">
     <h3>Upload your script.</h3>
@@ -12,14 +12,14 @@
     <ul>
       <li ng-repeat="file in controller.files" style="font:smaller">{{file.name}} {{file.$errorParam}}
         <span class="progress" ng-show="file.progress >= 0"/>
-        <div style="width:{{file.progress}}%"
-        >{{file.progress | number:2}}%
+        <div style="width:{{file.progress}}%">
+          {{file.progress | number:2}}%
         </div>
       </li>
     </ul>
   </div>
 
-  <div class="mdl-cell mdl-cell--8-col" data-ng-show="order.Order.stage == 2">
+  <div data-ng-show="order.Order.stage == 2">
     <h3>Give it a title.</h3>
     <div class="mdl-textfield mdl-js-textfield">
       <input class="mdl-textfield__input" type="text" id="sample1"
@@ -28,7 +28,7 @@
     </div>
   </div>
 
-  <div class="mdl-cell mdl-cell--8-col mdl-grid" data-ng-show="order.Order.stage == 3">
+  <div data-ng-show="order.Order.stage == 3">
     <button data-ng-repeat="plan in controller.order.plans"
             data-ng-click="controller.order.scripts[0].configuration.plan = plan"
             class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
@@ -36,7 +36,7 @@
     </button>
   </div>
 
-  <div class="mdl-cell mdl-cell--8-col mdl-grid" data-ng-show="order.Order.stage == 4">
+  <div data-ng-show="order.Order.stage == 4">
     <button data-ng-repeat="color in controller.order.colors"
             data-ng-click="controller.order.scripts[0].configuration.color = color"
             class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
@@ -44,7 +44,7 @@
     </button>
   </div>
 
-  <div class="mdl-cell mdl-cell--8-col mdl-grid" data-ng-show="order.Order.stage == 5">
+  <div data-ng-show="order.Order.stage == 5">
     <button data-ng-repeat="option in controller.order.pagesPerSide"
             data-ng-click="controller.order.scripts[0].configuration.pagesPerSide = option"
             class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">

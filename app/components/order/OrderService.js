@@ -13,10 +13,21 @@ OrderService.$inject = ['UploadService', '$q', 'UtilsService', 'AuthenticationSe
 function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
   const self = this;
 
-  self.stage = 1;
-  self.id = UtilsService.generateShortId();
-  self.scripts = [];
-  AuthenticationService.anonymousSignIn();
+  self.reset = function () {
+    self.stage = 1;
+    self.id = UtilsService.generateShortId();
+    self.scripts = [];
+    self.particulars = {};
+    AuthenticationService.anonymousSignIn();
+  };
+
+  // self.reset();
+
+  self.checkReset = function() {
+    if (!Boolean(AuthenticationService.user)) {
+      self.reset();
+    }
+  };
 
   self.addScript = function (file) {
     const deferred = $q.defer();
@@ -29,7 +40,8 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
 
     UploadService.uploadScript(script)
       .then(function (result) {
-        self.scripts.push(script);
+        // self.scripts.push(script);
+        self.scripts[0] = script;
 
         let title = script.file.name;
         title = title.substring(0, title.lastIndexOf('.'));
@@ -50,12 +62,13 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
     return deferred.promise;
   };
 
+
   self.update = function () {
-    const uid = AuthenticationService.uid;
+    const uid = AuthenticationService.user.uid;
     let location = 'orders/' + uid + '/' + self.id;
 
     let data = {
-      address: 'Dies ist eine Adresse',
+      particulars: self.particulars,
       scripts: {}
     };
 
@@ -71,13 +84,13 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
     firebase.database().ref(location).set(data);
   };
 
-  self.next = function() {
+  self.next = function () {
     self.validateInputs();
     self.update();
-    self.stage = Math.min(self.stage + 1, 7);
+    self.stage = Math.min(self.stage + 1, 8);
   };
 
-  self.previous = function() {
+  self.previous = function () {
     self.validateInputs();
     self.update();
     self.stage = Math.max(self.stage - 1, 1);
