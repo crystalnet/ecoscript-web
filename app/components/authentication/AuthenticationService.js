@@ -26,21 +26,27 @@ function AuthenticationService(Auth, $location, $q) {
     }
   });
 
-  self.anonymousSignIn = function () {
+  self.anonymousSignIn = function() {
+    const deferred = $q.defer();
+
     if (!self.user) {
       firebase.auth().signInAnonymously()
         .then(function (user) {
           self.user = user;
+          deferred.resolve('successful anonymous login');
         })
         .catch(function (error) {
           // TODO Handle Errors here.
           let errorCode = error.code;
           let errorMessage = error.message;
           console.log(errorCode, errorMessage);
+          deferred.reject('error with anonymous login');
         });
     } else {
       console.log('already logged in');
+      deferred.resolve('already logged in');
     }
+    return deferred.promise;
   };
 
   self.register = function (email, password) {

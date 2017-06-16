@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
-const PDFJS = require('pdfjs-dist');
+// const PDFJS = require('pdfjs');
+const PDF = require('azure-pdfinfo');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
@@ -15,32 +16,37 @@ exports.generateUploadEntry = functions.storage.object().onChange(event => {
   const object = event.data;
   // The File Path
   const filePath = object.name;
-  // The location for the database entry
-  const location = filePath.slice(0, filePath.lastIndexOf('.'));
-  // The id of the script
-  const id = filePath.split('/').pop();
+
   // File metadata
   const metadata = object.metadata;
-  // File meta
-  const fileName = metadata.name ? metadata.name : id;
+
   // The resourceState is 'exists' or 'not_exits' (for file/folder deletions).
   const resourceState = object.resourceState;
 
   let numPages = -1;
-  PDFJS.getDocument(object.name)
-    .then(function (doc) {
-      numPages = doc.numPages;
-    })
-    .catch(function () {
-      numPages = 42;
-    });
+  console.log(object.mediaLink);
+  var pdf = PDF(object.mediaLink);
+
+  pdf.info(function(err, meta) {
+    if (err) console.log('Error pdfinfo: ', err);
+    console.log('pdf info', meta);
+  });
+
+
+  // PDFJS.getDocument(object.mediaLink)
+  //   .then(function (doc) {
+  //     numPages = doc.numPages;
+  //   })
+  //   .catch(function () {
+  //     numPages = 42;
+  //   });
 
   if (resourceState === 'exists') {
     // return;
-    return admin.database().ref(location).set({
-      pages: numPages,
-      name: fileName,
-      id: id
+    return admin.database().ref('scripts/' + metadata.key).set({
+      pages: 42,
+      name: metadata.name,
+      user: metadata.uid
     });
   }
   return null;

@@ -64,11 +64,17 @@ function UploadService(AuthenticationService, $q, UtilsService) {
     };
 
     const uid = AuthenticationService.user.uid;
-    const storage = firebase.storage().ref('uploads/' + uid + '/' + script.id +
+    const location = firebase.database().ref('users/' + uid + '/scripts').push(true);
+    const key = location.key;
+    // key.set({key: true});
+
+    const storage = firebase.storage().ref('uploads/' + uid + '/' + key +
       '.pdf');
     const metadata = {
       customMetadata: {
-        name: script.file.name
+        key: key,
+        name: script.file.name,
+        user: uid
       }
     };
     const uploadTask = storage.put(script.file, metadata);

@@ -13,12 +13,16 @@ OrderService.$inject = ['UploadService', '$q', 'UtilsService', 'AuthenticationSe
 function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
   const self = this;
 
-  self.reset = function () {
+  self.reset = function() {
     self.stage = 1;
-    self.id = UtilsService.generateShortId();
+    AuthenticationService.anonymousSignIn().then(function() {
+      self.uid = AuthenticationService.user.uid;
+      const location = firebase.database().ref('users/' + self.uid + '/orders/').push(true);
+      self.id = location.key;
+    });
+
     self.scripts = [];
     self.particulars = {};
-    AuthenticationService.anonymousSignIn();
   };
 
   // self.reset();
@@ -64,12 +68,10 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
 
 
   self.update = function () {
-    const uid = AuthenticationService.user.uid;
-    let location = 'orders/' + uid + '/' + self.id;
-
     let data = {
       particulars: self.particulars,
-      scripts: {}
+      scripts: {},
+      user: self.uid
     };
 
     for (var i = 0; i < self.scripts.length; i++) {
@@ -81,7 +83,7 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
     data = angular.toJson(data);
     data = angular.fromJson(data);
 
-    firebase.database().ref(location).set(data);
+    firebase.database().ref('orders/' + self.id).set(data);
   };
 
   self.next = function () {

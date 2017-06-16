@@ -1,27 +1,53 @@
 {
   "rules": {
-    "orderItems": {
-      "$user_id": {
-        ".read": "$user_id === auth.uid",
-        ".write": "$user_id === auth.uid"
+    "order_items": {
+      "$order_item_id": {
+        ".read": "root.child('users/' + auth.uid + '/order_items/' + $order_item_id).exists()",
+        ".write": "root.child('users/' + auth.uid + '/order_items/' + $order_item_id).exists()",
+        ".validate": "newData.hasChildren(['order'])",
+        "order": {
+          ".validate": "root.child('orders/' + newData.val()).exists() && root.child('orders/' + newData.val() + '/order_items/' + $order_item_id).exists()"
+        }
       }
     },
     "orders": {
-      "$user_id": {
-        ".read": "$user_id === auth.uid",
-        ".write": "$user_id === auth.uid"
+      "$order_id": {
+        ".read": "root.child('users/' + auth.uid + '/orders/' + $order_id).exists()",
+        ".write": "root.child('users/' + auth.uid + '/orders/' + $order_id).exists()",
+        ".validate": "newData.hasChildren(['user'])",
+        "user": {
+          ".validate": "root.child('users/' + newData.val()).exists() && root.child('users/' + newData.val() + '/orders/' + $order_id).exists()"
+        }
       }
     },
     "uploads": {
-      "$user_id": {
-        ".read": "$user_id === auth.uid",
-        ".write": "$user_id === auth.uid"
+      "$script_id": {
+        ".read": "root.child('users/' + auth.uid + '/scripts/' + $script_id).exists()",
+        ".validate": "newData.hasChildren(['user', 'pages', 'name'])",
+        "user": {
+          ".validate": "root.child('users/' + newData.val()).exists() && root.child('users/' + newData.val() + '/scripts/' + $script_id).exists()"
+        }
       }
     },
     "users": {
       "$user_id": {
         ".read": "$user_id === auth.uid",
-        ".write": "$user_id === auth.uid"
+        ".write": "$user_id === auth.uid",
+        "order_items": {
+          "$order_item_id": {
+            ".validate": "!root.child('order_items/' + $order_item_id).exists()"
+          }
+        },
+        "orders": {
+          "$order_id": {
+            ".validate": "!root.child('orders/' + $order_id).exists()"
+          }
+        },
+        "scripts": {
+          "$script_id": {
+            ".validate": "!root.child('uploads/' + $script_id).exists()"
+          }
+        }
       }
     }
   }

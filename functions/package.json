@@ -2,9 +2,11 @@
   "name": "functions",
   "description": "Cloud Functions for Firebase",
   "dependencies": {
+    "azure-pdfinfo": "^0.4.3",
     "firebase-admin": "^4.1.2",
     "firebase-functions": "^0.5",
-    "pdfjs-dist": "^1.8.448",
+    "pdfjs": "^2.0.0-alpha.3",
+    "pdfjs-dist": "^1.8.452",
     "shortid": "^2.2.8"
   },
   "private": true
