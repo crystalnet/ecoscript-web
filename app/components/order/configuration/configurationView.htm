@@ -1,14 +1,41 @@
 <div data-ng-controller="configurationController as controller">
 
   <div data-ng-show="order.Order.stage == 1">
-    <h3>Upload your script.</h3>
-    <button id="uploadButton" ngfSelect ngf-select="controller.uploadFiles($files, $invalidFiles)"
-            accept="application/pdf" ngf-validate="{size: {max: '50MB'}, pattern: '.pdf'}"
-            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-      PDF hochladen<i class="material-icons">file_upload</i>
-    </button>
-    <br><br>
-    File:
+    <div class="mdl-grid--no-spacing">
+      <div class="order_title__container mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
+        <h3 class="order_title__content">Schicke uns einfach dein Skript.</h3>
+      </div>
+    </div>
+    <div class="mdl-grid--no-spacing">
+      <div class="order_subtitle__container mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
+        <p>Das PDF Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+          invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+          Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+      </div>
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--2-col mdl-cell--4-offset-desktop">
+        <button id="uploadButton" ngfSelect ngf-select="controller.uploadFiles($files, $invalidFiles)"
+                accept="application/pdf" ngf-validate="{size: {max: '50MB'}, pattern: '.pdf'}"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+          PDF hochladen<i class="material-icons">file_upload</i>
+        </button>
+      </div>
+    </div>
+
+    <div class="mdl-grid">
+      <div class="mmdl-cell mdl-cell--2-col mdl-cell--4-offset-desktop">
+        <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner mdl-color--text-primary is-active"></div>
+        <span ng-repeat="file in controller.files" style="font:smaller">{{file.name}} {{file.$errorParam}}
+          <span class="progress" ng-show="file.progress >= 0"/>
+          <div style="width:{{file.progress}}%">
+            {{file.progress | number:2}}%
+          </div>
+        </span>
+      </div>
+    </div>
+
+
     <ul>
       <li ng-repeat="file in controller.files" style="font:smaller">{{file.name}} {{file.$errorParam}}
         <span class="progress" ng-show="file.progress >= 0"/>
@@ -27,6 +54,7 @@
       <label class="mdl-textfield__label" for="sample1">Text...</label>
     </div>
   </div>
+
 
   <div data-ng-show="order.Order.stage == 3">
     <button data-ng-repeat="plan in controller.order.plans"

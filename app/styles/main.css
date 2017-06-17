@@ -25,9 +25,13 @@ will be correctly compiled during `gulp serve` and `gulp`
 @import "_header.scss";
 @import "_footer.scss";
 
-/*  landingView*/
+/*  landingView */
 @import "_hero.scss";
 @import "_landingView.scss";
+
+/* Order */
+@import "_order.scss";
+@import "_order_footer.scss";
 
 html, body {
   font-family: 'Roboto', 'Helvetica', sans-serif;

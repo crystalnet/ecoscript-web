@@ -17,6 +17,7 @@ function OrderController($location, OrderService, $timeout, PageContextService) 
   self.Order.checkReset();
 
   PageContextService.headerUrl = 'components/order/orderHeader.htm';
+  PageContextService.footerUrl = 'components/order/orderFooter.htm';
 
   self.getTemplate = function () {
     let result = '';

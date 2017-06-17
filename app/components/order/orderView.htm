@@ -1,27 +1,30 @@
 <div data-ng-controller="orderController as order" >
 
-  <div class="mdl-grid">
+  <div>
+    <!--
     <div class="mdl-cell mdl-cell--2-col mdl-cell--2-offset">
       Stage: {{order.Order.stage}}
     </div>
+    -->
 
     <!-- Data from order step partials -->
     <div data-ng-include="order.getTemplate()"></div>
 
-    <div class="mdl-cell mdl-cell--6-col mdl-cell--6-offset">
-      <button data-ng-click="order.Order.previous()"
-              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-        Zurück
-      </button>
-      <button data-ng-click="order.Order.next()"
-              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-        Weiter
-      </button>
-      <button data-ng-click="order.Order.console()"
-              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-        Show Order
-      </button>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--6-col mdl-cell--6-offset">
+        <button data-ng-click="order.Order.previous()"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+          Zurück
+        </button>
+        <button data-ng-click="order.Order.next()"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+          Weiter
+        </button>
+        <!-- <button data-ng-click="order.Order.console()"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+         Show Order
+       </button>-->
+     </div>
     </div>
-
-  </div>
+ </div>
 </div>

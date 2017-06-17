@@ -1,0 +1,30 @@
+.footer__order{
+  background-color: white;
+}
+
+.footer_order__container {
+  -webkit-align-items: flex-end;
+  align-items: flex-end;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-transform: translateX(-500px);
+  transform: translateX(-500px);
+  -webkit-user-select: none;
+  bottom: 0;
+  direction: ltr;
+  left: 50%;
+  position: fixed;
+  right: 0;
+  z-index: -10;
+}
+
+.footer_order__span {
+  margin: 0 18px;
+  vertical-align: bottom;
+
+}
+
+
