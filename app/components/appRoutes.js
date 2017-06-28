@@ -29,6 +29,14 @@ function config($routeProvider, $locationProvider) {
       templateUrl: 'components/order/orderView.htm'
     })
 
+    .when('/agb', {
+      templateUrl: 'components/law/agb.htm'
+    })
+
+    .when('/impressum', {
+      templateUrl: 'components/law/impressum.htm'
+    })
+
     .otherwise({
       redirectTo: '/'
     });
