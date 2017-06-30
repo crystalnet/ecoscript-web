@@ -31,4 +31,25 @@
   margin-bottom: 1%;
 }
 
+//Fap button back
+.fap_button_back__container {
+  position: fixed;
+  left: 60px;
+  top: 50%;
+  -webkit-transform: scale(1.5);
+  transform: scale(1.5);
+}
 
+.fap_button_back {
+ box-shadow: none;
+}
+
+
+.demo-card-square.mdl-card {
+  height: 320px;
+}
+.demo-card-square > .mdl-card__title {
+  color: #fff;
+  background:
+    url('../images/colorful_flower.jpg') bottom right 15% no-repeat #46B6AC;
+}

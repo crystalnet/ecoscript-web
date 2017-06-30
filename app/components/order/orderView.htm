@@ -13,11 +13,11 @@
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell--6-col mdl-cell--6-offset">
         <button data-ng-click="order.Order.previous()"
-                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color--grey-100 mdl-color-text--white">
           Zurück
         </button>
         <button data-ng-click="order.Order.next()"
-                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color--grey-100 mdl-color-text--white">
           Weiter
         </button>
         <!-- <button data-ng-click="order.Order.console()"
@@ -26,5 +26,13 @@
        </button>-->
      </div>
     </div>
+
+    <div class="fap_button_back__container mdl-layout--large-screen-only">
+      <button data-ng-click="order.Order.previous()" class="fap_button_back mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-color--white mdl-color-text--primary mdl-shadow--0dp">
+        <i class="material-icons">keyboard_arrow_left</i>
+      </button>
+    </div>
+  </div>
+
  </div>
 </div>
