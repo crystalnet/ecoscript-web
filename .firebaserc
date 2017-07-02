@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "studyscript-4a797"
+    "default": "studyscript-4a797",
+    "staging": "scripteco"
   }
 }
