@@ -20,6 +20,9 @@
         }
       }
     },
+    "prospects": {
+      ".write": true
+    },
     "uploads": {
       "$script_id": {
         ".read": "root.child('users/' + auth.uid + '/scripts/' + $script_id).exists()",
