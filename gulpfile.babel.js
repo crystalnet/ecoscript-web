@@ -133,7 +133,7 @@ gulp.task('compress-images', () => {
 gulp.task('copy-tmp', () =>
   gulp.src([
       '.tmp/index.html',
-      '.tmp/images/*.*',
+      '.tmp/images/**/*.*',
       '.tmp/scripts/main.min.js',
       '.tmp/styles/main.min.css',
       '.tmp/components/**/*.htm'
