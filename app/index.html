@@ -66,10 +66,11 @@
   <main class="mdl-layout__content">
     <div class="page-content" data-ng-view></div>
 
+    <!-- Add spacer to push Footer down when not enough content -->
+    <div class="mdl-layout-spacer"></div>
+
     <!-- Footer-->
-    <footer class="mdl-mini-footer">
       <div data-ng-include="navigation.pageContext.footerUrl"></div>
-    </footer>
   </main>
 
 

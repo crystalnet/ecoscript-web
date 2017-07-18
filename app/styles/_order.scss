@@ -1,0 +1,55 @@
+.order_progress {
+  width: 180px;
+}
+
+@media only screen and (min-width: 34rem) {
+  .order_progress {
+    width: 300px;
+  }
+}
+
+@media only screen and (min-width: 64rem) {
+  .order_progress {
+    width: 400px;
+  }
+}
+
+.order_title_process{
+  margin-left: 20px;
+}
+
+.order_title_help_icon{
+  font-size: 28px;
+  margin-right: 20px;
+}
+
+.order_title__container{
+  margin-top: 6%;
+}
+
+.order_title__content{
+  margin-bottom: 1%;
+}
+
+//Fap button back
+.fap_button_back__container {
+  position: fixed;
+  left: 60px;
+  top: 50%;
+  -webkit-transform: scale(1.5);
+  transform: scale(1.5);
+}
+
+.fap_button_back {
+ box-shadow: none;
+}
+
+
+.demo-card-square.mdl-card {
+  height: 320px;
+}
+.demo-card-square > .mdl-card__title {
+  color: #fff;
+  background:
+    url('../images/colorful_flower.jpg') bottom right 15% no-repeat #46B6AC;
+}
