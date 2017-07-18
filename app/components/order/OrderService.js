@@ -25,19 +25,27 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
     self.particulars = {};
   };
 
-  // self.reset();
+  self.stage = 1;
+  self.scripts = [];
+  self.particulars = {};
 
   self.checkReset = function() {
-    if (!Boolean(AuthenticationService.user)) {
+    if (!AuthenticationService.hasOwnProperty('user') && !AuthenticationService.user) {
+      console.log('reset');
       self.reset();
     }
+    self.uid = AuthenticationService.user.uid;
+    const location = firebase.database().ref('users/' + self.uid + '/orders/').push(true);
+    self.id = location.key;
   };
 
   self.addScript = function (file) {
     const deferred = $q.defer();
 
+    const location = firebase.database().ref('users/' + self.uid + '/order_items/').push(true);
+
     let script = {
-      id: UtilsService.generateShortId(),
+      id: location.key,
       file: file,
       configuration: angular.copy(self.configuration)
     };
@@ -68,28 +76,37 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
 
 
   self.update = function () {
-    let data = {
+    let orderData = {
       particulars: self.particulars,
-      scripts: {},
+      order_items: {},
       user: self.uid
     };
 
     for (var i = 0; i < self.scripts.length; i++) {
-      let script = self.scripts[i];
-      data.scripts[script.id] = script.configuration;
+      const script = self.scripts[i];
+      orderData.order_items[script.id] = true;
+
+      let scriptData = script.configuration;
+      scriptData.order = self.id;
+
+      // Remove Angular Properties
+      scriptData = angular.toJson(scriptData);
+      scriptData = angular.fromJson(scriptData);
+
+      firebase.database().ref('order_items/' + script.id).set(scriptData);
     }
 
     // Remove Angular Properties
-    data = angular.toJson(data);
-    data = angular.fromJson(data);
+    orderData = angular.toJson(orderData);
+    orderData = angular.fromJson(orderData);
 
-    firebase.database().ref('orders/' + self.id).set(data);
+    firebase.database().ref('orders/' + self.id).set(orderData);
   };
 
   self.next = function () {
     self.validateInputs();
     self.update();
-    self.stage = Math.min(self.stage + 1, 8);
+    self.stage = Math.min(self.stage + 1, self.maxStage);
   };
 
   self.previous = function () {
@@ -110,6 +127,8 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
     // const isScaleValid = self.order.pagesPerSide.indexOf(self.order.scripts[0].configuration.pagesPerSide) > -1;
     // const isSideValid = self.order.twoSided.indexOf(self.order.scripts[0].configuration.twoSided) > -1;
   };
+
+  self.maxStage = 8;
 
   self.plans = [
     {value: 'greenfree', name: 'Green Free'},

@@ -3,18 +3,34 @@
     "order_items": {
       "$order_item_id": {
         ".read": "root.child('users/' + auth.uid + '/order_items/' + $order_item_id).exists()",
-        ".write": "root.child('users/' + auth.uid + '/order_items/' + $order_item_id).exists()",
+        ".write": "root.child('users/' + auth.uid + '/order_items/' + $order_item_id).exists() && (data.hasChildren(['order']) ? !root.child('/orders/' + data.child('order').val()).hasChildren(['sent']) : true)",
         ".validate": "newData.hasChildren(['order'])",
         "order": {
-          ".validate": "root.child('orders/' + newData.val()).exists() && root.child('orders/' + newData.val() + '/order_items/' + $order_item_id).exists()"
+          ".validate": "root.child('users/' + auth.uid + '/orders/' + newData.val()).exists() && !root.child('users/' + auth.uid + '/orders/' + newData.val()).hasChildren(['sent'])"
+        },
+        "price": {
+          ".validate": "false"
         }
+      }
+    },
+    "order_status": {
+      "$order_id": {
+        ".read": "root.child('users/' + auth.uid + '/orders/' + $order_id).exists()"
       }
     },
     "orders": {
       "$order_id": {
         ".read": "root.child('users/' + auth.uid + '/orders/' + $order_id).exists()",
-        ".write": "root.child('users/' + auth.uid + '/orders/' + $order_id).exists()",
+        ".write": "root.child('users/' + auth.uid + '/orders/' + $order_id).exists() && !data.hasChildren(['sent'])",
         ".validate": "newData.hasChildren(['user'])",
+        "order_items": {
+          "$order_item_id": {
+            ".validate": "root.child('order_items/' + $order_item_id).exists() && root.child('order_items/' + $order_item_id + '/order').val() === $order_id"
+          }
+        },
+        "price": {
+          ".validate": "false"
+        },
         "user": {
           ".validate": "root.child('users/' + newData.val()).exists() && root.child('users/' + newData.val() + '/orders/' + $order_id).exists()"
         }

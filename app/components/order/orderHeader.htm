@@ -1,4 +1,4 @@
-<div class="mdl-layout__header-row">
+<div class="mdl-layout__header-row" data-ng-controller="orderController as order">
 
   <div class="mdl-layout-spacer"></div>
 
@@ -15,7 +15,7 @@
   </span>
 
   <!-- TODO Fix scope Order stage-->
-  <span class="order_title_process mdl-layout-title">{{order.Order.stage}}1/5</span>
+  <span class="order_title_process mdl-layout-title">{{order.Order.stage}}/{{order.Order.maxStage}} {{order.progress()}}</span>
 
   <script>
     document.querySelector('#p1').addEventListener('mdl-componentupgraded', function() {

@@ -16,6 +16,17 @@ function OrderController($location, OrderService, $timeout, PageContextService) 
 
   self.Order.checkReset();
 
+  self.progress = function() {
+    return Math.round(self.Order.stage / self.Order.maxStage);
+  };
+
+  // self.Order.$watch('stage', function (newVal, oldVal) {
+  //   console.log(newVal, oldVal);
+  //   // document.querySelector('#p1').addEventListener('mdl-componentupgraded', function () {
+  //   //   this.MaterialProgress.setProgress(Math.round(self.Order.stage / self.Order.maxStage));
+  //   // });
+  // });
+
   PageContextService.headerUrl = 'components/order/orderHeader.htm';
   PageContextService.footerUrl = 'components/order/orderFooter.htm';
 

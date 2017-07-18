@@ -452,7 +452,8 @@ gulp.task('development', ['clean'], cb => {
 // Watch files for changes & reload
 gulp.task('serve', ['development'], () => {
   browserSync({
-    notify: false,
+    cors: true,
+    notify: true,
     // Customize the Browsersync console logging prefix
     logPrefix: 'WSK',
     // Allow scroll syncing across breakpoints
@@ -460,13 +461,23 @@ gulp.task('serve', ['development'], () => {
     // Run as an https by uncommenting 'https: true'
     // Note: this uses an unsigned certificate which on first access
     //       will present a certificate warning in the browser.
-    // https: true,
+    https: true,
+
+    middleware: [
+      historyApiFallback(),
+      function (req, res, next) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
+        next();
+      }
+    ],
+
     server: {
-      baseDir: '.tmp',
-      middleware: [historyApiFallback()]
+      baseDir: '.tmp'
     },
     port: 3000
-  });
+  })
+  ;
 
   gulp.watch(['app/**/*.html'], ['inject', reload]);
   gulp.watch(['app/**/*.htm'], ['copy-htm', reload]);

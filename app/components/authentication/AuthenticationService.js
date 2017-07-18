@@ -18,10 +18,10 @@ function AuthenticationService(Auth, $location, $q) {
 
   Auth.$onAuthStateChanged(function (user) {
     if (user) {
-      //self.user = user;
+      self.user = user;
       console.log('Logged in as: ' + user.uid);
     } else {
-      //self.user = null;
+      self.user = null;
       console.log('Logged out');
     }
   });

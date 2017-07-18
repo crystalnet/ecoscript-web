@@ -8,12 +8,13 @@ angular.module('order')
 // Define controller
   .controller('paymentController', PaymentController);
 
-PaymentController.$inject = ['$location', 'OrderService', '$timeout', 'PageContextService', 'AuthenticationService', '$http'];
+PaymentController.$inject = ['$location', 'OrderService', '$timeout', 'PageContextService', 'AuthenticationService', '$http', 'PaymentService'];
 
-function PaymentController($location, OrderService, $timeout, PageContextService, AuthenticationService, $http) {
+function PaymentController($location, OrderService, $timeout, PageContextService, AuthenticationService, $http, PaymentService) {
   const self = this;
   const Authentication = AuthenticationService;
   self.order = OrderService;
+  self.Payment = PaymentService;
 
   let ppp = PAYPAL.apps.PPP({
     'approvalUrl': '\'.$approval_url.\'',
