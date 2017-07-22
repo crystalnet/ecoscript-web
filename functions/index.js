@@ -2,16 +2,15 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
+const cors = require('cors')({
+  origin: true
+});
+
 const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 const PDFJS = require('pdfjs-dist');
 //const PDF = require('azure-pdfinfo');
 
 const paypal = require('paypal-rest-sdk');
-paypal.configure({
-  'mode': 'sandbox', //sandbox or live
-  'client_id': 'AYm_7kdkUQYF1earQoDiMzzwDYhVentxVL0EfyAm5hyKuknMxLTio5bKpcBdatDj6MicqmW57GxrvQ9N',
-  'client_secret': 'EGDSqchBapiNHR3I74bdMuU0DF5xMitcg4ueM7AYmT7QbVqtgIGYwtZq5O4IgAakYnFe61Cyl'
-});
 
 
 // // Start writing Firebase Functions
@@ -80,10 +79,16 @@ exports.generateUploadEntry = functions.storage.object().onChange(event => {
 });
 
 
-exports.createPayment = functions.https.onRequest((req, res) => {
-  console.log(req);
-  res.status(200).send(req);
+function initalizePaypal() {
+  paypal.configure({
+    'mode': 'sandbox', //sandbox or live
+    'client_id': 'AYm_7kdkUQYF1earQoDiMzzwDYhVentxVL0EfyAm5hyKuknMxLTio5bKpcBdatDj6MicqmW57GxrvQ9N',
+    'client_secret': 'EGDSqchBapiNHR3I74bdMuU0DF5xMitcg4ueM7AYmT7QbVqtgIGYwtZq5O4IgAakYnFe61Cyl'
+  });
+}
 
+
+exports.createPayment = functions.https.onRequest((req, res) => {
   let createPaymentJson = {
     'intent': 'sale',
     'payer': {
@@ -96,39 +101,39 @@ exports.createPayment = functions.https.onRequest((req, res) => {
     'transactions': [{
       'item_list': {
         'items': [{
-          'name': 'item',
-          'sku': 'item',
+          'name': 'item1',
+          'sku': 'skusku',
           'price': '1.00',
-          'currency': 'USD',
-          'quantity': 1
+          'currency': 'EUR',
+          'quantity': 2
         }]
       },
       'amount': {
-        'currency': 'USD',
-        'total': '1.00'
+        'currency': 'EUR',
+        'total': '4.42'
       },
       'description': 'This is the payment description.'
     }]
   };
 
+  initalizePaypal();
 
-  paypal.payment.create(createPaymentJson, function (error, payment) {
-    if (error) {
-      console.log(error);
-      res.status(400).send(error);
-    } else {
-      console.log('Create Payment Response');
-      console.log(payment);
-      res.status(200).send(payment);
-    }
+  paypal.payment.create(createPaymentJson, function(error, payment) {
+    cors(req, res, () => {
+      if (error) {
+        console.log(error);
+        res.status(400).send(error);
+      } else {
+        console.log('Create Payment Response');
+        console.log(payment);
+        res.status(200).send(payment);
+      }
+    });
   });
 });
 
 
 exports.patchPayment = functions.https.onRequest((req, res) => {
-  console.log(req);
-  res.status(200).send(req);
-
   let patchPaymentJson = {
     'intent': 'sale',
     'payer': {
@@ -152,23 +157,24 @@ exports.patchPayment = functions.https.onRequest((req, res) => {
     }]
   };
 
-  paypal.payment.patch(patchPaymentJson, function (error, payment) {
-    if (error) {
-      console.log(error);
-      res.status(400).send(error);
-    } else {
-      console.log('Create Payment Response');
-      console.log(payment);
-      res.status(200).send(payment);
-    }
+  initalizePaypal();
+
+  paypal.payment.patch(patchPaymentJson, function(error, payment) {
+    cors(req, res, () => {
+      if (error) {
+        console.log(error);
+        res.status(400).send(error);
+      } else {
+        console.log('Patch Payment Response');
+        console.log(payment);
+        res.status(200).send(payment);
+      }
+    });
   });
 });
 
 exports.executePayment = functions.https.onRequest((req, res) => {
   const paymentId = req.data.paymentId;
-
-  console.log(req);
-  res.status(400).send('got ya');
 
   let executePaymentJson = {
     'payer_id': 'Appended to redirect url',
@@ -180,18 +186,19 @@ exports.executePayment = functions.https.onRequest((req, res) => {
     }]
   };
 
-  paypal.payment.execute(paymentId, executePaymentJson, function (error, payment) {
-    if (error) {
-      console.log(error.response);
-      res.status(400).send(error);
-    } else {
-      console.log('Get Payment Response');
-      console.log(JSON.stringify(payment));
-      res.status(200).send(payment);
+  initalizePaypal();
 
-    }
+  paypal.payment.execute(paymentId, executePaymentJson, function(error, payment) {
+    cors(req, res, () => {
+      if (error) {
+        console.log(error);
+        res.status(400).send(error);
+      } else {
+        console.log('Execute Payment Response');
+        console.log(payment);
+        res.status(200).send(payment);
+      }
+    });
   });
-
 });
-
 

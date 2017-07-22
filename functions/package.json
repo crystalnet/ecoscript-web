@@ -3,6 +3,7 @@
   "description": "Cloud Functions for Firebase",
   "dependencies": {
     "azure-pdfinfo": "^0.4.3",
+    "cors": "^2.8.4",
     "firebase-admin": "^4.2.1",
     "firebase-functions": "^0.5.9",
     "paypal-rest-sdk": "^1.7.1",

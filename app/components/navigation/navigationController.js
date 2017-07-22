@@ -6,7 +6,7 @@
   'use strict';
 
   // Get the module
-  angular.module('studyscriptApp')
+  angular.module('scriptecoApp')
 
   // Define controllers
     .controller('navigationController', NavigationController);

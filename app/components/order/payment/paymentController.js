@@ -16,12 +16,12 @@ function PaymentController($location, OrderService, $timeout, PageContextService
   self.order = OrderService;
   self.Payment = PaymentService;
 
-  let ppp = PAYPAL.apps.PPP({
-    'approvalUrl': '\'.$approval_url.\'',
-    'placeholder': 'ppplus',
-    'mode': 'sandbox',
-    'country': 'DE'
-  });
+  // let ppp = PAYPAL.apps.PPP({
+  //   'approvalUrl': '\'.$approval_url.\'',
+  //   'placeholder': 'ppplus',
+  //   'mode': 'sandbox',
+  //   'country': 'DE'
+  // });
 
   // let path = 'https://www.paypalobjects.com/webstatic/ppplus/ppplus.min.js';
   // $http.get(path)

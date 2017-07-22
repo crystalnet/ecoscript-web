@@ -3,7 +3,7 @@
  */
 
 // Get the module
-angular.module('studyscriptApp')
+angular.module('scriptecoApp')
 
 // Define service
   .service('PageContextService', PageContext);

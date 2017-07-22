@@ -13,19 +13,19 @@ PaymentService.$inject = ['OrderService', '$q', 'UtilsService', 'AuthenticationS
 function PaymentService(OrderService, $q, UtilsService, AuthenticationService, $http) {
   const self = this;
 
-  self.create = function () {
+  self.create = function() {
     let data = {
       orderId: OrderService.id,
       userId: AuthenticationService.user.id
     };
     data = JSON.stringify(data);
 
-    $http.get('https://us-central1-studyscript-4a797.cloudfunctions.net/createPayment', data)
-      .then(function successCallback(response) {
+    $http.post('https://us-central1-studyscript-4a797.cloudfunctions.net/createPayment', data)
+      .then(function(response) {
         console.log(response);
         // this callback will be called asynchronously
         // when the response is available
-      }, function errorCallback(response) {
+      }, function(response) {
         console.log(response);
         // called asynchronously if an error occurs
         // or server returns response with an error status.

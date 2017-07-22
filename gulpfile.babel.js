@@ -28,7 +28,7 @@ import path from 'path';
 import gulp from 'gulp';
 import del from 'del';
 import runSequence from 'run-sequence';
-import browserSync from 'browser-sync';
+// import browserSync from 'browser-sync';
 import historyApiFallback from 'connect-history-api-fallback';
 import swPrecache from 'sw-precache';
 import gulpLoadPlugins from 'gulp-load-plugins';
@@ -38,6 +38,7 @@ import pkg from './package.json';
 const $ = gulpLoadPlugins({
   DEBUG: false
 });
+const browserSync = require('browser-sync').create();
 const reload = browserSync.reload;
 let nocompression = ($.util.env.nocompression || false);
 let noconcat = ($.util.env.noconcat || false);
@@ -451,8 +452,8 @@ gulp.task('development', ['clean'], cb => {
 
 // Watch files for changes & reload
 gulp.task('serve', ['development'], () => {
-  browserSync({
-    cors: true,
+  browserSync.init({
+    logLevel: 'info',
     notify: true,
     // Customize the Browsersync console logging prefix
     logPrefix: 'WSK',
@@ -463,17 +464,11 @@ gulp.task('serve', ['development'], () => {
     //       will present a certificate warning in the browser.
     https: true,
 
-    middleware: [
-      historyApiFallback(),
-      function (req, res, next) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
-        next();
-      }
-    ],
-
     server: {
-      baseDir: '.tmp'
+      baseDir: '.tmp',
+      middleware: [
+        historyApiFallback()
+      ]
     },
     port: 3000
   })
@@ -489,7 +484,7 @@ gulp.task('serve', ['development'], () => {
 
 // Build and serve the output from the dist build
 gulp.task('serve:dist', ['default'], () =>
-  browserSync({
+  browserSync.init({
     notify: false,
     logPrefix: 'WSK',
     // Allow scroll syncing across breakpoints

@@ -3,7 +3,7 @@
  */
 
 // Define the module
-angular.module('studyscriptApp', [
+angular.module('scriptecoApp', [
   'ngRoute',
   'authentication',
   'order',
