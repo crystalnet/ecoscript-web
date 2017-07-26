@@ -54,9 +54,9 @@ function UploadService(AuthenticationService, $q, UtilsService) {
       }
     };
 
-    const completeFunction = function () {
+    const completeFunction = function (key) {
       // Upload completed successfully, now we can get the download URL
-      deferred.resolve('Upload was successful');
+      deferred.resolve(key);
       // let downloadURL = uploadTask.snapshot.downloadURL;
       // return $timeout(firebase.database().ref('uploads/' + uid + '/' + id + '/name')
       //  .set(file.name)
@@ -83,7 +83,7 @@ function UploadService(AuthenticationService, $q, UtilsService) {
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
       nextFunction,
       errorFunction,
-      completeFunction);
+      completeFunction(key));
 
     return deferred.promise;
   };

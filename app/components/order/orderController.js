@@ -14,7 +14,7 @@ function OrderController($location, OrderService, $timeout, PageContextService) 
   const self = this;
   self.Order = OrderService;
 
-  self.Order.checkReset();
+  //self.Order.initialize();
 
   self.progress = function() {
     return Math.round(self.Order.stage / self.Order.maxStage);

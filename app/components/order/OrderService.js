@@ -13,63 +13,66 @@ OrderService.$inject = ['UploadService', '$q', 'UtilsService', 'AuthenticationSe
 function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
   const self = this;
 
-  self.reset = function() {
-    self.stage = 1;
-    AuthenticationService.anonymousSignIn().then(function() {
+  self.initialize = function () {
+    const deferred = $q.defer();
+
+    AuthenticationService.anonymousSignIn().then(function () {
       self.uid = AuthenticationService.user.uid;
       const location = firebase.database().ref('users/' + self.uid + '/orders/').push(true);
       self.id = location.key;
-    });
+      deferred.resolve('initialized');
+    })
+      .catch(function () {
+        deferred.reject('could not check sign in')
+      });
 
-    self.scripts = [];
-    self.particulars = {};
+    return deferred.promise;
   };
 
   self.stage = 1;
   self.scripts = [];
   self.particulars = {};
 
-  self.checkReset = function() {
-    if (!AuthenticationService.hasOwnProperty('user') && !AuthenticationService.user) {
-      console.log('reset');
-      self.reset();
-    }
-    self.uid = AuthenticationService.user.uid;
-    const location = firebase.database().ref('users/' + self.uid + '/orders/').push(true);
-    self.id = location.key;
-  };
-
   self.addScript = function (file) {
     const deferred = $q.defer();
+    let location = null;
 
-    const location = firebase.database().ref('users/' + self.uid + '/order_items/').push(true);
+    self.initialize().then(function () {
+      location = firebase.database().ref('users/' + self.uid + '/order_items/').push(true);
 
-    let script = {
-      id: location.key,
-      file: file,
-      configuration: angular.copy(self.configuration)
-    };
+      let script = {
+        id: location.key,
+        file: file,
+        configuration: angular.copy(self.configuration)
+      };
 
-    UploadService.uploadScript(script)
-      .then(function (result) {
-        // self.scripts.push(script);
-        self.scripts[0] = script;
+      UploadService.uploadScript(script)
+        .then(function (result) {
+          // self.scripts.push(script);
+          self.scripts[0] = script;
+          self.scripts[0].configuration.script_id = result;
 
-        let title = script.file.name;
-        title = title.substring(0, title.lastIndexOf('.'));
-        title = title.split(/\s|_/);
-        for (let i = 0, l = title.length; i < l; i++) {
-          title[i] = title[i].substr(0, 1).toUpperCase() +
-            (title[i].length > 1 ? title[i].substr(1).toLowerCase() : '');
-        }
-        script.configuration.title = title.join(' ');
+          let title = script.file.name;
+          title = title.substring(0, title.lastIndexOf('.'));
+          title = title.split(/\s|_/);
+          for (let i = 0, l = title.length; i < l; i++) {
+            title[i] = title[i].substr(0, 1).toUpperCase() +
+              (title[i].length > 1 ? title[i].substr(1).toLowerCase() : '');
+          }
+          script.configuration.title = title.join(' ');
 
-        deferred.resolve(result);
-      }, function (error) {
-        deferred.reject(error);
-      }, function (notification) {
-        deferred.notify(notification);
-      });
+          deferred.resolve(result);
+        }, function (error) {
+          deferred.reject(error);
+        }, function (notification) {
+          console.log('got notification');
+          deferred.notify(notification);
+        });
+    }, function (error) {
+      deferred.reject('could not initialize');
+    }, function (notification) {
+      conosle.log(notification);
+    });
 
     return deferred.promise;
   };
@@ -105,13 +108,15 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
 
   self.next = function () {
     self.validateInputs();
-    self.update();
+    self.initialize().then(function () {
+      self.update();
+    });
     self.stage = Math.min(self.stage + 1, self.maxStage);
   };
 
   self.previous = function () {
     self.validateInputs();
-    self.update();
+    //self.update();
     self.stage = Math.max(self.stage - 1, 1);
   };
 

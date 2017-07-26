@@ -26,7 +26,7 @@ function AuthenticationService(Auth, $location, $q) {
     }
   });
 
-  self.anonymousSignIn = function() {
+  self.anonymousSignIn = function () {
     const deferred = $q.defer();
 
     if (!self.user) {
