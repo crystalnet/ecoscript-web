@@ -17,9 +17,11 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
     const deferred = $q.defer();
 
     AuthenticationService.anonymousSignIn().then(function () {
-      self.uid = AuthenticationService.user.uid;
-      const location = firebase.database().ref('users/' + self.uid + '/orders/').push(true);
-      self.id = location.key;
+      if (!self.id) {
+        self.uid = AuthenticationService.user.uid;
+        const location = firebase.database().ref('users/' + self.uid + '/orders/').push(true);
+        self.id = location.key;
+      }
       deferred.resolve('initialized');
     })
       .catch(function () {

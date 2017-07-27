@@ -43,6 +43,7 @@ function particularController($location, OrderService, $timeout, PageContextServ
   self.signIn = function () {
     Authentication.signIn(self.credentials.email, self.credentials.password)
       .then(function () {
+        self.order.id = null;
         self.order.next();
       });
   };

@@ -89,6 +89,10 @@ function initalizePaypal() {
 
 
 exports.createPayment = functions.https.onRequest((req, res) => {
+  const orderId = req.data.orderId;
+  const userId = req.data.userId;
+  const order = admin.database().ref('order/' + orderId);
+
   let createPaymentJson = {
     'intent': 'sale',
     'payer': {
