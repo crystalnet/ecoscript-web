@@ -89,10 +89,6 @@ function initalizePaypal() {
 
 
 exports.createPayment = functions.https.onRequest((req, res) => {
-  const orderId = req.data.orderId;
-  const userId = req.data.userId;
-  const order = admin.database().ref('order/' + orderId);
-
   let createPaymentJson = {
     'intent': 'sale',
     'payer': {
@@ -104,26 +100,41 @@ exports.createPayment = functions.https.onRequest((req, res) => {
     },
     'transactions': [{
       'item_list': {
-        'items': [{
-          'name': 'item1',
-          'sku': 'skusku',
-          'price': '1.00',
-          'currency': 'EUR',
-          'quantity': 2
-        }]
+        'items': []
       },
       'amount': {
         'currency': 'EUR',
-        'total': '4.42'
+        'total': '99.99'
       },
       'description': 'This is the payment description.'
     }]
   };
 
+  const orderId = req.data.orderId;
+  const userId = req.data.userId;
+
+  admin.database().ref('order/').once(orderId).then(function(snapshot) {
+    for (let orderItem in snapshot.val().order_items) {
+      admin.database().ref('order_items').once(orderItem).then(function(snapshot) {
+        let item = {
+          name: snapshot.val().title,
+          sku: snapshot.val().script,
+          price: snapshot.val().price,
+          currency: 'EUR',
+          quantity: '1'
+        };
+        createPaymentJson.transactions.item_list.items.push(item);
+      });
+    }
+    createPaymentJson.total = snapshot.val().price;
+  });
+
+
   initalizePaypal();
 
   paypal.payment.create(createPaymentJson, function(error, payment) {
     cors(req, res, () => {
+      res.status(200).send(createPaymentJson);
       if (error) {
         console.log(error);
         res.status(400).send(error);

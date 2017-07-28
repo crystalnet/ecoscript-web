@@ -13,6 +13,10 @@ PaymentService.$inject = ['OrderService', '$q', 'UtilsService', 'AuthenticationS
 function PaymentService(OrderService, $q, UtilsService, AuthenticationService, $http) {
   const self = this;
 
+  self.showOrder = function() {
+    console.log(OrderService);
+  };
+
   self.create = function() {
     let data = {
       orderId: OrderService.id,
