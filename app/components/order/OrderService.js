@@ -21,6 +21,7 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
         self.uid = AuthenticationService.user.uid;
         const location = firebase.database().ref('users/' + self.uid + '/orders/').push(true);
         self.id = location.key;
+        //firebase.database().ref('orders/' + self.id + '/user').set(self.uid);
       }
       deferred.resolve('initialized');
     })
@@ -52,7 +53,7 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
         .then(function (result) {
           // self.scripts.push(script);
           self.scripts[0] = script;
-          self.scripts[0].configuration.script_id = result;
+          self.scripts[0].configuration.script = result;
 
           let title = script.file.name;
           title = title.substring(0, title.lastIndexOf('.'));

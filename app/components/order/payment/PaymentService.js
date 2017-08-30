@@ -20,11 +20,11 @@ function PaymentService(OrderService, $q, UtilsService, AuthenticationService, $
   self.create = function() {
     let data = {
       orderId: OrderService.id,
-      userId: AuthenticationService.user.id
+      userId: AuthenticationService.user.uid
     };
     data = JSON.stringify(data);
 
-    $http.post('https://us-central1-studyscript-4a797.cloudfunctions.net/createPayment', data)
+    $http.post('https://us-central1-scripteco-prod.cloudfunctions.net/createPayment', data)
       .then(function(response) {
         console.log(response);
         // this callback will be called asynchronously
@@ -43,7 +43,7 @@ function PaymentService(OrderService, $q, UtilsService, AuthenticationService, $
     };
     data = JSON.stringify(data);
 
-    $http.post('https://us-central1-studyscript-4a797.cloudfunctions.net/patchPayment', data)
+    $http.post('https://us-central1-scripteco-prod.cloudfunctions.net/patchPayment', data)
       .then(function successCallback(response) {
         console.log(response);
         // this callback will be called asynchronously
@@ -62,7 +62,7 @@ function PaymentService(OrderService, $q, UtilsService, AuthenticationService, $
     };
     data = JSON.stringify(data);
 
-    $http.post('https://us-central1-studyscript-4a797.cloudfunctions.net/executePayment', data)
+    $http.post('https://us-central1-scripteco-prod.cloudfunctions.net/executePayment', data)
       .then(function successCallback(response) {
         console.log(response);
         // this callback will be called asynchronously

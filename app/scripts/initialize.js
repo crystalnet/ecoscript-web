@@ -76,13 +76,23 @@
     });
   }
 
-  // Initialize Firebase
+  // initialize firebase development environment
+  // const config = {
+  //   apiKey: 'AIzaSyAa6HhfTpQyeMV1-Wh2itJFX-uOIWRzSro',
+  //   authDomain: 'studyscript-4a797.firebaseapp.com',
+  //   databaseURL: 'https://studyscript-4a797.firebaseio.com',
+  //   storageBucket: 'studyscript-4a797.appspot.com',
+  //   messagingSenderId: '1079844072661'
+  // };
+
+  // initialize firebase production environment
   const config = {
-    apiKey: 'AIzaSyAa6HhfTpQyeMV1-Wh2itJFX-uOIWRzSro',
-    authDomain: 'studyscript-4a797.firebaseapp.com',
-    databaseURL: 'https://studyscript-4a797.firebaseio.com',
-    storageBucket: 'studyscript-4a797.appspot.com',
-    messagingSenderId: '1079844072661'
+    apiKey: "AIzaSyBCG2lMGrKSdeoKQrlMCnX9mydbEljB65U",
+    authDomain: "scripteco-prod.firebaseapp.com",
+    databaseURL: "https://scripteco-prod.firebaseio.com",
+    projectId: "scripteco-prod",
+    storageBucket: "scripteco-prod.appspot.com",
+    messagingSenderId: "357325119754"
   };
   firebase.initializeApp(config);
 
