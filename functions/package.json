@@ -12,8 +12,8 @@
     "path": "^0.12.7",
     "paypal-rest-sdk": "^1.7.1",
     "pdfjs": "^2.0.0-alpha.3",
-    "pdfjs-dist": "^1.8.550",
-    "pdfjs-dist-viewer-min": "^1.8.188",
+    "pdfjs-dist": "^1.9.504",
+    "pdfjs-dist-viewer-min": "^1.9.426",
     "shortid": "^2.2.8",
     "xmlhttprequest": "^1.8.0"
   },

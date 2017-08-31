@@ -6,9 +6,7 @@ const cors = require('cors')({
   origin: true
 });
 
-//const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 const PDFJS = require('pdfjs-dist');
-//const PDF = require('azure-pdfinfo');
 
 const paypal = require('paypal-rest-sdk');
 
@@ -31,49 +29,27 @@ const path = require('path');
 const os = require('os');
 
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// })
-
 exports.generateUploadEntry = functions.storage.object().onChange(event => {
-  console.log(event);
   // The File Path
   const filePath = event.data.name;
-
   // File metadata
   const metadata = event.data.metadata;
-
   // The resourceState is 'exists' or 'not_exits' (for file/folder deletions).
   const resourceState = event.data.resourceState;
+  let numPages = -1;
+  const fileDir = path.dirname(filePath);
+  const fileName = path.basename(filePath);
+  const tempLocalFile = path.join(os.tmpdir(), filePath);
+  const tempLocalDir = path.dirname(tempLocalFile);
 
   admin.database().ref('scripts/' + metadata.key).set({
     name: metadata.name,
     user: metadata.user
   });
 
-  let numPages = -1;
-  console.log(event.data.mediaLink);
-
-  // const pdf = PDF(event.data.mediaLink);
-  // pdf.info(function (err, meta) {
-  //   if (err) {
-  //     console.log('Error pdfinfo: ', err)
-  //   }
-  //   console.log('pdf info', meta);
-  // });
-
-  const fileDir = path.dirname(filePath);
-  const fileName = path.basename(filePath);
-  const tempLocalFile = path.join(os.tmpdir(), filePath);
-  const tempLocalDir = path.dirname(tempLocalFile);
-
   // Cloud Storage files.
   const bucket = gcs.bucket(event.data.bucket);
   const file = bucket.file(filePath);
-  console.log(file);
 
   // Create the temp directory where the storage file will be downloaded.
   return mkdirp(tempLocalDir).then(() => {
@@ -82,13 +58,10 @@ exports.generateUploadEntry = functions.storage.object().onChange(event => {
     return file.download({destination: tempLocalFile}).then(() => {
       console.log('downloaded file: ' + tempLocalFile);
       // Analyze file with pdfjs
-      return PDFJS.getDocument(tempLocalFile).then(function(doc) {
-        console.log('i am here');
-        console.log(doc);
+      return PDFJS.getDocument(tempLocalFile).then(function (doc) {
         numPages = doc.numPages;
 
         if (resourceState === 'exists') {
-          // return;
           return admin.database().ref('scripts/' + metadata.key).update({
             pages: numPages,
             prices: {
@@ -96,26 +69,22 @@ exports.generateUploadEntry = functions.storage.object().onChange(event => {
               '2b': 5.00,
               '4b': 2.50,
               '8b': 1.25,
-              '16b': 0.63,
               '1c': 20.00,
               '2c': 10.00,
               '4c': 5.00,
-              '8c': 2.50,
-              '16c': 1.25
+              '8c': 2.50
             }
           });
         }
-      }, function(err) {
-        console.log('i am there');
-        numPages = 42;
+      }, function (err) {
         console.log(err);
         return null;
       });
-    }, function(err) {
+    }, function (err) {
       console.log('file not downloaded');
       console.log(err);
     });
-  }, function(err) {
+  }, function (err) {
     console.log('temp dir not created');
     console.log(err);
   });
@@ -132,73 +101,10 @@ function initalizePaypal() {
 
 
 exports.createPayment = functions.https.onRequest((req, res) => {
-  try {
-    let createPaymentJson = {
-      'intent': 'sale',
-      'payer': {
-        'payment_method': 'paypal'
-      },
-      'redirect_urls': {
-        'return_url': 'https://script.eco/thankyou',
-        'cancel_url': 'https://script.eco/order'
-      },
-      'transactions': [{
-        'item_list': {
-          'items': []
-        },
-        'amount': {
-          'currency': 'EUR',
-          'total': '99.99'
-        },
-        'description': 'This is the payment description.'
-      }]
-    };
-
-    const orderId = req.body.orderId;
-    const userId = req.body.userId;
-
-    admin.database().ref('orders/' + orderId).once('value').then(function(orderSnapshot) {
-      orderSnapshot.child('order_items').forEach(function(childSnapshot) {
-        admin.database().ref('order_items/' + childSnapshot.key).once('value').then(function(itemSnapshot) {
-          let item = {
-            name: itemSnapshot.child('title').val(),
-            sku: itemSnapshot.child('script').val(),
-            price: itemSnapshot.child('price').val(),
-            currency: 'EUR',
-            quantity: '1'
-          };
-          createPaymentJson.transactions[0].item_list.items.push(item);
-        });
-      });
-      createPaymentJson.total = orderSnapshot.child('price').val();
-    });
-
-    initalizePaypal();
-
-    paypal.payment.create(createPaymentJson, function(error, payment) {
-      cors(req, res, () => {
-        if (error) {
-          console.log(error);
-          res.status(400).send(error);
-        } else {
-          console.log('Create Payment Response');
-          console.log(payment);
-          res.status(200).send(payment);
-        }
-      });
-    });
-  } catch (e) {
-    cors(req, res, () => {
-      console.log('error somewhere');
-      console.log(e);
-      res.status(400).send(e);
-    });
-  }
-});
-
-
-exports.patchPayment = functions.https.onRequest((req, res) => {
-  let patchPaymentJson = {
+  initalizePaypal();
+  const orderId = req.body.orderId;
+  const userId = req.body.userId;
+  let createPaymentJson = {
     'intent': 'sale',
     'payer': {
       'payment_method': 'paypal'
@@ -208,60 +114,105 @@ exports.patchPayment = functions.https.onRequest((req, res) => {
       'cancel_url': 'https://script.eco/order'
     },
     'transactions': [{
-      'shipping_address': {
-        'recipient_name': 'Brian Robinson',
-        'line1': '4th Floor',
-        'line2': 'Unit #34',
-        'city': 'San Jose',
-        'country_code': 'US',
-        'postal_code': '95131',
-        'phone': '011862212345678',
-        'state': 'CA'
-      }
+      'item_list': {
+        'items': []
+      },
+      'amount': {
+        'currency': 'EUR'
+      },
+      'description': 'This is the payment description.'
     }]
   };
 
-  initalizePaypal();
+  admin.database().ref('orders/' + orderId).once('value').then(function (orderSnapshot) {
+    createPaymentJson.transactions[0].amount.total = orderSnapshot.child('price').val();
+    orderSnapshot.child('order_items').forEach(function (childSnapshot) {
+      admin.database().ref('order_items/' + childSnapshot.key).once('value').then(function (itemSnapshot) {
+        let item = {
+          name: itemSnapshot.child('title').val(),
+          sku: itemSnapshot.child('script').val(),
+          price: itemSnapshot.child('price').val(),
+          currency: 'EUR',
+          quantity: '1'
+        };
+        createPaymentJson.transactions[0].item_list.items.push(item);
+      });
+    });
+  }).then(function () {
+    paypal.payment.create(createPaymentJson, function (error, payment) {
+      cors(req, res, () => {
+        if (error) {
+          console.log(error);
+          res.status(400).send([error, createPaymentJson]);
+        } else {
+          admin.database().ref('orders/' + orderId + '/payment').set(payment.id);
+          console.log('Create Payment Response');
+          console.log(payment);
+          res.status(200).send(payment);
+        }
+      });
+    });
+  });
+});
 
-  paypal.payment.patch(patchPaymentJson, function(error, payment) {
-    cors(req, res, () => {
-      if (error) {
-        console.log(error);
-        res.status(400).send(error);
-      } else {
-        console.log('Patch Payment Response');
-        console.log(payment);
-        res.status(200).send(payment);
-      }
+
+exports.patchPayment = functions.https.onRequest((req, res) => {
+  initalizePaypal();
+  const orderId = req.body.orderId;
+  let paymentId = '';
+  let patchPaymentJson = [{
+    'op': 'add',
+    'path': '/transactions/0/item_list/shipping_address',
+    'value': {
+      'country_code': 'DE'
+    }
+  }];
+
+  admin.database().ref('orders/' + orderId).once('value').then(function (orderSnapshot) {
+    paymentId = orderSnapshot.child('payment').val();
+    patchPaymentJson[0].value.recipient_name = orderSnapshot.child('particulars/firstname').val()
+      + ' ' + orderSnapshot.child('particulars/lastname').val();
+    patchPaymentJson[0].value.line1 = orderSnapshot.child('particulars/street').val();
+    patchPaymentJson[0].value.city = orderSnapshot.child('particulars/city').val();
+    patchPaymentJson[0].value.postal_code = orderSnapshot.child('particulars/zip').val();
+  }).then(function () {
+    console.log(paymentId);
+    console.log(patchPaymentJson);
+    paypal.payment.update(paymentId, patchPaymentJson, function (error, payment) {
+      cors(req, res, () => {
+        if (error) {
+          console.log(error);
+          res.status(400).send([error, patchPaymentJson]);
+        } else {
+          console.log('Patch Payment Response');
+          console.log(payment);
+          res.status(200).send(payment);
+        }
+      });
     });
   });
 });
 
 exports.executePayment = functions.https.onRequest((req, res) => {
-  const paymentId = req.body.paymentId;
-
+  initalizePaypal();
+  const orderId = req.body.orderId;
+  const payerId = req.body.payerId;
   let executePaymentJson = {
-    'payer_id': 'Appended to redirect url',
-    'transactions': [{
-      'amount': {
-        'currency': 'USD',
-        'total': '1.00'
-      }
-    }]
+    'payer_id': 'Appended to redirect url'
   };
 
-  initalizePaypal();
-
-  paypal.payment.execute(paymentId, executePaymentJson, function(error, payment) {
-    cors(req, res, () => {
-      if (error) {
-        console.log(error);
-        res.status(400).send(error);
-      } else {
-        console.log('Execute Payment Response');
-        console.log(payment);
-        res.status(200).send(payment);
-      }
+  const paymentId = admin.database().ref('orders/' + orderId + '/payment').once('value').then(function() {
+    paypal.payment.execute(paymentId, executePaymentJson, function (error, payment) {
+      cors(req, res, () => {
+        if (error) {
+          console.log(error);
+          res.status(400).send(error);
+        } else {
+          console.log('Execute Payment Response');
+          console.log(payment);
+          res.status(200).send(payment);
+        }
+      });
     });
   });
 });
