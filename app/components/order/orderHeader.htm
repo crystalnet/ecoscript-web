@@ -10,18 +10,10 @@
 
   <span>
     <nav class="mdl-navigation">
-      <div id="p1" class="order_progress mdl-progress mdl-js-progress"></div>
+      <div id="orderProgress" class="order_progress mdl-progress mdl-js-progress"></div>
     </nav>
   </span>
 
-  <!-- TODO Fix scope Order stage-->
-  <span class="order_title_process mdl-layout-title">{{order.Order.stage}}/{{order.Order.maxStage}} {{order.progress()}}</span>
-
-  <script>
-    document.querySelector('#p1').addEventListener('mdl-componentupgraded', function() {
-      this.MaterialProgress.setProgress(20);
-    });
-  </script>
+  <span class="order_title_process mdl-layout-title">{{order.Order.stage}}/{{order.Order.orderSteps.length}} {{order.progress()}}</span>
   <div class="mdl-layout-spacer"></div>
-
 </div>

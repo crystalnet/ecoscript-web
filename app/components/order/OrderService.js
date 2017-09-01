@@ -8,9 +8,9 @@ angular.module('order')
 // Define service
   .service('OrderService', OrderService);
 
-OrderService.$inject = ['UploadService', '$q', 'UtilsService', 'AuthenticationService'];
+OrderService.$inject = ['UploadService', '$q', 'UtilsService', 'AuthenticationService', '$http'];
 
-function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
+function OrderService(UploadService, $q, UtilsService, AuthenticationService, $http) {
   const self = this;
 
   self.initialize = function () {
@@ -21,14 +21,15 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
         self.uid = AuthenticationService.user.uid;
         const location = firebase.database().ref('users/' + self.uid + '/orders/').push(true);
         self.id = location.key;
-        //firebase.database().ref('orders/' + self.id + '/user').set(self.uid);
+        if (!AuthenticationService.user.isAnonymous) {
+          self.orderSteps.splice(5, 1);
+        }
       }
       deferred.resolve('initialized');
     })
       .catch(function () {
         deferred.reject('could not check sign in')
       });
-
     return deferred.promise;
   };
 
@@ -80,7 +81,6 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
     return deferred.promise;
   };
 
-
   self.update = function () {
     let orderData = {
       particulars: self.particulars,
@@ -114,7 +114,7 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
     self.initialize().then(function () {
       self.update();
     });
-    self.stage = Math.min(self.stage + 1, self.maxStage);
+    self.stage = Math.min(self.stage + 1, self.orderSteps.length);
   };
 
   self.previous = function () {
@@ -136,7 +136,26 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService) {
     // const isSideValid = self.order.twoSided.indexOf(self.order.scripts[0].configuration.twoSided) > -1;
   };
 
-  self.maxStage = 8;
+  // URLs of order steps
+  const scriptUpload = 'components/order/script/scriptUpload.htm';
+  const scriptTitle = 'components/order/script/scriptTitle.htm';
+  const scriptPlan = 'components/order/script/scriptPlan.htm';
+  const scriptColorSelection = 'components/order/script/scriptColorSelection.htm';
+  const scriptPrintConfiguration = 'components/order/script/scriptPrintConfiguration.htm';
+  const particularsSignIn = 'components/order/particulars/particularsSignInController.htm';
+  const particularsData = 'components/order/particulars/particularsData.htm';
+  const payment = 'components/order/payment/paymentView.htm';
+
+  self.orderSteps = [
+    scriptUpload,
+    scriptTitle,
+    scriptPlan,
+    scriptColorSelection,
+    scriptPrintConfiguration,
+    particularsSignIn,
+    particularsData,
+    payment
+  ];
 
   self.plans = [
     {value: 'greenfree', name: 'Green Free'},

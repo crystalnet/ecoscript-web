@@ -6,11 +6,11 @@
 angular.module('order')
 
 // Define controller
-  .controller('particularsController', particularController);
+  .controller('particularsSignInController', ParticularsSignInController);
 
-particularController.$inject = ['$location', 'OrderService', '$timeout', 'PageContextService', 'AuthenticationService'];
+ParticularsSignInController.$inject = ['$location', 'OrderService', '$timeout', 'PageContextService', 'AuthenticationService'];
 
-function particularController($location, OrderService, $timeout, PageContextService, AuthenticationService) {
+function ParticularsSignInController($location, OrderService, $timeout, PageContextService, AuthenticationService) {
   const self = this;
   const Authentication = AuthenticationService;
   self.order = OrderService;

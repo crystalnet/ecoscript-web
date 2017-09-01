@@ -1,0 +1,28 @@
+<div>
+  <div class="mdl-grid--no-spacing">
+    <div class="order_title__container mdl-cell mdl-cell--3-col mdl-cell--4-offset-desktop">
+      <h3 class="order_title__content">Wie möchtest du dein Skript nennen?</h3>
+    </div>
+  </div>
+  <div class="mdl-grid">
+    <div class="mmdl-cell mdl-cell--2-col mdl-cell--4-offset-desktop">
+      <!-- TODO Add is-focus class after loading-->
+      <form action="#">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="sample1"
+                 data-ng-model="order.Order.scripts[0].configuration.title">
+          <label class="mdl-textfield__label" for="sample1">Titel des Skripts</label>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="mdl-grid">
+    <div class="mmdl-cell mdl-cell--2-col mdl-cell--4-offset-desktop">
+      <button data-ng-click="order.Order.next()"
+              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+        Weiter
+      </button>
+    </div>
+  </div>
+</div>

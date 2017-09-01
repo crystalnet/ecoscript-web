@@ -6,11 +6,11 @@
 angular.module('order')
 
 // Define controller
-  .controller('configurationController', ConfigurationController);
+  .controller('scriptUploadController', ScriptUploadController);
 
-ConfigurationController.$inject = ['$location', 'OrderService', '$timeout', 'PageContextService'];
+ScriptUploadController.$inject = ['$location', 'OrderService', '$timeout', 'PageContextService'];
 
-function ConfigurationController($location, OrderService, $timeout) {
+function ScriptUploadController($location, OrderService, $timeout) {
   const self = this;
   self.order = OrderService;
 

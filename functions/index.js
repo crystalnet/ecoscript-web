@@ -42,26 +42,26 @@ exports.generateUploadEntry = functions.storage.object().onChange(event => {
   const tempLocalFile = path.join(os.tmpdir(), filePath);
   const tempLocalDir = path.dirname(tempLocalFile);
 
-  admin.database().ref('scripts/' + metadata.key).set({
-    name: metadata.name,
-    user: metadata.user
-  });
-
   // Cloud Storage files.
   const bucket = gcs.bucket(event.data.bucket);
   const file = bucket.file(filePath);
 
-  // Create the temp directory where the storage file will be downloaded.
-  return mkdirp(tempLocalDir).then(() => {
-    console.log('created temp directory: ' + tempLocalDir);
-    // Download file from bucket.
-    return file.download({destination: tempLocalFile}).then(() => {
-      console.log('downloaded file: ' + tempLocalFile);
-      // Analyze file with pdfjs
-      return PDFJS.getDocument(tempLocalFile).then(function (doc) {
-        numPages = doc.numPages;
+  if (resourceState === 'exists') {
+    admin.database().ref('scripts/' + metadata.key).set({
+      name: metadata.name,
+      user: metadata.user
+    });
 
-        if (resourceState === 'exists') {
+    // Create the temp directory where the storage file will be downloaded.
+    return mkdirp(tempLocalDir).then(() => {
+      console.log('created temp directory: ' + tempLocalDir);
+      // Download file from bucket.
+      return file.download({destination: tempLocalFile}).then(() => {
+        console.log('downloaded file: ' + tempLocalFile);
+        // Analyze file with pdfjs
+        return PDFJS.getDocument(tempLocalFile).then(function (doc) {
+          numPages = doc.numPages;
+
           return admin.database().ref('scripts/' + metadata.key).update({
             pages: numPages,
             prices: {
@@ -75,19 +75,19 @@ exports.generateUploadEntry = functions.storage.object().onChange(event => {
               '8c': 2.50
             }
           });
-        }
+        }, function (err) {
+          console.log(err);
+          return null;
+        });
       }, function (err) {
+        console.log('file not downloaded');
         console.log(err);
-        return null;
       });
     }, function (err) {
-      console.log('file not downloaded');
+      console.log('temp dir not created');
       console.log(err);
     });
-  }, function (err) {
-    console.log('temp dir not created');
-    console.log(err);
-  });
+  }
 });
 
 
@@ -100,10 +100,23 @@ function initalizePaypal() {
 }
 
 
+function updatePrices(orderId) {
+  let promises = [];
+  promises.push(admin.database().ref('orders/' + orderId + '/price').set('42'));
+  admin.database().ref('orders/' + orderId + '/order_items').once('value').then(function (snapshot) {
+    snapshot.forEach(function (childSnapshot) {
+      promises.push(admin.database().ref('order_items/' + childSnapshot.key + '/price').set('1'));
+    })
+  });
+  return Promise.all(promises);
+}
+
+
 exports.createPayment = functions.https.onRequest((req, res) => {
   initalizePaypal();
   const orderId = req.body.orderId;
   const userId = req.body.userId;
+  updatePrices(orderId);
   let createPaymentJson = {
     'intent': 'sale',
     'payer': {
@@ -201,7 +214,7 @@ exports.executePayment = functions.https.onRequest((req, res) => {
     'payer_id': 'Appended to redirect url'
   };
 
-  const paymentId = admin.database().ref('orders/' + orderId + '/payment').once('value').then(function() {
+  const paymentId = admin.database().ref('orders/' + orderId + '/payment').once('value').then(function () {
     paypal.payment.execute(paymentId, executePaymentJson, function (error, payment) {
       cors(req, res, () => {
         if (error) {

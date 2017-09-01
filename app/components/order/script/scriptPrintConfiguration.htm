@@ -1,0 +1,15 @@
+<div>
+  <button data-ng-repeat="option in order.Order.pagesPerSide"
+          data-ng-click="order.Order.scripts[0].configuration.pagesPerSide = option"
+          class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+    {{option.name}}
+  </button>
+
+  <div>
+    <button data-ng-repeat="option in order.Order.twoSided"
+            data-ng-click="order.Order.scripts[0].configuration.twoSided = option"
+            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+      {{option.name}}
+    </button>
+  </div>
+</div>

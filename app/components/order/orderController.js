@@ -16,29 +16,24 @@ function OrderController($location, OrderService, $timeout, PageContextService) 
 
   //self.Order.initialize();
 
-  self.progress = function() {
-    return Math.round(self.Order.stage / self.Order.maxStage);
+  self.progress = function () {
+    document.querySelector('#orderProgress').addEventListener('mdl-componentupgraded', function () {
+      this.MaterialProgress.setProgress((self.Order.stage / self.Order.orderSteps.length).toFixed(2));
+    });
+    return (self.Order.stage / self.Order.orderSteps.length).toFixed(2);
   };
 
-  // self.Order.$watch('stage', function (newVal, oldVal) {
+  // self.$watch('stage', function (newVal, oldVal) {
   //   console.log(newVal, oldVal);
-  //   // document.querySelector('#p1').addEventListener('mdl-componentupgraded', function () {
-  //   //   this.MaterialProgress.setProgress(Math.round(self.Order.stage / self.Order.maxStage));
-  //   // });
+  //   document.querySelector('#orderProgress').addEventListener('mdl-componentupgraded', function () {
+  //     this.MaterialProgress.setProgress((self.Order.stage / self.Order.orderSteps.length).toFixed(2));
+  //   });
   // });
 
   PageContextService.headerUrl = 'components/order/orderHeader.htm';
   PageContextService.footerUrl = 'components/order/orderFooter.htm';
 
   self.getTemplate = function () {
-    let result = '';
-    if (self.Order.stage > 7) {
-      result = 'components/order/payment/paymentView.htm';
-    } else if (self.Order.stage > 5) {
-      result = 'components/order/particulars/particularsView.htm';
-    } else {
-      result = 'components/order/configuration/configurationView.htm';
-    }
-    return result;
+    return self.Order.orderSteps[self.Order.stage - 1];
   };
 }
