@@ -34,7 +34,7 @@
         "payment_id": {
           ".validate": "false"
         },
-        "price": {
+        "total": {
           ".validate": "false"
         },
         "user": {
@@ -45,7 +45,7 @@
     "prospects": {
       ".write": true
     },
-    "uploads": {
+    "scripts": {
       "$script_id": {
         ".read": "root.child('users/' + auth.uid + '/scripts/' + $script_id).exists()",
         ".validate": "newData.hasChildren(['user', 'pages', 'name'])",

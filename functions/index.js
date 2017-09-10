@@ -59,36 +59,87 @@ exports.generateUploadEntry = functions.storage.object().onChange(event => {
       return file.download({destination: tempLocalFile}).then(() => {
         console.log('downloaded file: ' + tempLocalFile);
         // Analyze file with pdfjs
-        return PDFJS.getDocument(tempLocalFile).then(function (doc) {
+        return PDFJS.getDocument(tempLocalFile).then(function(doc) {
           numPages = doc.numPages;
 
           return admin.database().ref('scripts/' + metadata.key).update({
             pages: numPages,
             prices: {
-              '1b': 10.00,
-              '2b': 5.00,
-              '4b': 2.50,
-              '8b': 1.25,
-              '1c': 20.00,
-              '2c': 10.00,
-              '4c': 5.00,
-              '8c': 2.50
+              '1bvh': 10.00,
+              '2bvh': 5.00,
+              '4bvh': 2.50,
+              '8bvh': 1.25,
+              '1cvh': 20.00,
+              '2cvh': 10.00,
+              '4cvh': 5.00,
+              '8cvh': 2.50,
+              '1bv': 10.00,
+              '2bv': 5.00,
+              '4bv': 2.50,
+              '8bv': 1.25,
+              '1cv': 20.00,
+              '2cv': 10.00,
+              '4cv': 5.00,
+              '8cv': 2.50
             }
           });
-        }, function (err) {
+        }, function(err) {
           console.log(err);
           return null;
         });
-      }, function (err) {
+      }, function(err) {
         console.log('file not downloaded');
         console.log(err);
       });
-    }, function (err) {
+    }, function(err) {
       console.log('temp dir not created');
       console.log(err);
     });
   }
 });
+
+
+exports.updatePrices = functions.database.ref('/order_items/{orderItemId}')
+  .onUpdate(event => {
+    let snapshot = event.data;
+    if (snapshot.child('color').changed() || snapshot.child('pagesPerSide').changed() || snapshot.child('twoSided').changed()) {
+      return admin.database().ref('scripts/' + snapshot.child('script').val() + '/pages').once('value').then(function(pages) {
+        let divisor = snapshot.child('pagesPerSide/value').val();
+        if (snapshot.child('twoSided/value').val() === 'true') {
+          divisor *= 2;
+        }
+        let pagePrice;
+        let fixedCosts = 1;
+        if (snapshot.child('color/value').val() === 'color') {
+          pagePrice = 0.10;
+        } else {
+          pagePrice = 0.05;
+        }
+        let price = Math.ceil(pages.val() / divisor) * pagePrice + fixedCosts;
+        price = price.toFixed(2);
+        return snapshot.adminRef.update({price: price}).then(function() {
+          return updateOrderTotal(snapshot.child('order').val());
+        });
+      });
+    }
+  });
+
+
+function updateOrderTotal(orderId) {
+  let orderReference = admin.database().ref('orders/' + orderId);
+  return orderReference.child('order_items').once('value').then(function(orderSnapshot) {
+    let promises = [];
+    let total = 0;
+    orderSnapshot.forEach(function(childSnapshot) {
+      promises.push(admin.database().ref('order_items/' + childSnapshot.key).once('value').then(function(itemSnapshot) {
+        total += parseFloat(itemSnapshot.child('price').val()).toFixed(2);
+      }));
+    });
+    return Promise.all(promises).then(function() {
+      return orderReference.update({total: total});
+    });
+  });
+}
 
 
 function initalizePaypal() {
@@ -100,23 +151,23 @@ function initalizePaypal() {
 }
 
 
-function updatePrices(orderId) {
-  let promises = [];
-  promises.push(admin.database().ref('orders/' + orderId + '/price').set('42'));
-  admin.database().ref('orders/' + orderId + '/order_items').once('value').then(function (snapshot) {
-    snapshot.forEach(function (childSnapshot) {
-      promises.push(admin.database().ref('order_items/' + childSnapshot.key + '/price').set('1'));
-    })
-  });
-  return Promise.all(promises);
-}
+// function updatePrices(orderId) {
+//   let promises = [];
+//   promises.push(admin.database().ref('orders/' + orderId + '/price').set('42'));
+//   admin.database().ref('orders/' + orderId + '/order_items').once('value').then(function(snapshot) {
+//     snapshot.forEach(function(childSnapshot) {
+//       promises.push(admin.database().ref('order_items/' + childSnapshot.key + '/price').set('1'));
+//     });
+//   });
+//   return Promise.all(promises);
+// }
 
 
 exports.createPayment = functions.https.onRequest((req, res) => {
   initalizePaypal();
   const orderId = req.body.orderId;
   const userId = req.body.userId;
-  updatePrices(orderId);
+  updateOrderTotal(orderId);
   let createPaymentJson = {
     'intent': 'sale',
     'payer': {
@@ -137,10 +188,10 @@ exports.createPayment = functions.https.onRequest((req, res) => {
     }]
   };
 
-  admin.database().ref('orders/' + orderId).once('value').then(function (orderSnapshot) {
+  admin.database().ref('orders/' + orderId).once('value').then(function(orderSnapshot) {
     createPaymentJson.transactions[0].amount.total = orderSnapshot.child('price').val();
-    orderSnapshot.child('order_items').forEach(function (childSnapshot) {
-      admin.database().ref('order_items/' + childSnapshot.key).once('value').then(function (itemSnapshot) {
+    orderSnapshot.child('order_items').forEach(function(childSnapshot) {
+      admin.database().ref('order_items/' + childSnapshot.key).once('value').then(function(itemSnapshot) {
         let item = {
           name: itemSnapshot.child('title').val(),
           sku: itemSnapshot.child('script').val(),
@@ -151,8 +202,8 @@ exports.createPayment = functions.https.onRequest((req, res) => {
         createPaymentJson.transactions[0].item_list.items.push(item);
       });
     });
-  }).then(function () {
-    paypal.payment.create(createPaymentJson, function (error, payment) {
+  }).then(function() {
+    paypal.payment.create(createPaymentJson, function(error, payment) {
       cors(req, res, () => {
         if (error) {
           console.log(error);
@@ -181,17 +232,17 @@ exports.patchPayment = functions.https.onRequest((req, res) => {
     }
   }];
 
-  admin.database().ref('orders/' + orderId).once('value').then(function (orderSnapshot) {
+  admin.database().ref('orders/' + orderId).once('value').then(function(orderSnapshot) {
     paymentId = orderSnapshot.child('payment').val();
     patchPaymentJson[0].value.recipient_name = orderSnapshot.child('particulars/firstname').val()
       + ' ' + orderSnapshot.child('particulars/lastname').val();
     patchPaymentJson[0].value.line1 = orderSnapshot.child('particulars/street').val();
     patchPaymentJson[0].value.city = orderSnapshot.child('particulars/city').val();
     patchPaymentJson[0].value.postal_code = orderSnapshot.child('particulars/zip').val();
-  }).then(function () {
+  }).then(function() {
     console.log(paymentId);
     console.log(patchPaymentJson);
-    paypal.payment.update(paymentId, patchPaymentJson, function (error, payment) {
+    paypal.payment.update(paymentId, patchPaymentJson, function(error, payment) {
       cors(req, res, () => {
         if (error) {
           console.log(error);
@@ -214,8 +265,8 @@ exports.executePayment = functions.https.onRequest((req, res) => {
     'payer_id': 'Appended to redirect url'
   };
 
-  const paymentId = admin.database().ref('orders/' + orderId + '/payment').once('value').then(function () {
-    paypal.payment.execute(paymentId, executePaymentJson, function (error, payment) {
+  const paymentId = admin.database().ref('orders/' + orderId + '/payment').once('value').then(function() {
+    paypal.payment.execute(paymentId, executePaymentJson, function(error, payment) {
       cors(req, res, () => {
         if (error) {
           console.log(error);

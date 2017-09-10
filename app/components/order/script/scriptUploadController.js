@@ -25,8 +25,8 @@ function ScriptUploadController($location, OrderService, $timeout) {
     self.files = files;
 
     angular.forEach(files, function (file) {
-      self.order.addScript(file)
-        .then(function (result) {
+      let promise = self.order.addScript(file);
+      promise.then(function (result) {
           if (self.order.scripts.length > 0) {
             self.order.next();
           }

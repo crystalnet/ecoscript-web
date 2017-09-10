@@ -14,23 +14,23 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
   const self = this;
 
   self.initialize = function () {
-    const deferred = $q.defer();
-
-    AuthenticationService.anonymousSignIn().then(function () {
+    return AuthenticationService.anonymousSignIn().then(function () {
       if (!self.id) {
-        self.uid = AuthenticationService.user.uid;
-        const location = firebase.database().ref('users/' + self.uid + '/orders/').push(true);
-        self.id = location.key;
         if (!AuthenticationService.user.isAnonymous) {
           self.orderSteps.splice(5, 1);
         }
+        return new Promise(function(resolve, reject) {
+          self.uid = AuthenticationService.user.uid;
+          const location = firebase.database().ref('users/' + self.uid + '/orders/').push(true, function () {
+            self.id = location.key;
+            firebase.database().ref('orders/' + self.id + '/total').on('value', function (snapshot) {
+              self.total = snapshot.val();
+            });
+            resolve();
+          });
+        });
       }
-      deferred.resolve('initialized');
-    })
-      .catch(function () {
-        deferred.reject('could not check sign in')
-      });
-    return deferred.promise;
+    });
   };
 
   self.stage = 1;
@@ -38,11 +38,13 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
   self.particulars = {};
 
   self.addScript = function (file) {
-    const deferred = $q.defer();
-    let location = null;
-
-    self.initialize().then(function () {
-      location = firebase.database().ref('users/' + self.uid + '/order_items/').push(true);
+    return self.initialize().then(function () {
+      const deferred = $q.defer();
+      let location = firebase.database().ref('users/' + self.uid + '/order_items/').push(true, function() {
+        firebase.database().ref('order_items/' + script.id + '/price').on('value', function (snapshot) {
+          self.scripts[0].price = snapshot.val();
+        });
+      });
 
       let script = {
         id: location.key,
@@ -55,6 +57,36 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
           // self.scripts.push(script);
           self.scripts[0] = script;
           self.scripts[0].configuration.script = result;
+
+          Object.defineProperty(self.scripts[0], 'color', {
+            get: function() { return this.configuration.color; },
+            set: function(x) {
+              x = angular.toJson(x);
+              x = angular.fromJson(x);
+              this.configuration.color = x;
+              firebase.database().ref('order_items/' + this.id).update({color: x, order: self.id});
+            }
+          });
+
+          Object.defineProperty(self.scripts[0], 'twoSided', {
+            get: function() { return this.configuration.twoSided; },
+            set: function(x) {
+              x = angular.toJson(x);
+              x = angular.fromJson(x);
+              this.configuration.twoSided = x;
+              firebase.database().ref('order_items/' + this.id).update({twoSided: x, order: self.id});
+            }
+          });
+
+          Object.defineProperty(self.scripts[0], 'pagesPerSide', {
+            get: function() { return this.configuration.pagesPerSide; },
+            set: function(x) {
+              x = angular.toJson(x);
+              x = angular.fromJson(x);
+              this.configuration.pagesPerSide = x;
+              firebase.database().ref('order_items/' + this.id).update({pagesPerSide: x, order: self.id});
+            }
+          });
 
           let title = script.file.name;
           title = title.substring(0, title.lastIndexOf('.'));
@@ -72,13 +104,8 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
           console.log('got notification');
           deferred.notify(notification);
         });
-    }, function (error) {
-      deferred.reject('could not initialize');
-    }, function (notification) {
-      conosle.log(notification);
+      return deferred.promise;
     });
-
-    return deferred.promise;
   };
 
   self.update = function () {
@@ -99,14 +126,14 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
       scriptData = angular.toJson(scriptData);
       scriptData = angular.fromJson(scriptData);
 
-      firebase.database().ref('order_items/' + script.id).set(scriptData);
+      firebase.database().ref('order_items/' + script.id).update(scriptData);
     }
 
     // Remove Angular Properties
     orderData = angular.toJson(orderData);
     orderData = angular.fromJson(orderData);
 
-    firebase.database().ref('orders/' + self.id).set(orderData);
+    firebase.database().ref('orders/' + self.id).update(orderData);
   };
 
   self.next = function () {
