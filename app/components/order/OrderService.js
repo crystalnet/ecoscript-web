@@ -209,9 +209,9 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
   ];
 
   self.configuration = {
-    plan: {value: 'green', name: 'Green'},
-    color: {value: 'sw', name: 'Black and white'},
-    pagesPerSide: {value: '2', name: '2 Seiten pro Blatt'},
-    twoSided: {value: 'true', name: 'Vorder- und Rückseite'}
+    plan: self.plans[0],
+    color: self.colors[0],
+    pagesPerSide: self.pagesPerSide[1],
+    twoSided: self.twoSided[0]
   };
 }

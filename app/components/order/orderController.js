@@ -23,6 +23,10 @@ function OrderController($location, OrderService, $timeout, PageContextService) 
     return (self.Order.stage / self.Order.orderSteps.length).toFixed(2);
   };
 
+  self.price = function() {
+    return self.Order.total;
+  }
+
   // self.$watch('stage', function (newVal, oldVal) {
   //   console.log(newVal, oldVal);
   //   document.querySelector('#orderProgress').addEventListener('mdl-componentupgraded', function () {
