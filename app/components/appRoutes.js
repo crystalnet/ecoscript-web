@@ -37,7 +37,7 @@ function config($routeProvider, $locationProvider, $httpProvider) {
     })
 
     .when('/thankyou', {
-      templateUrl: 'components/payment/thankyou.htm'
+      templateUrl: 'components/order/payment/thankyou.htm'
     })
 
     .when('/agb', {

@@ -23,8 +23,9 @@ function UploadService(AuthenticationService, $q, UtilsService) {
           deferred.notify('Paused');
           break;
         case firebase.storage.TaskState.RUNNING:
-          // TODO replace with const if  angular-filesort allows
+          // TODO replace with const if angular-filesort allows
           var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('at beginning progress is ' + progress);
           deferred.notify(progress);
           break;
         default:

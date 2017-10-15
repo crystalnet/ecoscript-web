@@ -1,3 +1,31 @@
-<div>
+<div class="mdl-grid mdl-cell mdl-cell--6-col mdl-cell--3-offset-desktop"
+     data-ng-controller="paymentController as controller">
   <h1>Thank you bro</h1>
+  Lorem ipsum dolor sit amet
+
+  <button
+    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+    data-ng-click="">
+    Dafür musst du bezahlen.
+  </button>
+  <button
+    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+    data-ng-click="controller.Payment.create()">
+    Create
+  </button>
+  <button
+    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+    data-ng-click="controller.Payment.patch()">
+    Patch
+  </button>
+  <button
+    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+    data-ng-click="controller.Payment.execute()">
+    Execute
+  </button>
+  <button
+    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+    data-ng-click="controller.showOrder()">
+    Show Order
+  </button>
 </div>

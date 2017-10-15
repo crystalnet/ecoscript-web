@@ -8,11 +8,12 @@ angular.module('order')
 // Define controller
   .controller('scriptUploadController', ScriptUploadController);
 
-ScriptUploadController.$inject = ['$location', 'OrderService', '$timeout', 'PageContextService'];
+ScriptUploadController.$inject = ['$location', 'OrderService', '$timeout', 'PageContextService', '$scope'];
 
-function ScriptUploadController($location, OrderService, $timeout) {
+function ScriptUploadController($location, OrderService, $timeout, $scope) {
   const self = this;
   self.order = OrderService;
+  self.files = {};
 
   if (self.order.scripts.length === 0) {
     $timeout(function () {
@@ -27,16 +28,22 @@ function ScriptUploadController($location, OrderService, $timeout) {
     angular.forEach(files, function (file) {
       let promise = self.order.addScript(file);
       promise.then(function (result) {
-          if (self.order.scripts.length > 0) {
-            self.order.next();
-          }
-        }, function (error) {
-          self.errFiles.push(file);
-          console.log('error uploading file');
-        }, function (notification) {
-          file.progress = notification;
-          console.log(notification);
-        });
+        if (self.order.scripts.length > 0) {
+          self.order.next();
+        }
+      }, function (error) {
+        self.errFiles.push(file);
+        console.log('error uploading file');
+      }, function (notification) {
+        file.progress = notification;
+        console.log(notification);
+      });
     });
   };
+
+  // $scope.$watch(function () {
+  //   return self.files;
+  // }, function (newVal, oldVal) {
+  //   componentHandler.upgradeAllRegistered();
+  // });
 }

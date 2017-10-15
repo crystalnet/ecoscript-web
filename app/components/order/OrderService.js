@@ -19,16 +19,16 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
         if (!AuthenticationService.user.isAnonymous) {
           self.orderSteps.splice(4, 1);
         }
-        return new Promise(function(resolve, reject) {
-          self.uid = AuthenticationService.user.uid;
-          const location = firebase.database().ref('users/' + self.uid + '/orders/').push(true, function () {
-            self.id = location.key;
-            firebase.database().ref('orders/' + self.id + '/total').on('value', function (snapshot) {
-              self.total = snapshot.val();
-            });
-            resolve();
+        let deferred = $q.defer();
+        self.uid = AuthenticationService.user.uid;
+        const location = firebase.database().ref('users/' + self.uid + '/orders/').push(true, function () {
+          self.id = location.key;
+          firebase.database().ref('orders/' + self.id + '/total').on('value', function (snapshot) {
+            self.total = snapshot.val();
           });
+          deferred.resolve();
         });
+        return deferred.promise
       }
     });
   };
@@ -52,7 +52,7 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
         configuration: angular.copy(self.configuration)
       };
 
-      UploadService.uploadScript(script)
+      return UploadService.uploadScript(script)
         .then(function (result) {
           // self.scripts.push(script);
           self.scripts[0] = script;
@@ -104,7 +104,7 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
           console.log('got notification');
           deferred.notify(notification);
         });
-      return deferred.promise;
+      //return deferred.promise;
     });
   };
 
