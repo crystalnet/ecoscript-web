@@ -27,8 +27,7 @@ function PaymentService(OrderService, $q, UtilsService, AuthenticationService, $
     $http.post('https://us-central1-scripteco-prod.cloudfunctions.net/createPayment', data)
       .then(function(response) {
         console.log(response);
-        // this callback will be called asynchronously
-        // when the response is available
+        self.approvalUrl = response.data.links[1].href;
       }, function(response) {
         console.log(response);
         // called asynchronously if an error occurs

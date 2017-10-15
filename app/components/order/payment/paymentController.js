@@ -17,7 +17,7 @@ function PaymentController($location, OrderService, $timeout, PageContextService
   self.Payment = PaymentService;
 
   let ppp = PAYPAL.apps.PPP({
-    'approvalUrl': '\'.$approval_url.\'',
+    'approvalUrl': self.Payment.approvalUrl,
     'placeholder': 'ppplus',
     'mode': 'sandbox',
     'country': 'DE'

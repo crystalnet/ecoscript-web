@@ -17,7 +17,7 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
     return AuthenticationService.anonymousSignIn().then(function () {
       if (!self.id) {
         if (!AuthenticationService.user.isAnonymous) {
-          self.orderSteps.splice(5, 1);
+          self.orderSteps.splice(4, 1);
         }
         return new Promise(function(resolve, reject) {
           self.uid = AuthenticationService.user.uid;
@@ -169,14 +169,14 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
   const scriptPlan = 'components/order/script/scriptPlan.htm';
   const scriptColorSelection = 'components/order/script/scriptColorSelection.htm';
   const scriptPrintConfiguration = 'components/order/script/scriptPrintConfiguration.htm';
-  const particularsSignIn = 'components/order/particulars/particularsSignInController.htm';
+  const particularsSignIn = 'components/order/particulars/particularsSignIn.htm';
   const particularsData = 'components/order/particulars/particularsData.htm';
   const payment = 'components/order/payment/paymentView.htm';
 
   self.orderSteps = [
     scriptUpload,
     scriptTitle,
-    scriptPlan,
+    // scriptPlan,
     scriptColorSelection,
     scriptPrintConfiguration,
     particularsSignIn,

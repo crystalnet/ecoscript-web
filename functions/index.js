@@ -116,7 +116,7 @@ exports.updatePrices = functions.database.ref('/order_items/{orderItemId}')
           pagePrice = 0.05;
         }
         let price = Math.ceil(pages.val() / divisor) * pagePrice + fixedCosts;
-        price = price.toFixed(2);
+        price = Math.round(price * 100)/100;
         return snapshot.adminRef.update({price: price}).then(function() {
           return updateOrderTotal(snapshot.child('order').val());
         });
@@ -132,7 +132,7 @@ function updateOrderTotal(orderId) {
     let total = 0;
     orderSnapshot.forEach(function(childSnapshot) {
       promises.push(admin.database().ref('order_items/' + childSnapshot.key).once('value').then(function(itemSnapshot) {
-        total += parseFloat(itemSnapshot.child('price').val()).toFixed(2);
+        total += itemSnapshot.child('price').val();
       }));
     });
     return Promise.all(promises).then(function() {
@@ -189,7 +189,7 @@ exports.createPayment = functions.https.onRequest((req, res) => {
   };
 
   admin.database().ref('orders/' + orderId).once('value').then(function(orderSnapshot) {
-    createPaymentJson.transactions[0].amount.total = orderSnapshot.child('price').val();
+    createPaymentJson.transactions[0].amount.total = orderSnapshot.child('total').val();
     orderSnapshot.child('order_items').forEach(function(childSnapshot) {
       admin.database().ref('order_items/' + childSnapshot.key).once('value').then(function(itemSnapshot) {
         let item = {

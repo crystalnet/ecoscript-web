@@ -36,6 +36,10 @@ function config($routeProvider, $locationProvider, $httpProvider) {
       templateUrl: 'components/order/orderView.htm'
     })
 
+    .when('/thankyou', {
+      templateUrl: 'components/payment/thankyou.htm'
+    })
+
     .when('/agb', {
       templateUrl: 'components/law/agb.htm'
     })
