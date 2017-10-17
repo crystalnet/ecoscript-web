@@ -8,9 +8,9 @@ angular.module('order')
 // Define service
   .service('OrderService', OrderService);
 
-OrderService.$inject = ['UploadService', '$q', 'UtilsService', 'AuthenticationService', '$http'];
+OrderService.$inject = ['UploadService', '$q', 'UtilsService', 'AuthenticationService', '$http', '$scope'];
 
-function OrderService(UploadService, $q, UtilsService, AuthenticationService, $http) {
+function OrderService(UploadService, $q, UtilsService, AuthenticationService, $http, $scope) {
   const self = this;
 
   self.initialize = function () {
@@ -39,11 +39,7 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
 
   self.addScript = function (file) {
     return self.initialize().then(function () {
-      let location = firebase.database().ref('users/' + self.uid + '/order_items/').push(true, function() {
-        firebase.database().ref('order_items/' + script.id + '/price').on('value', function (snapshot) {
-          self.scripts[0].price = snapshot.val();
-        });
-      });
+      let location = firebase.database().ref('users/' + self.uid + '/order_items/').push(true);
 
       let script = {
         id: location.key,
@@ -57,9 +53,17 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
           self.scripts[0] = script;
           self.scripts[0].configuration.script = result;
 
+          firebase.database().ref('order_items/' + script.id + '/price').on('value', function (snapshot) {
+            $scope.$apply(function () {
+              self.scripts[0].price = snapshot.val()
+            });
+          });
+
           Object.defineProperty(self.scripts[0], 'color', {
-            get: function() { return this.configuration.color; },
-            set: function(x) {
+            get: function () {
+              return this.configuration.color;
+            },
+            set: function (x) {
               x = angular.toJson(x);
               x = angular.fromJson(x);
               this.configuration.color = x;
@@ -68,8 +72,10 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
           });
 
           Object.defineProperty(self.scripts[0], 'twoSided', {
-            get: function() { return this.configuration.twoSided; },
-            set: function(x) {
+            get: function () {
+              return this.configuration.twoSided;
+            },
+            set: function (x) {
               x = angular.toJson(x);
               x = angular.fromJson(x);
               this.configuration.twoSided = x;
@@ -78,8 +84,10 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
           });
 
           Object.defineProperty(self.scripts[0], 'pagesPerSide', {
-            get: function() { return this.configuration.pagesPerSide; },
-            set: function(x) {
+            get: function () {
+              return this.configuration.pagesPerSide;
+            },
+            set: function (x) {
               x = angular.toJson(x);
               x = angular.fromJson(x);
               this.configuration.pagesPerSide = x;

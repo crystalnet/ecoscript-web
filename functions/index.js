@@ -63,25 +63,7 @@ exports.generateUploadEntry = functions.storage.object().onChange(event => {
           numPages = doc.numPages;
 
           return admin.database().ref('scripts/' + metadata.key).update({
-            pages: numPages,
-            prices: {
-              '1bvh': 10.00,
-              '2bvh': 5.00,
-              '4bvh': 2.50,
-              '8bvh': 1.25,
-              '1cvh': 20.00,
-              '2cvh': 10.00,
-              '4cvh': 5.00,
-              '8cvh': 2.50,
-              '1bv': 10.00,
-              '2bv': 5.00,
-              '4bv': 2.50,
-              '8bv': 1.25,
-              '1cv': 20.00,
-              '2cv': 10.00,
-              '4cv': 5.00,
-              '8cv': 2.50
-            }
+            pages: numPages
           });
         }, function(err) {
           console.log(err);
