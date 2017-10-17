@@ -39,7 +39,6 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
 
   self.addScript = function (file) {
     return self.initialize().then(function () {
-      const deferred = $q.defer();
       let location = firebase.database().ref('users/' + self.uid + '/order_items/').push(true, function() {
         firebase.database().ref('order_items/' + script.id + '/price').on('value', function (snapshot) {
           self.scripts[0].price = snapshot.val();
@@ -97,12 +96,12 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
           }
           script.configuration.title = title.join(' ');
 
-          deferred.resolve(result);
+          return result;
         }, function (error) {
-          deferred.reject(error);
+          return error;
         }, function (notification) {
           console.log('got notification');
-          deferred.notify(notification);
+          return notification;
         });
       //return deferred.promise;
     });

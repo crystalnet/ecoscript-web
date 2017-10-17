@@ -29,7 +29,7 @@ function ScriptUploadController($location, OrderService, $timeout, $scope) {
       let promise = self.order.addScript(file);
       promise.then(function (result) {
         if (self.order.scripts.length > 0) {
-          self.order.next();
+          //self.order.next();
         }
       }, function (error) {
         self.errFiles.push(file);
@@ -41,9 +41,10 @@ function ScriptUploadController($location, OrderService, $timeout, $scope) {
     });
   };
 
-  // $scope.$watch(function () {
+  // $scope.$watch(function() {
   //   return self.files;
   // }, function (newVal, oldVal) {
-  //   componentHandler.upgradeAllRegistered();
+  //   console.log('upgrading');
+  //   //componentHandler.upgradeAllRegistered();
   // });
 }

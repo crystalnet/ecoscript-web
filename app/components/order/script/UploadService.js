@@ -84,7 +84,9 @@ function UploadService(AuthenticationService, $q, UtilsService) {
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
       nextFunction,
       errorFunction,
-      completeFunction(key));
+      function () {
+        completeFunction(key)
+      });
 
     return deferred.promise;
   };
