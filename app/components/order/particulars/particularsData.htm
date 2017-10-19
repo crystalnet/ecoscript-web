@@ -1,29 +1,56 @@
 <div data-ng-controller="particularsDataController">
-  <h3>Send it to where?</h3>
-  <div class="mdl-textfield mdl-js-textfield">
-    <input class="mdl-textfield__input" type="text" id="firstname"
-           data-ng-model="controller.order.particulars.firstname">
-    <label class="mdl-textfield__label" for="firstname">Vorname...</label>
+
+  <div class="mdl-grid--no-spacing">
+    <div class="order_title__container mdl-cell mdl-cell--3-col mdl-cell--4-offset-desktop">
+      <h3>Wohin sollen wir Deinen Skript schicken?</h3>
+    </div>
   </div>
-  <div class="mdl-textfield mdl-js-textfield">
-    <input class="mdl-textfield__input" type="text" id="lastname"
-           data-ng-model="controller.order.particulars.lastname">
-    <label class="mdl-textfield__label" for="lastname">Nachname...</label>
+
+  <div class="mdl-grid">
+    <div class="mdl-grid mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
+
+      <div class="mdl-cell mdl-cell--5-col">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="firstname"
+                 data-ng-model="controller.order.particulars.firstname">
+          <label class="mdl-textfield__label" for="firstname">Dein Vorname</label>
+        </div>
+      </div>
+
+      <div class="mdl-cell mdl-cell--5-col">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="lastname"
+                 data-ng-model="controller.order.particulars.lastname">
+          <label class="mdl-textfield__label" for="lastname">Dein Nachname</label>
+        </div>
+      </div>
+
+      <div class="mdl-cell mdl-cell--5-col">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="city"
+                 data-ng-model="controller.order.particulars.city">
+          <label class="mdl-textfield__label" for="city">Dein Wohnort</label>
+        </div>
+      </div>
+
+      <div class="mdl-cell mdl-cell--5-col">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="zip"
+                 data-ng-model="controller.order.particulars.zip">
+          <label class="mdl-textfield__label" for="zip">Deine PLZ</label>
+        </div>
+      </div>
+
+      <div class="mdl-cell mdl-cell--8-col">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="street"
+                 data-ng-model="controller.order.particulars.street">
+          <label class="mdl-textfield__label" for="street">Deine Straße und Hausnummer</label>
+        </div>
+      </div>
+
+    </div>
   </div>
-  <div class="mdl-textfield mdl-js-textfield">
-    <input class="mdl-textfield__input" type="text" id="street"
-           data-ng-model="controller.order.particulars.street">
-    <label class="mdl-textfield__label" for="street">Straße...</label>
-  </div>
-  <div class="mdl-textfield mdl-js-textfield">
-    <input class="mdl-textfield__input" type="text" id="zip"
-           data-ng-model="controller.order.particulars.zip">
-    <label class="mdl-textfield__label" for="zip">PLZ...</label>
-  </div>
-  <div class="mdl-textfield mdl-js-textfield">
-    <input class="mdl-textfield__input" type="text" id="city"
-           data-ng-model="controller.order.particulars.city">
-    <label class="mdl-textfield__label" for="city">Ort...</label>
-  </div>
+
 </div>
 <script src="https://www.paypalobjects.com/webstatic/ppplus/ppplus.min.js" type="text/javascript"></script>

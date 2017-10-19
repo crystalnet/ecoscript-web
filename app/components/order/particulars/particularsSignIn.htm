@@ -1,67 +1,128 @@
 <div data-ng-controller="particularsSignInController as controller">
-  <h3>Do you have a account?</h3>
-  <button data-ng-click="controller.toggle('login')"
-          class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-    Yes, log me in
-  </button>
-  <button data-ng-click="controller.toggle('register')"
-          class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-    No, create new one
-  </button>
-  <button data-ng-click="order.Order.next()"
-          class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-    No, continue anonymously
-  </button>
+
+  <div class="mdl-grid--no-spacing">
+    <div class="order_title__container mdl-cell mdl-cell--3-col mdl-cell--4-offset-desktop">
+      <h3>Hast Du bereits einen Account bei uns?</h3>
+    </div>
+  </div>
+
+  <div class="mdl-grid">
+    <div class="mdl-grid mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
+
+      <div class="mdl-cell mdl-cell--3-col">
+        <button data-ng-click="controller.toggle('login')"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+          Einloggen :)
+        </button>
+      </div>
+
+      <div class="mdl-cell mdl-cell--3-col">
+        <button data-ng-click="controller.toggle('register')"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+          Registrieren
+        </button>
+      </div>
+
+      <div class="mdl-cell mdl-cell--4-col">
+        <button data-ng-click="order.Order.next()"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+          Als Gast bestellen
+        </button>
+      </div>
+    </div>
+  </div>
 
   <div data-ng-show="!controller.createNewAccount">
-
-    <h4>Login</h4>
-
-    <div class="mdl-textfield mdl-js-textfield">
-      <input class="mdl-textfield__input" type="email" id="usernamel" data-ng-model="controller.credentials.email">
-      <label class="mdl-textfield__label" for="usernamel">Email...</label>
+    <div class="mdl-grid--no-spacing">
+      <div class="order_title__container mdl-cell mdl-cell--3-col mdl-cell--4-offset-desktop">
+        <h3>Einmal einloggen bitte</h3>
+      </div>
     </div>
 
-    <div class="mdl-textfield mdl-js-textfield">
-      <input class="mdl-textfield__input" type="password" id="passwordl"
-             data-ng-model="controller.credentials.password">
-      <label class="mdl-textfield__label" for="passwordl">Password...</label>
+
+    <div class="mdl-grid">
+      <div class="mdl-grid mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
+        <div class="mdl-cell mdl-cell--4-col">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="email" id="usernamel" data-ng-model="controller.credentials.email">
+            <label class="mdl-textfield__label" for="usernamel">Deine E-Mail</label>
+          </div>
+        </div>
+
+        <div class="mdl-cell mdl-cell--4-col">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="password" id="passwordl"
+                   data-ng-model="controller.credentials.password">
+            <label class="mdl-textfield__label" for="passwordl">Dein Passwort</label>
+          </div>
+        </div>
+
+        <div class="mdl-cell mdl-cell--4-col">
+          <button id="signIn-btn" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored mdl-color--primary"
+                  data-ng-click="controller.signIn()">
+            <i class="material-icons">keyboard_arrow_right</i>
+          </button>
+        </div>
+      </div>
     </div>
 
-    <button id="signIn-btn" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored"
-            data-ng-click="controller.signIn()">
-      <i class="material-icons">keyboard_arrow_right</i>
-    </button>
+    <div class="mdl-grid">
+      <div class="mdl-grid mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
+        <div class="mdl-cell mdl-cell--4-col">
+          <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-color--primary"
+                  data-ng-click="controller.googleSignIn()">
+            Google Sign-in
+          </button>
+        </div>
 
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
-            data-ng-click="controller.googleSignIn()">
-      Google Sign-in
-    </button>
+        <div class="mdl-cell mdl-cell--4-col">
+          <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-color--primary"
+                  data-ng-click="controller.facebookSignIn()">
+            Facebook Sign-in
+          </button>
+        </div>
+      </div>
+    </div>
 
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
-            data-ng-click="controller.facebookSignIn()">
-      Facebook Sign-in
-    </button>
   </div>
 
   <div data-ng-show="controller.createNewAccount">
 
-    <h4>Register</h4>
-
-    <div class="mdl-textfield mdl-js-textfield">
-      <input class="mdl-textfield__input" type="email" id="usernamer" data-ng-model="controller.credentials.email">
-      <label class="mdl-textfield__label" for="usernamer">Email...</label>
+    <div class="mdl-grid--no-spacing">
+      <div class="order_title__container mdl-cell mdl-cell--3-col mdl-cell--4-offset-desktop">
+        <h3>Herzlich Willkomen bei uns</h3>
+        <h4>Hier kannst Du dich registrieren:</h4>
+      </div>
     </div>
 
-    <div class="mdl-textfield mdl-js-textfield">
-      <input class="mdl-textfield__input" type="password" id="passwordr"
-             data-ng-model="controller.credentials.password">
-      <label class="mdl-textfield__label" for="passwordr">Password...</label>
-    </div>
+    <div class="mdl-grid">
+      <div class="mdl-grid mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
+        <div class="mdl-cell mdl-cell--4-col">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="email" id="usernamer" data-ng-model="controller.credentials.email">
+            <label class="mdl-textfield__label" for="usernamer">Deine E-Mail</label>
+          </div>
+        </div>
 
-    <button id="register-btn" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored"
-            data-ng-click="controller.register()">
-      <i class="material-icons">keyboard_arrow_right</i>
-    </button>
+        <div class="mdl-cell mdl-cell--4-col">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="password" id="passwordr"
+                   data-ng-model="controller.credentials.password">
+            <label class="mdl-textfield__label" for="passwordr">Dein Passwort</label>
+          </div>
+        </div>
+
+        <div class="mdl-cell mdl-cell--4-col">
+          <div class="mdl-textfield mdl-js-textfield">
+            <button id="register-btn" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored mdl-color--primary"
+                    data-ng-click="controller.register()">
+              <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
+
 </div>

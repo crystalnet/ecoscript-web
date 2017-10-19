@@ -6,30 +6,15 @@
     </div>
   </div>
 
-  <div class="mdl-grid">
+
     <div class="mdl-grid mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
 
-      <div class="mdl-cell mdl-cell--5-col mdl-cell--1-offset-desktop demo-card-square mdl-card mdl-shadow--2dp">
-        <div class="mdl-card__title mdl-card--expand">
-          <h2 class="mdl-card__title-text">Beidseitig</h2>
-        </div>
-        <div class="mdl-card__supporting-text">
-          Platzsparend.
-        </div>
-        <div class="mdl-card__actions mdl-card--border">
-          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-             data-ng-click="order.Order.scripts[0].twoSided = order.Order.twoSided[0]">
-            Auswählen
-          </a>
-        </div>
-      </div>
-
-      <div class="mdl-cell mdl-cell--5-col demo-card-square mdl-card mdl-shadow--2dp">
+      <div class="mdl-cell mdl-cell--4-col order_card__print_config mdl-card mdl-shadow--2dp">
         <div class="mdl-card__title mdl-card--expand">
           <h2 class="mdl-card__title-text">Einseitig</h2>
         </div>
-        <div class="mdl-card__supporting-text">
-          Platz für deine Notizen.
+
+        <div class="order_card__print_config_einseitig mdl-card__supporting-text">
         </div>
         <div class="mdl-card__actions mdl-card--border">
           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
@@ -39,13 +24,29 @@
         </div>
       </div>
 
-
-      <div class="mdl-cell mdl-cell--5-col demo-card-square mdl-card mdl-shadow--2dp">
+      <div class="mdl-cell mdl-cell--4-col mdl-cell--1-offset-desktop order_card__print_config mdl-card mdl-shadow--2dp">
         <div class="mdl-card__title mdl-card--expand">
-          <h2 class="mdl-card__title-text">1 Seite pro Blatt</h2>
+          <h2 class="mdl-card__title-text">Beidseitig</h2>
         </div>
-        <div class="mdl-card__supporting-text">
-          Lorem ipsum
+        <div class="order_card__print_config_zweiseitig mdl-card__supporting-text">
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+             data-ng-click="order.Order.scripts[0].twoSided = order.Order.twoSided[0]">
+            Auswählen
+          </a>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="mdl-grid mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
+      <hr>
+      <div class="mdl-cell mdl-cell--4-col order_card__print_config mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title mdl-card--expand">
+          <h2 class="mdl-card__title-text">1 Seite</h2>
+        </div>
+        <div class="order_card__print_config_ein_blatt mdl-card__supporting-text">
         </div>
         <div class="mdl-card__actions mdl-card--border">
           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
@@ -55,12 +56,11 @@
         </div>
       </div>
 
-      <div class="mdl-cell mdl-cell--5-col demo-card-square mdl-card mdl-shadow--2dp">
+      <div class="mdl-cell mdl-cell--4-col order_card__print_config mdl-card mdl-shadow--2dp">
         <div class="mdl-card__title mdl-card--expand">
-          <h2 class="mdl-card__title-text">2 Seiten pro Blatt</h2>
+          <h2 class="mdl-card__title-text">2 Seiten</h2>
         </div>
-        <div class="mdl-card__supporting-text">
-          Lorem ipsum
+        <div class="order_card__print_config_zwei_blatt mdl-card__supporting-text">
         </div>
         <div class="mdl-card__actions mdl-card--border">
           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
@@ -68,14 +68,13 @@
             Auswählen
           </a>
         </div>
-
       </div>
-      <div class="mdl-cell mdl-cell--5-col demo-card-square mdl-card mdl-shadow--2dp">
+
+      <div class="mdl-cell mdl-cell--4-col order_card__print_config mdl-card mdl-shadow--2dp">
         <div class="mdl-card__title mdl-card--expand">
-          <h2 class="mdl-card__title-text">4 Seiten pro Blatt</h2>
+          <h2 class="mdl-card__title-text">4 Seiten</h2>
         </div>
-        <div class="mdl-card__supporting-text">
-          Lorem ipsum
+        <div class="order_card__print_config_vier_blatt mdl-card__supporting-text">
         </div>
         <div class="mdl-card__actions mdl-card--border">
           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
@@ -85,21 +84,6 @@
         </div>
       </div>
 
-      <div class="mdl-cell mdl-cell--5-col demo-card-square mdl-card mdl-shadow--2dp">
-        <div class="mdl-card__title mdl-card--expand">
-          <h2 class="mdl-card__title-text">8 Seiten pro Blatt</h2>
-        </div>
-        <div class="mdl-card__supporting-text">
-          Lorem ipsum
-        </div>
-        <div class="mdl-card__actions mdl-card--border">
-          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-             data-ng-click="order.Order.scripts[0].pagesPerSide = order.Order.pagesPerSide[3]">
-            Auswählen
-          </a>
-        </div>
-      </div>
-
     </div>
-  </div>
+
 </div>

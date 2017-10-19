@@ -45,11 +45,66 @@
 }
 
 
-.demo-card-square.mdl-card {
-  height: 320px;
+//scriptPlan
+.order_card {
+  height: 110px;
 }
-.demo-card-square > .mdl-card__title {
+
+.mdl-card__supporting-text{
+  min-height: 90px;
+}
+
+.order_card__blackwhite  {
   color: #fff;
-  background:
-    url('../images/colorful_flower.jpg') bottom right 15% no-repeat #46B6AC;
+  background: #424242;
 }
+
+.order_card__color  {
+  color: #fff;
+  background: #4CAF50;
+}
+
+//scriptPrintConfirguration
+.order_card__print_config {
+
+}
+
+.order_card__print_config_einseitig{
+  background-image: url("../images/icons/einseitig_180px.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-bottom: 10px;
+}
+
+.order_card__print_config_zweiseitig{
+  background-image: url("../images/icons/beidseitig_180px.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-bottom: 10px;
+}
+.order_card__print_config_ein_blatt{
+  background-image: url("../images/icons/ein_blatt_180px.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-bottom: 10px;
+}
+
+.order_card__print_config_zwei_blatt{
+  background-image: url("../images/icons/zwei_blatt_180px.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-bottom: 10px;
+}
+
+.order_card__print_config_vier_blatt{
+  background-image: url("../images/icons/vier_blatt_180px.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-bottom: 10px;
+}
+
