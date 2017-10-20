@@ -8,114 +8,126 @@ angular.module('order')
 // Define service
   .service('OrderService', OrderService);
 
-OrderService.$inject = ['UploadService', '$q', 'UtilsService', 'AuthenticationService', '$http', '$scope'];
+OrderService.$inject = ['UploadService', '$q', 'UtilsService', 'AuthenticationService', '$http', 'Auth'];
 
-function OrderService(UploadService, $q, UtilsService, AuthenticationService, $http, $scope) {
+function OrderService(UploadService, $q, UtilsService, AuthenticationService, $http, Auth) {
   const self = this;
 
   self.initialize = function () {
-    return AuthenticationService.anonymousSignIn().then(function () {
-      if (!self.id) {
-        if (!AuthenticationService.user.isAnonymous) {
-          self.orderSteps.splice(4, 1);
-        }
-        let deferred = $q.defer();
-        self.uid = AuthenticationService.user.uid;
-        const location = firebase.database().ref('users/' + self.uid + '/orders/').push(true, function () {
-          self.id = location.key;
-          firebase.database().ref('orders/' + self.id + '/total').on('value', function (snapshot) {
-            self.total = snapshot.val();
+    return Auth.$waitForSignIn().then(function () {
+      return AuthenticationService.anonymousSignIn().then(function () {
+        if (!self.id) {
+          if (!AuthenticationService.user.isAnonymous) {
+            self.orderSteps.splice(4, 1);
+          }
+          let deferred = $q.defer();
+          self.uid = AuthenticationService.user.uid;
+          firebase.database().ref('users/' + self.uid + '/current_order/').once('value').then(function (currentOrder) {
+            if (currentOrder.val() && currentOrder.val() !== 'undefined') {
+              self.readOrder(currentOrder.val()).then(deferred.resolve());
+            } else {
+              const location = firebase.database().ref('users/' + self.uid + '/orders/').push(true, function () {
+                self.id = location.key;
+                firebase.database().ref('orders/' + self.id + '/total').on('value', function (snapshot) {
+                  self.total = snapshot.val();
+                });
+                firebase.database().ref('users/' + self.uid + '/current_order').set(self.id);
+                deferred.resolve();
+              });
+            }
           });
-          deferred.resolve();
-        });
-        return deferred.promise
-      }
+          return deferred.promise
+        }
+      });
     });
   };
+
 
   self.stage = 1;
   self.scripts = [];
   self.particulars = {};
 
+  self.initialize();
+
   self.addScript = function (file) {
-    return self.initialize().then(function () {
-      let location = firebase.database().ref('users/' + self.uid + '/order_items/').push(true);
+    //   return self.initialize().then(function () {
+    let location = firebase.database().ref('users/' + self.uid + '/order_items/').push(true);
 
-      let script = {
-        id: location.key,
-        file: file,
-        configuration: angular.copy(self.configuration)
-      };
+    let script = {
+      id: location.key,
+      file: file,
+      configuration: angular.copy(self.configuration)
+    };
 
-      return UploadService.uploadScript(script)
-        .then(function (result) {
-          // self.scripts.push(script);
-          self.scripts[0] = script;
-          self.scripts[0].configuration.script = result;
+    return UploadService.uploadScript(script)
+      .then(function (result) {
+        // self.scripts.push(script);
+        self.scripts[0] = script;
+        self.scripts[0].configuration.script = result;
 
-          firebase.database().ref('order_items/' + script.id + '/price').on('value', function (snapshot) {
-            $scope.$apply(function () {
-              self.scripts[0].price = snapshot.val()
-            });
-          });
-
-          Object.defineProperty(self.scripts[0], 'color', {
-            get: function () {
-              return this.configuration.color;
-            },
-            set: function (x) {
-              x = angular.toJson(x);
-              x = angular.fromJson(x);
-              this.configuration.color = x;
-              firebase.database().ref('order_items/' + this.id).update({color: x, order: self.id});
-            }
-          });
-
-          Object.defineProperty(self.scripts[0], 'twoSided', {
-            get: function () {
-              return this.configuration.twoSided;
-            },
-            set: function (x) {
-              x = angular.toJson(x);
-              x = angular.fromJson(x);
-              this.configuration.twoSided = x;
-              firebase.database().ref('order_items/' + this.id).update({twoSided: x, order: self.id});
-            }
-          });
-
-          Object.defineProperty(self.scripts[0], 'pagesPerSide', {
-            get: function () {
-              return this.configuration.pagesPerSide;
-            },
-            set: function (x) {
-              x = angular.toJson(x);
-              x = angular.fromJson(x);
-              this.configuration.pagesPerSide = x;
-              firebase.database().ref('order_items/' + this.id).update({pagesPerSide: x, order: self.id});
-            }
-          });
-
-          let title = script.file.name;
-          title = title.substring(0, title.lastIndexOf('.'));
-          title = title.split(/\s|_/);
-          for (let i = 0, l = title.length; i < l; i++) {
-            title[i] = title[i].substr(0, 1).toUpperCase() +
-              (title[i].length > 1 ? title[i].substr(1).toLowerCase() : '');
-          }
-          script.configuration.title = title.join(' ');
-
-          return result;
-        }, function (error) {
-          return error;
-        }, function (notification) {
-          console.log('got notification');
-          return notification;
+        firebase.database().ref('order_items/' + script.id + '/price').on('value', function (snapshot) {
+          //$scope.$apply(function () {
+          self.scripts[0].price = snapshot.val();
+          //});
         });
-      //return deferred.promise;
-    });
+
+        Object.defineProperty(self.scripts[0], 'color', {
+          get: function () {
+            return this.configuration.color;
+          },
+          set: function (x) {
+            x = angular.toJson(x);
+            x = angular.fromJson(x);
+            this.configuration.color = x;
+            firebase.database().ref('order_items/' + this.id).update({color: x, order: self.id});
+          }
+        });
+
+        Object.defineProperty(self.scripts[0], 'twoSided', {
+          get: function () {
+            return this.configuration.twoSided;
+          },
+          set: function (x) {
+            x = angular.toJson(x);
+            x = angular.fromJson(x);
+            this.configuration.twoSided = x;
+            firebase.database().ref('order_items/' + this.id).update({twoSided: x, order: self.id});
+          }
+        });
+
+        Object.defineProperty(self.scripts[0], 'pagesPerSide', {
+          get: function () {
+            return this.configuration.pagesPerSide;
+          },
+          set: function (x) {
+            x = angular.toJson(x);
+            x = angular.fromJson(x);
+            this.configuration.pagesPerSide = x;
+            firebase.database().ref('order_items/' + this.id).update({pagesPerSide: x, order: self.id});
+          }
+        });
+
+        let title = script.file.name;
+        title = title.substring(0, title.lastIndexOf('.'));
+        title = title.split(/\s|_/);
+        for (let i = 0, l = title.length; i < l; i++) {
+          title[i] = title[i].substr(0, 1).toUpperCase() +
+            (title[i].length > 1 ? title[i].substr(1).toLowerCase() : '');
+        }
+        script.configuration.title = title.join(' ');
+
+        return result;
+      }, function (error) {
+        return error;
+      }, function (notification) {
+        console.log('got notification');
+        return notification;
+      });
+    //return deferred.promise;
+    //   });
   };
 
-  self.update = function () {
+  self.saveOrder = function () {
     let orderData = {
       particulars: self.particulars,
       order_items: {},
@@ -143,17 +155,46 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
     firebase.database().ref('orders/' + self.id).update(orderData);
   };
 
+  self.readOrder = function (orderId) {
+    self.id = orderId;
+    return firebase.database().ref('orders/' + orderId).once('value').then(function (snapshot) {
+      self.particulars = snapshot.child('particulars').val();
+
+      firebase.database().ref('orders/' + orderId + '/total').on('value', function (snapshot) {
+        self.total = snapshot.val();
+      });
+
+      let promises = [];
+      snapshot.child('order_items').forEach(function (orderItemId) {
+        promises.push(firebase.database().ref('order_items/' + orderItemId.key).once('value').then(function (orderItem) {
+          let script = {
+            id: orderItemId.key,
+            configuration: orderItem.val()
+          };
+          self.scripts.push(script);
+
+          firebase.database().ref('order_items/' + orderItemId.key + '/price').on('value', function (snapshot) {
+            //$scope.$apply(function () {
+            self.scripts[0].price = snapshot.val();
+            //});
+          });
+        }));
+      });
+      return Promise.all(promises);
+    });
+  };
+
   self.next = function () {
     self.validateInputs();
-    self.initialize().then(function () {
-      self.update();
-    });
+    //self.initialize().then(function () {
+    self.saveOrder();
+    //});
     self.stage = Math.min(self.stage + 1, self.orderSteps.length);
   };
 
   self.previous = function () {
     self.validateInputs();
-    //self.update();
+    //self.saveOrder();
     self.stage = Math.max(self.stage - 1, 1);
   };
 
@@ -170,7 +211,7 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
     // const isSideValid = self.order.twoSided.indexOf(self.order.scripts[0].configuration.twoSided) > -1;
   };
 
-  // URLs of order steps
+// URLs of order steps
   const scriptUpload = 'components/order/script/scriptUpload.htm';
   const scriptTitle = 'components/order/script/scriptTitle.htm';
   const scriptPlan = 'components/order/script/scriptPlan.htm';

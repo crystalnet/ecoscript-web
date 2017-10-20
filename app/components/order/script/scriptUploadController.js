@@ -13,7 +13,7 @@ ScriptUploadController.$inject = ['$location', 'OrderService', '$timeout', 'Page
 function ScriptUploadController($location, OrderService, $timeout, $scope) {
   const self = this;
   self.order = OrderService;
-  self.files = {};
+  self.files = self.order.scripts;
 
   if (self.order.scripts.length === 0) {
     $timeout(function () {

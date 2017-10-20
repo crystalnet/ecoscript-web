@@ -28,11 +28,13 @@ function AuthenticationService(Auth, $location, $q) {
 
   self.anonymousSignIn = function () {
     const deferred = $q.defer();
+    self.user = Auth.$getAuth();
 
     if (!self.user) {
       firebase.auth().signInAnonymously()
         .then(function (user) {
           self.user = user;
+          console.log('successful anonymous login');
           deferred.resolve('successful anonymous login');
         })
         .catch(function (error) {
@@ -50,6 +52,8 @@ function AuthenticationService(Auth, $location, $q) {
   };
 
   self.register = function (email, password) {
+    self.user = Auth.$getAuth();
+
     if (!self.user) {
       Auth.$createUserWithEmailAndPassword(email, password)
         .then(function (user) {
@@ -77,6 +81,8 @@ function AuthenticationService(Auth, $location, $q) {
 
   self.signIn = function (email, password) {
     const deferred = $q.defer();
+    self.user = Auth.$getAuth();
+
     if (!self.user) {
       Auth.$signInWithEmailAndPassword(email, password)
         .then(function (user) {
@@ -116,6 +122,8 @@ function AuthenticationService(Auth, $location, $q) {
 
   self.providerSignIn = function (provider) {
     const deferred = $q.defer();
+    self.user = Auth.$getAuth();
+
     if (!self.user) {
       Auth.$signInWithPopup(provider)
         .then(function (result) {
@@ -139,6 +147,8 @@ function AuthenticationService(Auth, $location, $q) {
   };
 
   self.providerRegister = function (provider) {
+    self.user = Auth.$getAuth();
+
     if (!self.user) {
       self.providerSignIn(provider);
     } else if (self.user.isAnonymous) {
