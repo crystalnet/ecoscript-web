@@ -15,6 +15,11 @@ function ScriptUploadController($location, OrderService, $timeout, $scope) {
   self.order = OrderService;
   self.files = self.order.scripts;
 
+  for (let i = 0; i < self.files.length; i++) {
+    self.files[i].name = self.files[i].configuration.title;
+    self.files[i].progress = 100;
+  }
+
   if (self.order.scripts.length === 0) {
     $timeout(function () {
       angular.element('#uploadButton').triggerHandler('click');

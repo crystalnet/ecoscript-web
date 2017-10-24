@@ -1,4 +1,4 @@
-<div>
+<div data-ng-controller="scriptColorSelectionController as controller">
   <div class="mdl-grid--no-spacing">
     <div class="order_title__container mdl-cell mdl-cell--3-col mdl-cell--4-offset-desktop">
       <h3 class="order_title__content">Darf es ein wenig Farbe für dich sein?</h3>
@@ -14,11 +14,11 @@
         </div>
         <div class="mdl-card__supporting-text">
           Konzentrier dich auf das Wesentliche - weniger Farbe, mehr Inhalt.
-          Ab 5€
+          Ab {{order.Order.scripts[0].prices['sw']['true']['2'].toFixed(2)}}€
         </div>
-        <div class="mdl-card__actions mdl-card--border">
+        <div class="mdl-card__actions mdl-card--border" data-ng-class="order.Order.scripts[0].configuration.color.value === order.Order.colors[0].value ? 'order_card__blackwhite' : ''">
           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-             data-ng-click="order.Order.scripts[0].color = order.Order.colors[0]">
+             data-ng-click="order.Order.scripts[0].configuration.color = order.Order.colors[0]; order.Order.next()">
             Auswählen
           </a>
         </div>
@@ -30,16 +30,15 @@
         </div>
         <div class="mdl-card__supporting-text">
           Dein buntes, bildhübsches Skript.
-          Ab 10€
+          Ab {{order.Order.scripts[0].prices['color']['true']['2'].toFixed(2)}}€
         </div>
-        <div class="mdl-card__actions mdl-card--border">
+        <div class="mdl-card__actions mdl-card--border" data-ng-class="order.Order.scripts[0].configuration.color.value === order.Order.colors[1].value ? 'mdl-color--primary' : ''">
           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-             data-ng-click="order.Order.scripts[0].color = order.Order.colors[1]">
+             data-ng-click="order.Order.scripts[0].configuration.color = order.Order.colors[1]; order.Order.next()">
             Auswählen
           </a>
         </div>
       </div>
-
     </div>
   </div>
 </div>

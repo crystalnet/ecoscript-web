@@ -26,9 +26,9 @@
       <span ng-repeat="file in controller.files">
         {{file.name}} {{file.$errorParam}}
         <span class="progress" ng-show="file.progress >= 0"/>
-            {{file.progress | number:2}}%
+            {{file.progress | number:0}}%
         </span>
-        <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner mdl-color--text-primary is-active"></div>
+        <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner mdl-color--text-primary is-active" data-ng-show="file.progress < 100"></div>
     </div>
   </div>
 </div>

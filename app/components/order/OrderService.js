@@ -26,26 +26,25 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
             if (currentOrder.val() && currentOrder.val() !== 'undefined') {
               self.readOrder(currentOrder.val()).then(deferred.resolve());
             } else {
+              self.stage = 1;
+              self.scripts = [];
+              self.particulars = {};
               const location = firebase.database().ref('users/' + self.uid + '/orders/').push(true, function () {
                 self.id = location.key;
                 firebase.database().ref('orders/' + self.id + '/total').on('value', function (snapshot) {
                   self.total = snapshot.val();
                 });
+                self.saveOrder();
                 firebase.database().ref('users/' + self.uid + '/current_order').set(self.id);
                 deferred.resolve();
               });
             }
           });
-          return deferred.promise
+          return deferred.promise;
         }
       });
     });
   };
-
-
-  self.stage = 1;
-  self.scripts = [];
-  self.particulars = {};
 
   self.initialize();
 
@@ -79,7 +78,7 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
             x = angular.toJson(x);
             x = angular.fromJson(x);
             this.configuration.color = x;
-            firebase.database().ref('order_items/' + this.id).update({color: x, order: self.id});
+            //firebase.database().ref('order_items/' + this.id).update({color: x, order: self.id});
           }
         });
 
@@ -91,7 +90,7 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
             x = angular.toJson(x);
             x = angular.fromJson(x);
             this.configuration.twoSided = x;
-            firebase.database().ref('order_items/' + this.id).update({twoSided: x, order: self.id});
+            //firebase.database().ref('order_items/' + this.id).update({twoSided: x, order: self.id});
           }
         });
 
@@ -103,7 +102,7 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
             x = angular.toJson(x);
             x = angular.fromJson(x);
             this.configuration.pagesPerSide = x;
-            firebase.database().ref('order_items/' + this.id).update({pagesPerSide: x, order: self.id});
+            //firebase.database().ref('order_items/' + this.id).update({pagesPerSide: x, order: self.id});
           }
         });
 
@@ -127,8 +126,23 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
     //   });
   };
 
+  self.getPrices = function() {
+    return $http.post('https://us-central1-scripteco-prod.cloudfunctions.net/getOrderItemPrices', {orderItemId: self.scripts[0].id})
+      .then(function successCallback(response) {
+        console.log(response);
+        self.scripts[0].prices = response.data;
+        // this callback will be called asynchronously
+        // when the response is available
+      }, function errorCallback(response) {
+        console.log(response);
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+      });
+  };
+
   self.saveOrder = function () {
     let orderData = {
+      stage: self.stage,
       particulars: self.particulars,
       order_items: {},
       user: self.uid
@@ -159,6 +173,8 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
     self.id = orderId;
     return firebase.database().ref('orders/' + orderId).once('value').then(function (snapshot) {
       self.particulars = snapshot.child('particulars').val();
+      self.stage = snapshot.child('stage').val();
+      self.scripts = [];
 
       firebase.database().ref('orders/' + orderId + '/total').on('value', function (snapshot) {
         self.total = snapshot.val();
@@ -171,6 +187,8 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
             id: orderItemId.key,
             configuration: orderItem.val()
           };
+          delete script.configuration.price;
+          delete script.configuration.order;
           self.scripts.push(script);
 
           firebase.database().ref('order_items/' + orderItemId.key + '/price').on('value', function (snapshot) {
@@ -187,9 +205,9 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
   self.next = function () {
     self.validateInputs();
     //self.initialize().then(function () {
+    self.stage = Math.min(self.stage + 1, self.orderSteps.length);
     self.saveOrder();
     //});
-    self.stage = Math.min(self.stage + 1, self.orderSteps.length);
   };
 
   self.previous = function () {

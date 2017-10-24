@@ -1,8 +1,8 @@
-<div>
+<div data-ng-controller="scriptPrintConfigurationController as controller">
   <div class="mdl-grid--no-spacing">
     <div class="order_title__container mdl-cell mdl-cell--3-col mdl-cell--4-offset-desktop">
       <h3 class="order_title__content">Wähle deine Druckoptionen</h3>
-      <h4>Preis: <span data-ng-bind="order.Order.scripts[0].price.toFixed(2)"></span>€</h4>
+      <h4>Preis: <span data-ng-bind="controller.displayPrice()"></span>€</h4>
     </div>
   </div>
 
@@ -16,9 +16,9 @@
 
         <div class="order_card__print_config_einseitig mdl-card__supporting-text">
         </div>
-        <div class="mdl-card__actions mdl-card--border">
+        <div class="mdl-card__actions mdl-card--border" data-ng-class="order.Order.scripts[0].configuration.twoSided.value === order.Order.twoSided[1].value ? 'mdl-color--primary' : ''">
           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-             data-ng-click="order.Order.scripts[0].twoSided = order.Order.twoSided[1]">
+             data-ng-click="order.Order.scripts[0].configuration.twoSided = order.Order.twoSided[1]">
             Auswählen
           </a>
         </div>
@@ -30,9 +30,9 @@
         </div>
         <div class="order_card__print_config_zweiseitig mdl-card__supporting-text">
         </div>
-        <div class="mdl-card__actions mdl-card--border">
+        <div class="mdl-card__actions mdl-card--border" data-ng-class="order.Order.scripts[0].configuration.twoSided.value === order.Order.twoSided[0].value ? 'mdl-color--primary' : ''">
           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-             data-ng-click="order.Order.scripts[0].twoSided = order.Order.twoSided[0]">
+             data-ng-click="order.Order.scripts[0].configuration.twoSided = order.Order.twoSided[0]">
             Auswählen
           </a>
         </div>
@@ -48,9 +48,9 @@
         </div>
         <div class="order_card__print_config_ein_blatt mdl-card__supporting-text">
         </div>
-        <div class="mdl-card__actions mdl-card--border">
+        <div class="mdl-card__actions mdl-card--border" data-ng-class="order.Order.scripts[0].configuration.pagesPerSide.value === order.Order.pagesPerSide[0].value ? 'mdl-color--primary' : ''">
           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-             data-ng-click="order.Order.scripts[0].pagesPerSide = order.Order.pagesPerSide[0]">
+             data-ng-click="order.Order.scripts[0].configuration.pagesPerSide = order.Order.pagesPerSide[0]">
             Auswählen
           </a>
         </div>
@@ -62,9 +62,9 @@
         </div>
         <div class="order_card__print_config_zwei_blatt mdl-card__supporting-text">
         </div>
-        <div class="mdl-card__actions mdl-card--border">
+        <div class="mdl-card__actions mdl-card--border" data-ng-class="order.Order.scripts[0].configuration.pagesPerSide.value === order.Order.pagesPerSide[1].value ? 'mdl-color--primary' : ''">
           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-             data-ng-click="order.Order.scripts[0].pagesPerSide = order.Order.pagesPerSide[1]">
+             data-ng-click="order.Order.scripts[0].configuration.pagesPerSide = order.Order.pagesPerSide[1]">
             Auswählen
           </a>
         </div>
@@ -76,9 +76,9 @@
         </div>
         <div class="order_card__print_config_vier_blatt mdl-card__supporting-text">
         </div>
-        <div class="mdl-card__actions mdl-card--border">
+        <div class="mdl-card__actions mdl-card--border" data-ng-class="order.Order.scripts[0].configuration.pagesPerSide.value === order.Order.pagesPerSide[2].value ? 'mdl-color--primary' : ''">
           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-             data-ng-click="order.Order.scripts[0].pagesPerSide = order.Order.pagesPerSide[2]">
+             data-ng-click="order.Order.scripts[0].configuration.pagesPerSide = order.Order.pagesPerSide[2]">
             Auswählen
           </a>
         </div>
