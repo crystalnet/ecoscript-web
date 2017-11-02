@@ -284,6 +284,7 @@ exports.executePayment = functions.https.onRequest((req, res) => {
   initalizePaypal();
   const orderId = req.body.orderId;
   const payerId = req.body.payerId;
+  const userId = req.body.userId;
   let executePaymentJson = {
     'payer_id': 'Appended to redirect url'
   };
@@ -295,6 +296,8 @@ exports.executePayment = functions.https.onRequest((req, res) => {
           console.log(error);
           res.status(400).send(error);
         } else {
+          admin.database().ref('orders/' + orderId + '/sent').set(true);
+          admin.database().ref('users/' + userId + '/current_order').set(null);
           console.log('Execute Payment Response');
           console.log(payment);
           res.status(200).send(payment);

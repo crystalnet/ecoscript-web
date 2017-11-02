@@ -8,10 +8,13 @@ angular.module('order')
 // Define service
   .service('OrderService', OrderService);
 
-OrderService.$inject = ['UploadService', '$q', 'UtilsService', 'AuthenticationService', '$http', 'Auth'];
+OrderService.$inject = ['UploadService', '$q', 'UtilsService', 'AuthenticationService', '$http', 'Auth', '$rootScope'];
 
-function OrderService(UploadService, $q, UtilsService, AuthenticationService, $http, Auth) {
+function OrderService(UploadService, $q, UtilsService, AuthenticationService, $http, Auth, $rootScope) {
   const self = this;
+  self.stage = 1;
+  self.scripts = [];
+  self.particulars = {};
 
   self.initialize = function () {
     return Auth.$waitForSignIn().then(function () {
@@ -24,11 +27,11 @@ function OrderService(UploadService, $q, UtilsService, AuthenticationService, $h
           self.uid = AuthenticationService.user.uid;
           firebase.database().ref('users/' + self.uid + '/current_order/').once('value').then(function (currentOrder) {
             if (currentOrder.val() && currentOrder.val() !== 'undefined') {
-              self.readOrder(currentOrder.val()).then(deferred.resolve());
+              self.readOrder(currentOrder.val()).then(function() {
+                $rootScope.$apply();
+                deferred.resolve();
+              });
             } else {
-              self.stage = 1;
-              self.scripts = [];
-              self.particulars = {};
               const location = firebase.database().ref('users/' + self.uid + '/orders/').push(true, function () {
                 self.id = location.key;
                 firebase.database().ref('orders/' + self.id + '/total').on('value', function (snapshot) {
