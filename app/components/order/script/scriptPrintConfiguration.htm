@@ -1,89 +1,114 @@
 <div data-ng-controller="scriptPrintConfigurationController as controller">
   <div class="mdl-grid--no-spacing">
     <div class="order_title__container mdl-cell mdl-cell--3-col mdl-cell--4-offset-desktop">
-      <h3 class="order_title__content">Wähle deine Druckoptionen</h3>
+      <h3 class="order_title__content">Deine Druckoptionen.</h3>
       <h4>Preis: <span data-ng-bind="controller.displayPrice()"></span>€</h4>
     </div>
   </div>
 
 
-    <div class="mdl-grid mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
+  <div class="mdl-grid mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
 
-      <div class="mdl-cell mdl-cell--4-col order_card__print_config mdl-card mdl-shadow--2dp">
-        <div class="mdl-card__title mdl-card--expand">
-          <h2 class="mdl-card__title-text">Einseitig</h2>
-        </div>
-
-        <div class="order_card__print_config_einseitig mdl-card__supporting-text">
-        </div>
-        <div class="mdl-card__actions mdl-card--border" data-ng-class="order.Order.scripts[0].configuration.twoSided.value === order.Order.twoSided[1].value ? 'mdl-color--primary' : ''">
-          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-             data-ng-click="order.Order.scripts[0].configuration.twoSided = order.Order.twoSided[1]">
-            Auswählen
-          </a>
-        </div>
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--2-col-phone order_card__print_config mdl-card mdl-shadow--2dp">
+      <div class="mdl-card__title mdl-card--expand">
+        <h2 class="mdl-card__title-text">Einseitig</h2>
       </div>
 
-      <div class="mdl-cell mdl-cell--4-col mdl-cell--1-offset-desktop order_card__print_config mdl-card mdl-shadow--2dp">
-        <div class="mdl-card__title mdl-card--expand">
-          <h2 class="mdl-card__title-text">Beidseitig</h2>
-        </div>
-        <div class="order_card__print_config_zweiseitig mdl-card__supporting-text">
-        </div>
-        <div class="mdl-card__actions mdl-card--border" data-ng-class="order.Order.scripts[0].configuration.twoSided.value === order.Order.twoSided[0].value ? 'mdl-color--primary' : ''">
-          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-             data-ng-click="order.Order.scripts[0].configuration.twoSided = order.Order.twoSided[0]">
-            Auswählen
-          </a>
-        </div>
+      <div class="order_card__print_config_einseitig mdl-card__supporting-text">
+      </div>
+      <div class="mdl-card__actions mdl-card--border"
+           data-ng-class="order.Order.scripts[0].configuration.twoSided.value === order.Order.twoSided[1].value ? 'mdl-color--primary' : ''">
+        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+           data-ng-click="order.Order.scripts[0].configuration.twoSided = order.Order.twoSided[1]"
+           data-ng-class="order.Order.scripts[0].configuration.twoSided.value === order.Order.twoSided[1].value ? 'mdl-color-text--white' : ''">
+          Auswählen
+        </a>
       </div>
     </div>
 
-
-    <div class="mdl-grid mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
-      <hr>
-      <div class="mdl-cell mdl-cell--4-col order_card__print_config mdl-card mdl-shadow--2dp">
-        <div class="mdl-card__title mdl-card--expand">
-          <h2 class="mdl-card__title-text">1 Seite</h2>
-        </div>
-        <div class="order_card__print_config_ein_blatt mdl-card__supporting-text">
-        </div>
-        <div class="mdl-card__actions mdl-card--border" data-ng-class="order.Order.scripts[0].configuration.pagesPerSide.value === order.Order.pagesPerSide[0].value ? 'mdl-color--primary' : ''">
-          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-             data-ng-click="order.Order.scripts[0].configuration.pagesPerSide = order.Order.pagesPerSide[0]">
-            Auswählen
-          </a>
-        </div>
+    <div
+      class="mdl-cell mdl-cell--4-col mdl-cell--2-col-phone mdl-cell--1-offset-desktop order_card__print_config mdl-card mdl-shadow--2dp">
+      <div class="mdl-card__title mdl-card--expand">
+        <h2 class="mdl-card__title-text" style="font-size: 10px;">Beidseitig</h2>
       </div>
-
-      <div class="mdl-cell mdl-cell--4-col order_card__print_config mdl-card mdl-shadow--2dp">
-        <div class="mdl-card__title mdl-card--expand">
-          <h2 class="mdl-card__title-text">2 Seiten</h2>
-        </div>
-        <div class="order_card__print_config_zwei_blatt mdl-card__supporting-text">
-        </div>
-        <div class="mdl-card__actions mdl-card--border" data-ng-class="order.Order.scripts[0].configuration.pagesPerSide.value === order.Order.pagesPerSide[1].value ? 'mdl-color--primary' : ''">
-          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-             data-ng-click="order.Order.scripts[0].configuration.pagesPerSide = order.Order.pagesPerSide[1]">
-            Auswählen
-          </a>
-        </div>
+      <div class="order_card__print_config_zweiseitig mdl-card__supporting-text">
       </div>
-
-      <div class="mdl-cell mdl-cell--4-col order_card__print_config mdl-card mdl-shadow--2dp">
-        <div class="mdl-card__title mdl-card--expand">
-          <h2 class="mdl-card__title-text">4 Seiten</h2>
-        </div>
-        <div class="order_card__print_config_vier_blatt mdl-card__supporting-text">
-        </div>
-        <div class="mdl-card__actions mdl-card--border" data-ng-class="order.Order.scripts[0].configuration.pagesPerSide.value === order.Order.pagesPerSide[2].value ? 'mdl-color--primary' : ''">
-          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-             data-ng-click="order.Order.scripts[0].configuration.pagesPerSide = order.Order.pagesPerSide[2]">
-            Auswählen
-          </a>
-        </div>
+      <div class="mdl-card__actions mdl-card--border"
+           data-ng-class="order.Order.scripts[0].configuration.twoSided.value === order.Order.twoSided[0].value ? 'mdl-color--primary' : ''">
+        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+           data-ng-click="order.Order.scripts[0].configuration.twoSided = order.Order.twoSided[0]"
+           data-ng-class="order.Order.scripts[0].configuration.twoSided.value === order.Order.twoSided[0].value ? 'mdl-color-text--white' : ''">
+          Auswählen
+        </a>
       </div>
-
     </div>
+  </div>
+
+  <div class=mdl-grid">
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
+      <hr >
+    </div>
+  </div>
+
+  <div class="mdl-grid mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
+
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--2-col-phone order_card__print_config mdl-card mdl-shadow--2dp">
+      <div class="mdl-card__title mdl-card--expand">
+        <h2 class="mdl-card__title-text">1 Seite</h2>
+      </div>
+      <div class="order_card__print_config_ein_blatt mdl-card__supporting-text">
+      </div>
+      <div class="mdl-card__actions mdl-card--border"
+           data-ng-class="order.Order.scripts[0].configuration.pagesPerSide.value === order.Order.pagesPerSide[0].value ? 'mdl-color--primary' : ''">
+        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+           data-ng-click="order.Order.scripts[0].configuration.pagesPerSide = order.Order.pagesPerSide[0]"
+           data-ng-class="order.Order.scripts[0].configuration.pagesPerSide.value === order.Order.pagesPerSide[0].value ? 'mdl-color-text--white' : ''">
+          Auswählen
+        </a>
+      </div>
+    </div>
+
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--2-col-phone order_card__print_config mdl-card mdl-shadow--2dp">
+      <div class="mdl-card__title mdl-card--expand">
+        <h2 class="mdl-card__title-text">2 Seiten</h2>
+      </div>
+      <div class="order_card__print_config_zwei_blatt mdl-card__supporting-text">
+      </div>
+      <div class="mdl-card__actions mdl-card--border"
+           data-ng-class="order.Order.scripts[0].configuration.pagesPerSide.value === order.Order.pagesPerSide[1].value ? 'mdl-color--primary' : ''">
+        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+           data-ng-click="order.Order.scripts[0].configuration.pagesPerSide = order.Order.pagesPerSide[1]"
+           data-ng-class="order.Order.scripts[0].configuration.pagesPerSide.value === order.Order.pagesPerSide[1].value ? 'mdl-color-text--white' : ''">
+          Auswählen
+        </a>
+      </div>
+    </div>
+
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--2-col-phone order_card__print_config mdl-card mdl-shadow--2dp">
+      <div class="mdl-card__title mdl-card--expand">
+        <h2 class="mdl-card__title-text">4 Seiten</h2>
+      </div>
+      <div class="order_card__print_config_vier_blatt mdl-card__supporting-text">
+      </div>
+      <div class="mdl-card__actions mdl-card--border"
+           data-ng-class="order.Order.scripts[0].configuration.pagesPerSide.value === order.Order.pagesPerSide[2].value ? 'mdl-color--primary' : ''">
+        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+           data-ng-click="order.Order.scripts[0].configuration.pagesPerSide = order.Order.pagesPerSide[2]"
+           data-ng-class="order.Order.scripts[0].configuration.pagesPerSide.value === order.Order.pagesPerSide[2].value ? 'mdl-color-text--white' : ''">
+          Auswählen
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--2-col mdl-cell--4-offset-desktop">
+      <button data-ng-click="order.Order.next()"
+              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+        Weiter
+      </button>
+    </div>
+  </div>
 
 </div>

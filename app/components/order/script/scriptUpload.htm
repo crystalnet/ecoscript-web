@@ -1,15 +1,12 @@
 <div data-ng-controller="scriptUploadController as controller">
   <div class="mdl-grid--no-spacing">
     <div class="order_title__container mdl-cell mdl-cell--3-col mdl-cell--4-offset-desktop">
-      <h3 class="order_title__content">Schicke uns einfach dein Skript.</h3>
+      <h3 class="order_title__content">Dein Skript.</h3>
     </div>
   </div>
   <div class="mdl-grid--no-spacing">
     <div class="order_subtitle__container mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
-      <p>Das PDF Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-        invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-        et ea rebum.
-        Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+      <p>Lade hier Dein Skript hoch und lass es Dir in Deinem gewünschten Format drucken. Und das Beste daran: Super einfach und in nur 3 Minuten bestellt.</p>
     </div>
   </div>
   <div class="mdl-grid">
@@ -22,7 +19,7 @@
     </div>
   </div>
   <div class="mdl-grid">
-    <div class="mmdl-cell mdl-cell--2-col mdl-cell--4-offset-desktop">
+    <div class="mdl-cell mdl-cell--2-col mdl-cell--4-offset-desktop">
       <span ng-repeat="file in controller.files">
         {{file.name}} {{file.$errorParam}}
         <span class="progress" ng-show="file.progress >= 0"/>
