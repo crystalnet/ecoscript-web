@@ -12,6 +12,7 @@ ParticularsDataController.$inject = ['PaymentService', 'OrderService'];
 
 function ParticularsDataController(PaymentService, OrderService) {
   const self = this;
+  self.order = OrderService;
 
   PaymentService.create();
 }

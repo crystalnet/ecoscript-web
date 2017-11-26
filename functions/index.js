@@ -62,21 +62,21 @@ exports.generateUploadEntry = functions.storage.object().onChange(event => {
       return file.download({destination: tempLocalFile}).then(() => {
         console.log('downloaded file: ' + tempLocalFile);
         // Analyze file with pdfjs
-        return PDFJS.getDocument(tempLocalFile).then(function (doc) {
+        return PDFJS.getDocument(tempLocalFile).then(function(doc) {
           numPages = doc.numPages;
 
           return admin.database().ref('scripts/' + metadata.key).update({
             pages: numPages
           });
-        }, function (err) {
+        }, function(err) {
           console.log(err);
           return null;
         });
-      }, function (err) {
+      }, function(err) {
         console.log('file not downloaded');
         console.log(err);
       });
-    }, function (err) {
+    }, function(err) {
       console.log('temp dir not created');
       console.log(err);
     });
@@ -95,8 +95,8 @@ exports.updatePrices = functions.database.ref('/order_items/{orderItemId}')
 exports.getOrderItemPrices = functions.https.onRequest((req, res) => {
   const orderItemId = req.body.orderItemId;
   cors(req, res, () => {
-    return admin.database().ref('order_items/' + orderItemId + '/script').once('value').then(function (script) {
-      return admin.database().ref('scripts/' + script.val() + '/pages').once('value').then(function (pages) {
+    return admin.database().ref('order_items/' + orderItemId + '/script').once('value').then(function(script) {
+      return admin.database().ref('scripts/' + script.val() + '/pages').once('value').then(function(pages) {
         let pagesPerSide = ['1', '2', '4', '8'];
         let twoSided = ['true', 'false'];
         let color = ['sw', 'color'];
@@ -120,6 +120,7 @@ exports.getOrderItemPrices = functions.https.onRequest((req, res) => {
               }
               let price = Math.ceil(pages.val() / divisor) * pagePrice + fixedCosts;
               price = Math.ceil(price * 100) / 100;
+              console.log('Seiten: ' + Math.ceil(pages.val() / divisor) + ' Seitenpreis: ' + pagePrice + ' Fixkosten: ' + fixedCosts + ' Summe: ' + price);
               prices[c][ts][pps] = price;
             }
           }
@@ -131,7 +132,7 @@ exports.getOrderItemPrices = functions.https.onRequest((req, res) => {
 });
 
 function updateOrderItemPrice(orderItemSnapshot) {
-  return admin.database().ref('scripts/' + orderItemSnapshot.child('script').val() + '/pages').once('value').then(function (pages) {
+  return admin.database().ref('scripts/' + orderItemSnapshot.child('script').val() + '/pages').once('value').then(function(pages) {
     let divisor = orderItemSnapshot.child('pagesPerSide/value').val();
     if (orderItemSnapshot.child('twoSided/value').val() === 'true') {
       divisor *= 2;
@@ -145,7 +146,7 @@ function updateOrderItemPrice(orderItemSnapshot) {
     }
     let price = Math.ceil(pages.val() / divisor) * pagePrice + fixedCosts;
     price = Math.ceil(price * 100) / 100;
-    return orderItemSnapshot.adminRef.update({price: price}).then(function () {
+    return orderItemSnapshot.adminRef.update({price: price}).then(function() {
       return updateOrderTotal(orderItemSnapshot.child('order').val());
     });
   });
@@ -153,15 +154,15 @@ function updateOrderItemPrice(orderItemSnapshot) {
 
 function updateOrderTotal(orderId) {
   let orderReference = admin.database().ref('orders/' + orderId);
-  return orderReference.child('order_items').once('value').then(function (orderSnapshot) {
+  return orderReference.child('order_items').once('value').then(function(orderSnapshot) {
     let promises = [];
     let total = 0;
-    orderSnapshot.forEach(function (childSnapshot) {
-      promises.push(admin.database().ref('order_items/' + childSnapshot.key).once('value').then(function (itemSnapshot) {
+    orderSnapshot.forEach(function(childSnapshot) {
+      promises.push(admin.database().ref('order_items/' + childSnapshot.key).once('value').then(function(itemSnapshot) {
         total += itemSnapshot.child('price').val();
       }));
     });
-    return Promise.all(promises).then(function () {
+    return Promise.all(promises).then(function() {
       return orderReference.update({total: total});
     });
   });
@@ -211,10 +212,10 @@ exports.createPayment = functions.https.onRequest((req, res) => {
     }]
   };
 
-  admin.database().ref('orders/' + orderId).once('value').then(function (orderSnapshot) {
+  admin.database().ref('orders/' + orderId).once('value').then(function(orderSnapshot) {
     createPaymentJson.transactions[0].amount.total = orderSnapshot.child('total').val();
-    orderSnapshot.child('order_items').forEach(function (childSnapshot) {
-      admin.database().ref('order_items/' + childSnapshot.key).once('value').then(function (itemSnapshot) {
+    orderSnapshot.child('order_items').forEach(function(childSnapshot) {
+      admin.database().ref('order_items/' + childSnapshot.key).once('value').then(function(itemSnapshot) {
         let item = {
           name: itemSnapshot.child('title').val(),
           sku: itemSnapshot.child('script').val(),
@@ -225,8 +226,8 @@ exports.createPayment = functions.https.onRequest((req, res) => {
         createPaymentJson.transactions[0].item_list.items.push(item);
       });
     });
-  }).then(function () {
-    paypal.payment.create(createPaymentJson, function (error, payment) {
+  }).then(function() {
+    paypal.payment.create(createPaymentJson, function(error, payment) {
       cors(req, res, () => {
         if (error) {
           console.log(error);
@@ -255,17 +256,17 @@ exports.patchPayment = functions.https.onRequest((req, res) => {
     }
   }];
 
-  admin.database().ref('orders/' + orderId).once('value').then(function (orderSnapshot) {
+  admin.database().ref('orders/' + orderId).once('value').then(function(orderSnapshot) {
     paymentId = orderSnapshot.child('payment').val();
     patchPaymentJson[0].value.recipient_name = orderSnapshot.child('particulars/firstname').val()
       + ' ' + orderSnapshot.child('particulars/lastname').val();
     patchPaymentJson[0].value.line1 = orderSnapshot.child('particulars/street').val();
     patchPaymentJson[0].value.city = orderSnapshot.child('particulars/city').val();
     patchPaymentJson[0].value.postal_code = orderSnapshot.child('particulars/zip').val();
-  }).then(function () {
+  }).then(function() {
     console.log(paymentId);
     console.log(patchPaymentJson);
-    paypal.payment.update(paymentId, patchPaymentJson, function (error, payment) {
+    paypal.payment.update(paymentId, patchPaymentJson, function(error, payment) {
       cors(req, res, () => {
         if (error) {
           console.log(error);
@@ -289,8 +290,8 @@ exports.executePayment = functions.https.onRequest((req, res) => {
     'payer_id': 'Appended to redirect url'
   };
 
-  const paymentId = admin.database().ref('orders/' + orderId + '/payment').once('value').then(function () {
-    paypal.payment.execute(paymentId, executePaymentJson, function (error, payment) {
+  const paymentId = admin.database().ref('orders/' + orderId + '/payment').once('value').then(function() {
+    paypal.payment.execute(paymentId, executePaymentJson, function(error, payment) {
       cors(req, res, () => {
         if (error) {
           console.log(error);
@@ -304,6 +305,25 @@ exports.executePayment = functions.https.onRequest((req, res) => {
         }
       });
     });
+  });
+});
+
+exports.linkAccount = functions.https.onRequest((req, res) => {
+  cors(req, res, () => {
+    // Need to get current authentication token and new uid in request...
+    admin.auth().verifyIdToken(req.token)
+      .then(function(decodedToken) {
+        let uid = decodedToken.uid;
+        admin.database().ref('users/' + uid).once('value').then(function(snapshot) {
+          admin.database().ref('users/' + req.newUid).set(snapshot.val())
+            .then(function() {
+              admin.database().ref('user' + uid).remove();
+            });
+        });
+        res.status(200).send('success');
+      }).catch(function(error) {
+        res.status(400).send(error);
+      });
   });
 });
 
