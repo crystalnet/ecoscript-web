@@ -28,7 +28,7 @@ Besides, we are using Git. You can either use the Git Bash or for example the Gi
 
 ## Get and install the repository
 
-1. `$ git clone https://github.com/crystalnet/ecoscript-web.git
+1. `$ git clone https://github.com/crystalnet/ecoscript-web.git`
 2. `$ npm install`
 3. `$ bower install`
 
